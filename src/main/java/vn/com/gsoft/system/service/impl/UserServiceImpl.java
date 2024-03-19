@@ -2,7 +2,6 @@ package vn.com.gsoft.system.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,29 +9,26 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
 import vn.com.gsoft.system.constant.CachingConstant;
 import vn.com.gsoft.system.constant.UserStatus;
 import vn.com.gsoft.system.entity.Department;
-import vn.com.gsoft.system.entity.Role;
 import vn.com.gsoft.system.entity.User;
 import vn.com.gsoft.system.model.system.Profile;
 import vn.com.gsoft.system.repository.DepartmentRepository;
 import vn.com.gsoft.system.repository.RoleRepository;
 import vn.com.gsoft.system.repository.UserRepository;
 import vn.com.gsoft.system.service.UserService;
-import vn.com.gsoft.system.util.system.JwtTokenUtil;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Slf4j
 public class UserServiceImpl extends BaseServiceImpl implements UserService, UserDetailsService {
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
     @Autowired
     private DepartmentRepository departmentRepository;
     @Autowired
@@ -41,8 +37,7 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService, Use
     @Override
     @Cacheable(value = CachingConstant.USER)
     public Optional<Profile> findUserByToken(String token) {
-        String username = jwtTokenUtil.getUsernameFromToken(token);
-        log.warn("Cache findUserByToken missing: {}", username);
+        log.warn("Cache findUserByToken missing: user");
         return Optional.empty();
     }
 

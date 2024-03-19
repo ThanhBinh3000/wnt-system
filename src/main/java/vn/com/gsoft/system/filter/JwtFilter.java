@@ -1,7 +1,5 @@
 package vn.com.gsoft.system.filter;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,10 +15,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import vn.com.gsoft.system.model.system.Profile;
 import vn.com.gsoft.system.service.UserService;
-import vn.com.gsoft.system.util.system.JwtTokenUtil;
 
 import java.io.IOException;
-import java.util.Objects;
 import java.util.Optional;
 
 @Component
@@ -29,35 +25,19 @@ public class JwtFilter extends OncePerRequestFilter {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         final String requestTokenHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        String username = null;
-        String type = null;
         String jwtToken = null;
-        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
-            jwtToken = requestTokenHeader.substring(7);
-            try {
-                Claims claims = jwtTokenUtil.getAllClaimsFromToken(jwtToken);
-                type = (String) claims.get("type");
-                username = jwtTokenUtil.getUsernameFromToken(jwtToken);
-            } catch (IllegalArgumentException e) {
-                logger.error("Unable to get JWT Token");
-            } catch (ExpiredJwtException e) {
-                logger.error("JWT Token has expired");
-            }
-        }
 
         // Once we get the token validate it.
-        if (Objects.nonNull(username) && "token".equals(type)) {
+        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             Optional<String> loggedUsernameOpt = Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
                     .map(Authentication::getName);
 
-            if (!loggedUsernameOpt.isPresent() || !loggedUsernameOpt.get().equals(username)) {
+            if (!loggedUsernameOpt.isPresent()) {
                 Optional<Profile> opt = userService.findUserByToken(jwtToken);
 
                 if (opt.isPresent()) {
