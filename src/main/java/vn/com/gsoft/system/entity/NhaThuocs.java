@@ -1,5 +1,6 @@
 package vn.com.gsoft.system.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -27,22 +28,22 @@ public class NhaThuocs extends BaseEntity {
     private String email;
     private String mobile;
     private String duocSy;
-    private boolean hoatDong;
-    private boolean active;
-    private boolean isReportDataGenerating;
+    private Boolean hoatDong;
+    private Boolean active;
+    private Boolean isReportDataGenerating;
     private Long tinhThanhId;
     private String maNhaThuocCha;
     private Long id;
-    private boolean isConnectivity;
+    private Boolean isConnectivity;
     private String connectivityCode;
     private String connectivityUserName;
     private String connectivityPassword;
     private String generalPharmacyId;
-    private boolean isGeneralPharmacy;
+    private Boolean isGeneralPharmacy;
     private BigDecimal paidAmount;
     private String description;
     private Long drugStoreTypeId;
-    private boolean isPaid;
+    private Boolean isPaid;
     private Long chainLinkId;
     private Long regionId;
     private Long cityId;
@@ -54,32 +55,35 @@ public class NhaThuocs extends BaseEntity {
     private Long recordStatusId;
     private Long idTypeBasic;
     private String ghiChu;
-    private boolean isNationalDBConnected;
+    private Boolean isNationalDBConnected;
     private String imagePreviewUrl;
     private String imageThumbUrl;
-    private int totalNumberInvoices;
+    private Integer totalNumberInvoices;
     private String connEInvoiceUserName;
     private String connEInvoicePassword;
     private String symbolCodeInvocie;
     private String formNumberInvoice;
-    private int typeInvoice;
-    private int paymentStatus;
+    private Integer typeInvoice;
+    private Integer paymentStatus;
     private BigDecimal paidMoney;
-    private boolean isNationalSampleConnected;
+    private Boolean isNationalSampleConnected;
     private String connectivityCodeMeidcal;
     private String connectivityPasswordMedical;
     private LocalDateTime expiredDate;
     private String businessDescription;
     private LocalDateTime paidDate;
-    private boolean isUploading;
+    private Boolean isUploading;
     private String connEInvoiceSerialCert;
     private String linkConnectEInvoice;
     private String nameServiceEInvoice;
     private String passServiceEInvoice;
     private String signedString;
-    private int typeSendEinvocie;
+    private Integer typeSendEinvocie;
+    @Column(name="Slug_CustomerWebsite")
     private String slugCustomerWebsite;
+    @Column(name="GoogleLocation_CustomerWebsite")
     private String googleLocationCustomerWebsite;
+    @Column(name="ThemeId_CustomerWebsite")
     private Long themeIdCustomerWebsite;
     private String tokenZalo;
     private String zaloKey;
@@ -87,24 +91,33 @@ public class NhaThuocs extends BaseEntity {
     private String refreshTokenZalo;
     private String imageOrderThumbUrl;
     private String imageOrderPreviewUrl;
-    private int typeMessage;
+    private Integer typeMessage;
+    @Column(name="Banner_CustomerWebsite")
     private String bannerCustomerWebsite;
+    @Column(name="MainSlogan_CustomerWebsite")
     private String mainSloganCustomerWebsite;
+    @Column(name="SubSlogan_CustomerWebsite")
     private String subSloganCustomerWebsite;
     private String qRDeviceName;
     private String qRDeviceToken;
     private String simData;
-    private boolean mapped;
-    private boolean zNSStatusSendCreateAccount;
+    private Boolean mapped;
+    @Column(name="ZNS_StatusSendCreateAccount")
+    private Boolean zNSStatusSendCreateAccount;
+    @Column(name="ZNS_TrackingIdCreateAccount")
     private String zNSTrackingIdCreateAccount;
-    private boolean zNSStatusSendPayment;
+    @Column(name="ZNS_StatusSendPayment")
+    private Boolean zNSStatusSendPayment;
+    @Column(name="ZNS_TrackingIdPayment")
     private String zNSTrackingIdPayment;
     private Long businessId;
-    private int codeErrorConfirmPayment_ZNS;
-    private int codeErrorCreateAccount_ZNS;
+    @Column(name="CodeErrorConfirmPayment_ZNS")
+    private Integer codeErrorConfirmPaymentZNS;
+    @Column(name="CodeErrorCreateAccount_ZNS")
+    private Integer codeErrorCreateAccountZNS;
     private String footerPrint;
-    private int classify;
-    private int evaluate;
+    private Integer classify;
+    private Integer evaluate;
     private Long supporterId;
     private Boolean upgradeToPlus;
 

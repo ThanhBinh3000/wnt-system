@@ -21,4 +21,6 @@ public interface NhaThuocsRepository extends CrudRepository<NhaThuocs, Long> {
             "ORDER BY c.modified desc , c.created desc, c.id desc"
     )
     Page<NhaThuocs> searchPage(@Param("param") NhaThuocsReq param, Pageable pageable);
+
+    List<NhaThuocs> findAll();
 }

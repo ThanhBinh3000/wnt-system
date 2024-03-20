@@ -213,7 +213,7 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl implements NhaThuocsSe
 
 	@Override
 	public List<NhaThuocs> searchList(NhaThuocsReq req) throws Exception {
-		return null;
+		return hdrRepo.findAll();
 	}
 
 	@Override

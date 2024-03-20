@@ -30,12 +30,12 @@ public class NhaThuocsController {
   NhaThuocsService service;
 
   @ApiOperation(value = "Tra cứu", response = List.class)
-  @PostMapping(value = PathContains.URL_TRA_CUU, produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(value = PathContains.URL_SEARCH_PAGE, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<BaseResponse> colection(@RequestBody NhaThuocsReq objReq) {
     BaseResponse resp = new BaseResponse();
     try {
-      resp.setData(service.searchPage(objReq));
+      resp.setData(service.searchList(objReq));
       resp.setStatusCode(EnumResponse.RESP_SUCC.getValue());
       resp.setMsg(EnumResponse.RESP_SUCC.getDescription());
     } catch (Exception e) {
@@ -48,7 +48,7 @@ public class NhaThuocsController {
 
 
   @ApiOperation(value = "Tạo mới", response = List.class)
-  @PostMapping(value = PathContains.URL_TAO_MOI, produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(value = PathContains.URL_CREATE, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
   public ResponseEntity<BaseResponse> insert(@Valid @RequestBody NhaThuocsReq objReq) {
     BaseResponse resp = new BaseResponse();
@@ -65,7 +65,7 @@ public class NhaThuocsController {
   }
 
   @ApiOperation(value = "Lấy chi tiết", response = List.class)
-  @GetMapping(value = PathContains.URL_CHI_TIET + "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(value = PathContains.URL_DETAIL, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<BaseResponse> detail(@ApiParam(value = "ID thông tin", example = "1", required = true) @PathVariable("id") Long id) {
     BaseResponse resp = new BaseResponse();
@@ -84,7 +84,7 @@ public class NhaThuocsController {
 
 
   @ApiOperation(value = "Xoá thông tin", response = List.class, produces = MediaType.APPLICATION_JSON_VALUE)
-  @PostMapping(value = PathContains.URL_XOA, produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(value = PathContains.URL_DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<BaseResponse> delete(@Valid @RequestBody NhaThuocsReq idSearchReq) {
     BaseResponse resp = new BaseResponse();
