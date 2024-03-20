@@ -67,3 +67,5 @@
 /.idea/vcs.xml
 /.idea/wnt-system.iml
 /app/log/wnt-system.log
+/target/
+/.idea/
