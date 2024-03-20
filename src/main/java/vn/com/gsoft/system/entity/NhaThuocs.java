@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 public class NhaThuocs extends BaseEntity {
 
     @Id
+    private Long id;
     private String maNhaThuoc;
     private String tenNhaThuoc;
     private String diaChi;
@@ -33,7 +34,6 @@ public class NhaThuocs extends BaseEntity {
     private Boolean isReportDataGenerating;
     private Long tinhThanhId;
     private String maNhaThuocCha;
-    private Long id;
     private Boolean isConnectivity;
     private String connectivityCode;
     private String connectivityUserName;
