@@ -23,7 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/nha-thuoc")
 @Slf4j
-@Api(tags = "Quản trị hệ thống - Kêt chuyển")
+@Api(tags = "Nhà thuốc")
 public class NhaThuocsController {
 
   @Autowired
