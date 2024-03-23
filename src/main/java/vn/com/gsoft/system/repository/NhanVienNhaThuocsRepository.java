@@ -7,25 +7,26 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import vn.com.gsoft.system.entity.NhaThuocs;
+import vn.com.gsoft.system.entity.NhanVienNhaThuocs;
 import vn.com.gsoft.system.model.system.NhaThuocsReq;
+import vn.com.gsoft.system.model.system.NhanVienNhaThuocsReq;
 
 import java.util.List;
 
 @Repository
-public interface NhaThuocsRepository extends CrudRepository<NhaThuocs, Long> {
+public interface NhanVienNhaThuocsRepository extends CrudRepository<NhanVienNhaThuocs, Long> {
 //    List<NhaThuocs> findByUserId(Long id);
 
-    @Query("SELECT c FROM NhaThuocs c " +
+    @Query("SELECT c FROM NhanVienNhaThuocs c " +
             " WHERE 1=1 " +
-            "ORDER BY c.modified desc , c.created desc, c.id desc"
+            "ORDER BY c.id"
     )
-    Page<NhaThuocs> searchPage(@Param("param") NhaThuocsReq param, Pageable pageable);
+    Page<NhanVienNhaThuocs> searchPage(@Param("param") NhanVienNhaThuocsReq param, Pageable pageable);
 
-    @Query("SELECT c FROM NhaThuocs c " +
+    @Query("SELECT c FROM NhanVienNhaThuocs c " +
             " WHERE 1=1 " +
-            "ORDER BY c.modified desc , c.created desc, c.id desc"
+            "ORDER BY c.id desc"
     )
-    List<NhaThuocs> searchList(@Param("param") NhaThuocsReq param);
+    List<NhanVienNhaThuocs> searchList(@Param("param") NhanVienNhaThuocsReq param);
 
-    List<NhaThuocs> findAll();
 }

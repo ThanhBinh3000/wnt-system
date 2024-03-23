@@ -11,6 +11,12 @@ public class PathContains {
 
     public static final String URL_DELETE = "/delete";
 
+    public static final String URL_NHA_THUOC = "/nha-thuoc";
+
+    public static final String URL_NGUOI_DUNG = "/nguoi-dung";
+
+    public static final String URL_NHAN_VIEN_NHA_THUOC = "/nhan-vien-nha-thuoc";
+
 
 
 }

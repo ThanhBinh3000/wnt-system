@@ -7,25 +7,27 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import vn.com.gsoft.system.entity.NhaThuocs;
+import vn.com.gsoft.system.entity.UserProfile;
 import vn.com.gsoft.system.model.system.NhaThuocsReq;
+import vn.com.gsoft.system.model.system.UserProfileReq;
 
 import java.util.List;
 
 @Repository
-public interface NhaThuocsRepository extends CrudRepository<NhaThuocs, Long> {
+public interface UserProfileRepository extends CrudRepository<UserProfile, Long> {
 //    List<NhaThuocs> findByUserId(Long id);
 
-    @Query("SELECT c FROM NhaThuocs c " +
+    @Query("SELECT c FROM UserProfile c " +
             " WHERE 1=1 " +
-            "ORDER BY c.modified desc , c.created desc, c.id desc"
+            "ORDER BY c.userId desc"
     )
-    Page<NhaThuocs> searchPage(@Param("param") NhaThuocsReq param, Pageable pageable);
+    Page<UserProfile> searchPage(@Param("param") UserProfileReq param, Pageable pageable);
 
-    @Query("SELECT c FROM NhaThuocs c " +
+    @Query("SELECT c FROM UserProfile c " +
             " WHERE 1=1 " +
-            "ORDER BY c.modified desc , c.created desc, c.id desc"
+            "ORDER BY c.userId desc"
     )
-    List<NhaThuocs> searchList(@Param("param") NhaThuocsReq param);
+    List<UserProfile> searchList(@Param("param") UserProfileReq param);
 
-    List<NhaThuocs> findAll();
+    List<UserProfile> findAll();
 }

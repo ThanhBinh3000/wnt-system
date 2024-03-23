@@ -12,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.com.gsoft.system.enums.EnumResponse;
-import vn.com.gsoft.system.model.system.BaseRequest;
 import vn.com.gsoft.system.model.system.NhaThuocsReq;
 import vn.com.gsoft.system.response.BaseResponse;
 import vn.com.gsoft.system.service.NhaThuocsService;
@@ -21,10 +20,10 @@ import vn.com.gsoft.system.util.system.PathContains;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = PathContains.URL_NHA_THUOC)
+@RequestMapping(value = PathContains.URL_NHAN_VIEN_NHA_THUOC)
 @Slf4j
-@Api(tags = "Nhà thuốc")
-public class NhaThuocsController {
+@Api(tags = "Nhân viên nhà thuốc ( Chủ/nhân viên)")
+public class NhanVienNhaThuocsController {
 
   @Autowired
   NhaThuocsService service;
