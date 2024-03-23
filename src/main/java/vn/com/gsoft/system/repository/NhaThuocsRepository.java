@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import vn.com.gsoft.system.entity.NhaThuocs;
-import vn.com.gsoft.system.model.system.NhaThuocsReq;
+import vn.com.gsoft.system.model.dto.NhaThuocsReq;
 
 import java.util.List;
 

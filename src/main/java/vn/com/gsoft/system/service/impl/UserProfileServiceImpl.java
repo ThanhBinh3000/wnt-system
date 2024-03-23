@@ -8,16 +8,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import vn.com.gsoft.system.entity.NhaThuocs;
 import vn.com.gsoft.system.entity.UserProfile;
-import vn.com.gsoft.system.model.system.NhaThuocsReq;
 import vn.com.gsoft.system.model.system.Profile;
 import vn.com.gsoft.system.model.system.UserProfileReq;
-import vn.com.gsoft.system.repository.NhaThuocsRepository;
 import vn.com.gsoft.system.repository.UserProfileRepository;
-import vn.com.gsoft.system.service.NhaThuocsService;
 import vn.com.gsoft.system.service.UserProfileService;
-import vn.com.gsoft.system.service.UserService;
 
 import java.util.List;
 import java.util.Optional;

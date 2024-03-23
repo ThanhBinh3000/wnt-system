@@ -1,5 +1,7 @@
 package vn.com.gsoft.system.filter;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,6 +36,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         // Once we get the token validate it.
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+            jwtToken = requestTokenHeader.substring(7);
             Optional<String> loggedUsernameOpt = Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
                     .map(Authentication::getName);
 

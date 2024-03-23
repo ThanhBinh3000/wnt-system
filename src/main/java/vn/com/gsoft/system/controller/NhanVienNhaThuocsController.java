@@ -12,7 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.com.gsoft.system.enums.EnumResponse;
-import vn.com.gsoft.system.model.system.NhaThuocsReq;
+import vn.com.gsoft.system.model.dto.NhaThuocsReq;
 import vn.com.gsoft.system.response.BaseResponse;
 import vn.com.gsoft.system.service.NhaThuocsService;
 import vn.com.gsoft.system.util.system.PathContains;

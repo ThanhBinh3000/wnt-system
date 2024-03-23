@@ -6,9 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import vn.com.gsoft.system.entity.NhaThuocs;
 import vn.com.gsoft.system.entity.UserProfile;
-import vn.com.gsoft.system.model.system.NhaThuocsReq;
 import vn.com.gsoft.system.model.system.UserProfileReq;
 
 import java.util.List;

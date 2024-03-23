@@ -1,7 +1,8 @@
-package vn.com.gsoft.system.model.system;
+package vn.com.gsoft.system.model.dto;
 
 import jakarta.persistence.Id;
 import lombok.Data;
+import vn.com.gsoft.system.model.system.BaseRequest;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
