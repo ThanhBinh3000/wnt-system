@@ -1,9 +1,8 @@
 package vn.com.gsoft.system.controller;
 
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,18 +16,16 @@ import vn.com.gsoft.system.response.BaseResponse;
 import vn.com.gsoft.system.service.NhaThuocsService;
 import vn.com.gsoft.system.util.system.PathContains;
 
-import java.util.List;
-
 @RestController
 @RequestMapping(value = PathContains.URL_NHA_THUOC)
 @Slf4j
-@Api(tags = "Nhà thuốc")
+@Tag(name  = "Nhà thuốc")
 public class NhaThuocsController {
 
   @Autowired
   NhaThuocsService service;
 
-  @ApiOperation(value = "Tra cứu", response = List.class)
+  @Operation(summary = "Tra cứu", description = "Tra cứu")
   @PostMapping(value = PathContains.URL_SEARCH_PAGE, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<BaseResponse> colection(@RequestBody NhaThuocsReq objReq) {
@@ -46,7 +43,7 @@ public class NhaThuocsController {
   }
 
 
-  @ApiOperation(value = "Tạo mới", response = List.class)
+  @Operation(summary = "Tạo mới", description = "Tạo mới")
   @PostMapping(value = PathContains.URL_CREATE, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
   public ResponseEntity<BaseResponse> insert(@Valid @RequestBody NhaThuocsReq objReq) {
@@ -63,10 +60,10 @@ public class NhaThuocsController {
     return ResponseEntity.ok(resp);
   }
 
-  @ApiOperation(value = "Lấy chi tiết", response = List.class)
+  @Operation(summary = "Lấy chi tiết", description = "Lấy chi tiết")
   @GetMapping(value = PathContains.URL_DETAIL, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public ResponseEntity<BaseResponse> detail(@ApiParam(value = "ID thông tin", example = "1", required = true) @PathVariable("id") Long id) {
+  public ResponseEntity<BaseResponse> detail(@PathVariable("id") Long id) {
     BaseResponse resp = new BaseResponse();
     try {
       resp.setData(service.detail(id));
@@ -82,7 +79,7 @@ public class NhaThuocsController {
 
 
 
-  @ApiOperation(value = "Xoá thông tin", response = List.class, produces = MediaType.APPLICATION_JSON_VALUE)
+  @Operation(summary = "Xóa thông tin", description = "Xóa thông tin")
   @PostMapping(value = PathContains.URL_DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<BaseResponse> delete(@Valid @RequestBody NhaThuocsReq idSearchReq) {
