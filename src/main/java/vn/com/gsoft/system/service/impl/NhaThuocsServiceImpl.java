@@ -20,75 +20,13 @@ import java.util.*;
 
 @Service
 @Log4j2
-public class NhaThuocsServiceImpl extends BaseServiceImpl implements NhaThuocsService {
+public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsReq,Long> implements NhaThuocsService {
 
-	@Autowired
 	private NhaThuocsRepository hdrRepo;
 
-	@Override
-	public Page<NhaThuocs> searchPage(NhaThuocsReq req) throws Exception {
-		Pageable pageable = PageRequest.of(req.getPaggingReq().getPage(), req.getPaggingReq().getLimit());
-		return hdrRepo.searchPage(req, pageable);
+	@Autowired
+	public NhaThuocsServiceImpl(NhaThuocsRepository hdrRepo) {
+		super(hdrRepo);
+		this.hdrRepo = hdrRepo;
 	}
-
-	@Override
-	public List<NhaThuocs> searchList(NhaThuocsReq req) throws Exception {
-		return hdrRepo.searchList(req);
-	}
-
-	@Override
-	public NhaThuocs create(NhaThuocsReq req) throws Exception {
-		Profile userInfo = this.getLoggedUser();
-		if (userInfo == null)
-			throw new Exception("Bad request.");
-		NhaThuocs nhaThuocs = new NhaThuocs();
-		BeanUtils.copyProperties(req, nhaThuocs, "id");
-		hdrRepo.save(nhaThuocs);
-		return nhaThuocs;
-	}
-
-	@Override
-	public NhaThuocs update(NhaThuocsReq req) throws Exception {
-		Profile userInfo = this.getLoggedUser();
-		if (userInfo == null)
-			throw new Exception("Bad request.");
-
-		Optional<NhaThuocs> optional = hdrRepo.findById(req.getId());
-		if (optional.isEmpty()) {
-			throw new Exception("Không tìm thấy dữ liệu.");
-		}
-
-		NhaThuocs nhaThuocs = optional.get();
-		BeanUtils.copyProperties(req, nhaThuocs, "id");
-		hdrRepo.save(nhaThuocs);
-		return nhaThuocs;
-	}
-
-	@Override
-	public NhaThuocs detail(Long id) throws Exception {
-		Profile userInfo = this.getLoggedUser();
-		if (userInfo == null)
-			throw new Exception("Bad request.");
-
-		Optional<NhaThuocs> optional = hdrRepo.findById(id);
-		if (optional.isEmpty()) {
-			throw new Exception("Không tìm thấy dữ liệu.");
-		}
-		return optional.get();
-	}
-
-	@Override
-	public boolean delete(Long id) throws Exception {
-		Profile userInfo = this.getLoggedUser();
-		if (userInfo == null)
-			throw new Exception("Bad request.");
-
-		Optional<NhaThuocs> optional = hdrRepo.findById(id);
-		if (optional.isEmpty()) {
-			throw new Exception("Không tìm thấy dữ liệu.");
-		}
-		hdrRepo.delete(optional.get());
-		return true;
-	}
-
 }

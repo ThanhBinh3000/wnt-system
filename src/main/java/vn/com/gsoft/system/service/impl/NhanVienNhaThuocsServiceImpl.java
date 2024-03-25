@@ -19,75 +19,12 @@ import java.util.Optional;
 
 @Service
 @Log4j2
-public class NhanVienNhaThuocsServiceImpl extends BaseServiceImpl implements NhanVienNhaThuocsService {
+public class NhanVienNhaThuocsServiceImpl extends BaseServiceImpl<NhanVienNhaThuocs, NhanVienNhaThuocsReq,Long> implements NhanVienNhaThuocsService {
 
-	@Autowired
 	private NhanVienNhaThuocsRepository hdrRepo;
-
-	@Override
-	public Page<NhanVienNhaThuocs> searchPage(NhanVienNhaThuocsReq req) throws Exception {
-		Pageable pageable = PageRequest.of(req.getPaggingReq().getPage(), req.getPaggingReq().getLimit());
-		return hdrRepo.searchPage(req, pageable);
+	@Autowired
+	public NhanVienNhaThuocsServiceImpl(NhanVienNhaThuocsRepository hdrRepo) {
+		super(hdrRepo);
+		this.hdrRepo = hdrRepo;
 	}
-
-	@Override
-	public List<NhanVienNhaThuocs> searchList(NhanVienNhaThuocsReq req) throws Exception {
-		return hdrRepo.searchList(req);
-	}
-
-	@Override
-	public NhanVienNhaThuocs create(NhanVienNhaThuocsReq req) throws Exception {
-		Profile userInfo = this.getLoggedUser();
-		if (userInfo == null)
-			throw new Exception("Bad request.");
-		NhanVienNhaThuocs nhaThuocs = new NhanVienNhaThuocs();
-		BeanUtils.copyProperties(req, nhaThuocs, "id");
-		hdrRepo.save(nhaThuocs);
-		return nhaThuocs;
-	}
-
-	@Override
-	public NhanVienNhaThuocs update(NhanVienNhaThuocsReq req) throws Exception {
-		Profile userInfo = this.getLoggedUser();
-		if (userInfo == null)
-			throw new Exception("Bad request.");
-
-		Optional<NhanVienNhaThuocs> optional = hdrRepo.findById(req.getId());
-		if (optional.isEmpty()) {
-			throw new Exception("Không tìm thấy dữ liệu.");
-		}
-
-		NhanVienNhaThuocs nhaThuocs = optional.get();
-		BeanUtils.copyProperties(req, nhaThuocs, "id");
-		hdrRepo.save(nhaThuocs);
-		return nhaThuocs;
-	}
-
-	@Override
-	public NhanVienNhaThuocs detail(Long id) throws Exception {
-		Profile userInfo = this.getLoggedUser();
-		if (userInfo == null)
-			throw new Exception("Bad request.");
-
-		Optional<NhanVienNhaThuocs> optional = hdrRepo.findById(id);
-		if (optional.isEmpty()) {
-			throw new Exception("Không tìm thấy dữ liệu.");
-		}
-		return optional.get();
-	}
-
-	@Override
-	public boolean delete(Long id) throws Exception {
-		Profile userInfo = this.getLoggedUser();
-		if (userInfo == null)
-			throw new Exception("Bad request.");
-
-		Optional<NhanVienNhaThuocs> optional = hdrRepo.findById(id);
-		if (optional.isEmpty()) {
-			throw new Exception("Không tìm thấy dữ liệu.");
-		}
-		hdrRepo.delete(optional.get());
-		return true;
-	}
-
 }

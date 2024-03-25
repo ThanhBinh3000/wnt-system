@@ -12,7 +12,7 @@ import vn.com.gsoft.system.model.system.UserProfileReq;
 import java.util.List;
 
 @Repository
-public interface UserProfileRepository extends CrudRepository<UserProfile, Long> {
+public interface UserProfileRepository extends BaseRepository<UserProfile,UserProfileReq, Long> {
 //    List<NhaThuocs> findByUserId(Long id);
 
     @Query("SELECT c FROM UserProfile c " +
