@@ -22,5 +22,5 @@ public interface BaseService<E,R, PK extends Serializable> {
     E detail (PK id) throws Exception;
 
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
-    void delete(PK id) throws Exception;
+    boolean delete(PK id) throws Exception;
 }

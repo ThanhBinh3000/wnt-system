@@ -77,7 +77,7 @@ public class UserProfileServiceImpl extends BaseServiceImpl implements UserProfi
 	}
 
 	@Override
-	public void delete(Long id) throws Exception {
+	public boolean delete(Long id) throws Exception {
 		Profile userInfo = this.getLoggedUser();
 		if (userInfo == null)
 			throw new Exception("Bad request.");
@@ -87,6 +87,7 @@ public class UserProfileServiceImpl extends BaseServiceImpl implements UserProfi
 			throw new Exception("Không tìm thấy dữ liệu.");
 		}
 		hdrRepo.delete(optional.get());
+		return true;
 	}
 
 }

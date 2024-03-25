@@ -7,6 +7,6 @@ public class BaseResponse {
 	Object data;
 	Object otherData;
 	int statusCode;//0: succ <>0: fail
-	String msg;
+	String message;
 	Object included;
 }

@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class NhaThuocsReq extends BaseRequest {
+    private Long recordStatusID;
     private String MaNhaThuoc;
     private String TenNhaThuoc;
     private String DiaChi;
