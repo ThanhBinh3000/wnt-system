@@ -1,37 +1,30 @@
 package vn.com.gsoft.system.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import jakarta.persistence.*;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.*;
 
-
-@Getter
-@Setter
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
-@Table(name = "privilege")
-public class Privilege extends BaseEntity {
+@Table(name = "Privilege")
+public class Privilege {
     @Id
-    private Long id;
-
+    @Column(name = "Id")
+    private Integer id;
+    @Column(name = "Code")
     private String code;
-
+    @Column(name = "ParentCode")
     private String parentCode;
-
+    @Column(name = "Name")
     private String name;
-
-    private String icon;
-
-    private Integer type;
-
-    private Integer sort;
-
-    private String meta;
-
-    private String path;
-
+    @Column(name = "Enable")
     private Boolean enable;
 }
+

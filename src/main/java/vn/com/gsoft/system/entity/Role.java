@@ -1,35 +1,30 @@
 package vn.com.gsoft.system.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-@Getter
-@Setter
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
-@Table(name = "role")
-@EntityListeners(AuditingEntityListener.class)
-public class Role extends BaseEntity {
+@Table(name = "Role")
+public class Role {
     @Id
-    private Long id;
-
-    private String code;
-
-    private Long departmentId;
-
-    private String name;
-
-    private Boolean enable;
-
+    @Column(name = "RoleId")
+    private Integer roleId;
+    @Column(name = "RoleName")
+    private String roleName;
+    @Column(name = "IsDeleted")
+    private Boolean isDeleted;
+    @Column(name = "MaNhaThuoc")
+    private String maNhaThuoc;
+    @Column(name = "Description")
     private String description;
-
-    private String type;
-
-    private Long userId;
+    @Column(name = "Type")
+    private Integer type;
 }
+

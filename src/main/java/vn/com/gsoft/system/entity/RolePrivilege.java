@@ -1,5 +1,6 @@
 package vn.com.gsoft.system.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -11,12 +12,15 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "department")
-public class Department extends BaseEntity {
+@Table(name = "RolePrivilege")
+public class RolePrivilege {
     @Id
+    @Column(name = "ID")
     private Long id;
 
-    private String code;
+    @Column(name = "RoleId")
+    private Integer roleId;
 
-    private Long userId;
+    @Column(name = "PrivilegeId")
+    private Long privilegeId;
 }

@@ -10,7 +10,6 @@ import vn.com.gsoft.system.model.system.BaseRequest;
 @Data
 public class NhanVienNhaThuocsReq extends BaseRequest {
 
-    private Long id;
     private String role;
     private String nhaThuocMaNhaThuoc;
     private Integer userUserId;

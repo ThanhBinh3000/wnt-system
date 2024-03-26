@@ -4,22 +4,25 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-
-@Getter
-@Setter
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
-@Table(name = "UserProfileReq")
+@Table(name = "UserProfile")
 public class UserProfile {
     @Id
     @Column(name = "UserId")
     private Integer userId;
     @Column(name = "UserName")
     private String userName;
+    @Column(name = "Password")
+    private String password;
     @Column(name = "TenDayDu")
     private String tenDayDu;
     @Column(name = "Email")
@@ -56,5 +59,7 @@ public class UserProfile {
     private String tokenDevice2;
     @Column(name = "MobileDeviceId")
     private String mobileDeviceId;
+    @Column(name = "EntityId")
+    private Long entityId;
 }
 

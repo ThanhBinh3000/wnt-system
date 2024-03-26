@@ -11,7 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "privilegeentity")
+@Table(name = "PrivilegeEntity")
 public class PrivilegeEntity extends BaseEntity {
     @Id
     private Long id;

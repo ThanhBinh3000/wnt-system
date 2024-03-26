@@ -1,20 +1,27 @@
 package vn.com.gsoft.system.entity;
 
-import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import lombok.NoArgsConstructor;
+
+import jakarta.persistence.*;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @jakarta.persistence.Entity
-@Table(name = "entity")
-@EntityListeners(AuditingEntityListener.class)
-public class Entity extends BaseEntity {
+@Table(name = "Entity")
+public class Entity {
     @Id
-    private Long id;
-
-    @Column(name = "CODE")
-    private Long code;
-
-    @Column(name = "NAME")
-    private Long name;
+    @Column(name = "Id")
+    private Integer id;
+    @Column(name = "Code")
+    private String code;
+    @Column(name = "Name")
+    private String name;
+    @Column(name = "Type")
+    private Integer type;
 }
+

@@ -13,7 +13,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "userrole")
+@Table(name = "UserRole")
 @EntityListeners(AuditingEntityListener.class)
 public class UserRole extends BaseEntity{
     @Id

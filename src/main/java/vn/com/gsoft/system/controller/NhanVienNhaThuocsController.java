@@ -52,7 +52,7 @@ public class NhanVienNhaThuocsController {
   @PostMapping(value = PathContains.URL_DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<BaseResponse> delete(@Valid @RequestBody NhaThuocsReq idSearchReq) throws Exception {
-    return ResponseEntity.ok(ResponseUtils.ok(service.delete(idSearchReq.getRecordStatusID())));
+    return ResponseEntity.ok(ResponseUtils.ok(service.delete(idSearchReq.getId())));
   }
 
 
