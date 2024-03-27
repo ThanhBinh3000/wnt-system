@@ -27,7 +27,7 @@ public class BaseEntity {
 
     @CreatedBy
     @Column(name="CreatedBy_UserId")
-    private Long CreatedByUserId;
+    private Long createdByUserId;
 
     @LastModifiedDate
     @Column(name="Modified")
@@ -35,5 +35,5 @@ public class BaseEntity {
 
     @LastModifiedBy
     @Column(name="ModifiedBy_UserId")
-    private Long ModifiedByUserId;
+    private Long modifiedByUserId;
 }

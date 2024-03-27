@@ -14,7 +14,7 @@ import jakarta.persistence.Entity;
 @AllArgsConstructor
 @Entity
 @Table(name = "Privilege")
-public class Privilege {
+public class Privilege extends BaseEntity{
     @Id
     @Column(name = "Id")
     private Integer id;

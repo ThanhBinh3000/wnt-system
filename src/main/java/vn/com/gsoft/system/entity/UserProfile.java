@@ -15,10 +15,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "UserProfile")
-public class UserProfile {
+public class UserProfile extends BaseEntity{
     @Id
-    @Column(name = "UserId")
-    private Integer userId;
+    @Column(name = "id")
+    private Long id;
     @Column(name = "UserName")
     private String userName;
     @Column(name = "Password")

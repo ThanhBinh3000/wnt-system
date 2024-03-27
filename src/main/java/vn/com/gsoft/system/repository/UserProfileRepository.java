@@ -14,7 +14,7 @@ import java.util.List;
 public interface UserProfileRepository extends BaseRepository<UserProfile, UserProfileReq, Long> {
   @Query("SELECT c FROM UserProfile c " +
          "WHERE 1=1 "
-          + " AND (:#{#param.userId} IS NULL OR c.userId = :#{#param.userId}) "
+          + " AND (:#{#param.userId} IS NULL OR c.id = :#{#param.userId}) "
           + " AND (:#{#param.userName} IS NULL OR lower(c.userName) LIKE lower(concat('%',CONCAT(:#{#param.userName},'%'))))"
           + " AND (:#{#param.tenDayDu} IS NULL OR lower(c.tenDayDu) LIKE lower(concat('%',CONCAT(:#{#param.tenDayDu},'%'))))"
           + " AND (:#{#param.email} IS NULL OR lower(c.email) LIKE lower(concat('%',CONCAT(:#{#param.email},'%'))))"
@@ -33,14 +33,14 @@ public interface UserProfileRepository extends BaseRepository<UserProfile, UserP
           + " AND (:#{#param.mobileDeviceId} IS NULL OR lower(c.mobileDeviceId) LIKE lower(concat('%',CONCAT(:#{#param.mobileDeviceId},'%'))))"
           + " AND (:#{#param.password} IS NULL OR lower(c.password) LIKE lower(concat('%',CONCAT(:#{#param.password},'%'))))"
           + " AND (:#{#param.entityId} IS NULL OR c.entityId = :#{#param.entityId}) "
-          + " ORDER BY c.userId desc"
+          + " ORDER BY c.id desc"
   )
   Page<UserProfile> searchPage(@Param("param") UserProfileReq param, Pageable pageable);
   
   
   @Query("SELECT c FROM UserProfile c " +
          "WHERE 1=1 "
-          + " AND (:#{#param.userId} IS NULL OR c.userId = :#{#param.userId}) "
+          + " AND (:#{#param.userId} IS NULL OR c.id = :#{#param.userId}) "
           + " AND (:#{#param.userName} IS NULL OR lower(c.userName) LIKE lower(concat('%',CONCAT(:#{#param.userName},'%'))))"
           + " AND (:#{#param.tenDayDu} IS NULL OR lower(c.tenDayDu) LIKE lower(concat('%',CONCAT(:#{#param.tenDayDu},'%'))))"
           + " AND (:#{#param.email} IS NULL OR lower(c.email) LIKE lower(concat('%',CONCAT(:#{#param.email},'%'))))"
@@ -59,7 +59,7 @@ public interface UserProfileRepository extends BaseRepository<UserProfile, UserP
           + " AND (:#{#param.mobileDeviceId} IS NULL OR lower(c.mobileDeviceId) LIKE lower(concat('%',CONCAT(:#{#param.mobileDeviceId},'%'))))"
           + " AND (:#{#param.password} IS NULL OR lower(c.password) LIKE lower(concat('%',CONCAT(:#{#param.password},'%'))))"
           + " AND (:#{#param.entityId} IS NULL OR c.entityId = :#{#param.entityId}) "
-          + " ORDER BY c.userId desc"
+          + " ORDER BY c.id desc"
   )
   List<UserProfile> searchList(@Param("param") UserProfileReq param);
 

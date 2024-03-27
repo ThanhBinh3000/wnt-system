@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "NhanVienNhaThuocs")
-public class NhanVienNhaThuocs {
+public class NhanVienNhaThuocs extends BaseEntity{
     @Id
     @Column(name = "Id")
     private Long id;

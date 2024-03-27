@@ -7,45 +7,45 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import vn.com.gsoft.system.model.dto.NhaThuocsReq;
+import vn.com.gsoft.system.model.dto.PrivilegeEntityReq;
 import vn.com.gsoft.system.response.BaseResponse;
-import vn.com.gsoft.system.service.NhaThuocsService;
+import vn.com.gsoft.system.service.PrivilegeEntityService;
 import vn.com.gsoft.system.util.system.PathContains;
 import vn.com.gsoft.system.util.system.ResponseUtils;
 
 @Slf4j
 @RestController
-@RequestMapping("/nha-thuocs")
-public class NhaThuocsController {
+@RequestMapping("/privilege-entity")
+public class PrivilegeEntityController {
 
     @Autowired
-    private NhaThuocsService service;
+    private PrivilegeEntityService service;
 
 
     @PostMapping(value = PathContains.URL_SEARCH_PAGE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<BaseResponse> colection(@RequestBody NhaThuocsReq objReq) throws Exception {
+    public ResponseEntity<BaseResponse> colection(@RequestBody PrivilegeEntityReq objReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.searchPage(objReq)));
     }
 
 
     @PostMapping(value = PathContains.URL_SEARCH_LIST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<BaseResponse> colectionList(@RequestBody NhaThuocsReq objReq) throws Exception {
+    public ResponseEntity<BaseResponse> colectionList(@RequestBody PrivilegeEntityReq objReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.searchList(objReq)));
     }
 
 
     @PostMapping(value = PathContains.URL_CREATE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<BaseResponse> insert(@Valid @RequestBody NhaThuocsReq objReq) throws Exception {
+    public ResponseEntity<BaseResponse> insert(@Valid @RequestBody PrivilegeEntityReq objReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.create(objReq)));
     }
 
 
     @PostMapping(value = PathContains.URL_UPDATE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<BaseResponse> update(@Valid @RequestBody NhaThuocsReq objReq) throws Exception {
+    public ResponseEntity<BaseResponse> update(@Valid @RequestBody PrivilegeEntityReq objReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.update(objReq)));
     }
 
@@ -59,7 +59,7 @@ public class NhaThuocsController {
 
     @PostMapping(value = PathContains.URL_DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<BaseResponse> delete(@Valid @RequestBody NhaThuocsReq idSearchReq) throws Exception {
+    public ResponseEntity<BaseResponse> delete(@Valid @RequestBody PrivilegeEntityReq idSearchReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.delete(idSearchReq.getId())));
     }
 }

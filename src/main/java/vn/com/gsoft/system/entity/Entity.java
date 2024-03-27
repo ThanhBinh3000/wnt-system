@@ -13,7 +13,7 @@ import jakarta.persistence.*;
 @AllArgsConstructor
 @jakarta.persistence.Entity
 @Table(name = "Entity")
-public class Entity {
+public class Entity extends BaseEntity{
     @Id
     @Column(name = "Id")
     private Integer id;
