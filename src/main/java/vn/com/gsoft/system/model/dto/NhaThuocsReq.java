@@ -44,7 +44,6 @@ public class NhaThuocsReq extends BaseRequest {
     private String supportPhones;
     private String deliveryPolicy;
     private String contentThankYou;
-    private Integer recordStatusId;
     private Integer idTypeBasic;
     private String ghiChu;
     private Boolean isNationalDBConnected;

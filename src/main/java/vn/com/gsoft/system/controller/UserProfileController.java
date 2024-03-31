@@ -10,9 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import vn.com.gsoft.system.model.dto.NhaThuocsReq;
+import vn.com.gsoft.system.model.dto.UserProfileReq;
 import vn.com.gsoft.system.response.BaseResponse;
-import vn.com.gsoft.system.service.NhaThuocsService;
+import vn.com.gsoft.system.service.UserProfileService;
 import vn.com.gsoft.system.util.system.PathContains;
 import vn.com.gsoft.system.util.system.ResponseUtils;
 
@@ -23,20 +23,26 @@ import vn.com.gsoft.system.util.system.ResponseUtils;
 public class UserProfileController {
 
   @Autowired
-  NhaThuocsService service;
+  UserProfileService service;
 
   @Operation(summary = "Tra cứu", description = "Tra cứu")
   @PostMapping(value = PathContains.URL_SEARCH_PAGE, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public ResponseEntity<BaseResponse> colection(@RequestBody NhaThuocsReq objReq) throws Exception {
+  public ResponseEntity<BaseResponse> colection(@RequestBody UserProfileReq objReq) throws Exception {
     return ResponseEntity.ok(ResponseUtils.ok(service.searchPage(objReq)));
   }
 
+  @Operation(summary = "Tra cứu", description = "Tra cứu")
+  @PostMapping(value = "/search-page-user-management", produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseEntity<BaseResponse> colectionPageUserManagement(@RequestBody UserProfileReq objReq) throws Exception {
+    return ResponseEntity.ok(ResponseUtils.ok(service.searchPageUserManagement(objReq)));
+  }
 
   @Operation(summary = "Tạo mới", description = "Tạo mới")
   @PostMapping(value = PathContains.URL_CREATE, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
-  public ResponseEntity<BaseResponse> insert(@Valid @RequestBody NhaThuocsReq objReq) throws Exception {
+  public ResponseEntity<BaseResponse> insert(@Valid @RequestBody UserProfileReq objReq) throws Exception {
     return ResponseEntity.ok(ResponseUtils.ok(service.create(objReq)));
   }
 
@@ -52,7 +58,7 @@ public class UserProfileController {
   @Operation(summary = "Xóa thông tin", description = "Xóa thông tin")
   @PostMapping(value = PathContains.URL_DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public ResponseEntity<BaseResponse> delete(@Valid @RequestBody NhaThuocsReq idSearchReq) throws Exception {
+  public ResponseEntity<BaseResponse> delete(@Valid @RequestBody UserProfileReq idSearchReq) throws Exception {
     return ResponseEntity.ok(ResponseUtils.ok(service.delete(idSearchReq.getId())));
   }
 

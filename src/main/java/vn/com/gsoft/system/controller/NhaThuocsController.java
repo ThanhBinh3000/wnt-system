@@ -28,6 +28,12 @@ public class NhaThuocsController {
         return ResponseEntity.ok(ResponseUtils.ok(service.searchPage(objReq)));
     }
 
+    @PostMapping(value = "/search-page-nha-thuoc", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<BaseResponse> colectionNhaThuoc(@RequestBody NhaThuocsReq objReq) throws Exception {
+        return ResponseEntity.ok(ResponseUtils.ok(service.searchPageNhaThuoc(objReq)));
+    }
+
 
     @PostMapping(value = PathContains.URL_SEARCH_LIST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)

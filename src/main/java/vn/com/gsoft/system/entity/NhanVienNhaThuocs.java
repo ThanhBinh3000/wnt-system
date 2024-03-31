@@ -23,10 +23,10 @@ public class NhanVienNhaThuocs extends BaseEntity{
     @Column(name = "NhaThuoc_MaNhaThuoc")
     private String nhaThuocMaNhaThuoc;
     @Column(name = "User_UserId")
-    private Integer userUserId;
+    private Long userUserId;
     @Column(name = "ArchivedId")
-    private Integer archivedId;
+    private Long archivedId;
     @Column(name = "StoreId")
-    private Integer storeId;
+    private Long storeId;
 }
 

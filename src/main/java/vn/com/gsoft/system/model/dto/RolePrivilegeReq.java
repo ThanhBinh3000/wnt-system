@@ -6,7 +6,7 @@ import vn.com.gsoft.system.model.system.BaseRequest;
 @Data
 public class RolePrivilegeReq extends BaseRequest {
 
-    private Integer roleId;
+    private Long roleId;
 
     private Long privilegeId;
 }

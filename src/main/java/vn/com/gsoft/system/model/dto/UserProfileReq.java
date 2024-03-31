@@ -5,7 +5,6 @@ import vn.com.gsoft.system.model.system.BaseRequest;
 
 @Data
 public class UserProfileReq extends BaseRequest {
-    private Integer userId;
     private String userName;
     private String password;
     private String tenDayDu;
@@ -15,11 +14,11 @@ public class UserProfileReq extends BaseRequest {
     private Boolean hoatDong;
     private String soCMT;
     private Boolean enableNT;
-    private Integer archivedId;
-    private Integer storeId;
-    private Integer regionId;
-    private Integer cityId;
-    private Integer wardId;
+    private Long archivedId;
+    private Long storeId;
+    private Long regionId;
+    private Long cityId;
+    private Long wardId;
     private String addresses;
     private String tokenDevice;
     private String tokenBrowser;

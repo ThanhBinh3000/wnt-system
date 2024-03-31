@@ -4,7 +4,6 @@ import lombok.Data;
 import vn.com.gsoft.system.model.system.BaseRequest;
 @Data
 public class RoleReq extends BaseRequest {
-    private Integer roleId;
     private String roleName;
     private Boolean isDeleted;
     private String maNhaThuoc;
