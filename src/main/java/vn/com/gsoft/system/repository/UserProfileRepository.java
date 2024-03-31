@@ -119,9 +119,23 @@ public interface UserProfileRepository extends BaseRepository<UserProfile, UserP
                     " AND (:#{#param.hoatDong} IS NULL OR up.HoatDong = :#{#param.hoatDong}) " +
                     " AND (:#{#param.maNhaThuoc} IS NULL OR nv.NhaThuoc_MaNhaThuoc = :#{#param.maNhaThuoc}) " +
                     " AND ((:#{#param.textSearch} IS NULL OR lower(nt.MaNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%'))))" +
-                    " OR (:#{#param.textSearch} IS NULL OR lower(nt.MaNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%')))))" +
+                    " OR (:#{#param.textSearch} IS NULL OR lower(nt.TenNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%')))))" +
                     " GROUP BY up.id, up.UserName, ad.nhomQuyens, up.Email, up.HoatDong, up.TenDayDu" +
                     " ORDER BY up.id desc", nativeQuery = true
     )
     Page<Tuple> searchPageUserManagement(@Param("param") UserProfileReq param, Pageable pageable);
+
+    @Query(value =
+            "SELECT  up.id as id, up.UserName as userName, up.SoDienThoai AS soDienThoai , nv.Role AS role, " +
+            "  up.Email as email, up.HoatDong as hoatDong, up.TenDayDu as tenDayDu " +
+            "FROM UserProfile up " +
+            "JOIN NhanVienNhaThuocs nv ON  up.id = nv.User_UserId " +
+            " WHERE 1 = 1" +
+            " AND (:#{#param.hoatDong} IS NULL OR up.HoatDong = :#{#param.hoatDong}) " +
+            " AND (:#{#param.maNhaThuoc} IS NULL OR nv.NhaThuoc_MaNhaThuoc = :#{#param.maNhaThuoc}) " +
+            " AND ((:#{#param.textSearch} IS NULL OR lower(up.UserName) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%'))))" +
+            " OR (:#{#param.textSearch} IS NULL OR lower(up.TenDayDu) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%')))))" +
+            " ORDER BY up.id desc", nativeQuery = true
+    )
+    Page<Tuple> searchPageStaffManagement(@Param("param") UserProfileReq param, Pageable pageable);
 }

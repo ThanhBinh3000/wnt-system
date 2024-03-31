@@ -12,6 +12,7 @@ import vn.com.gsoft.system.entity.UserProfile;
 import vn.com.gsoft.system.model.dto.NhaThuocsReq;
 import vn.com.gsoft.system.model.dto.UserProfileReq;
 import vn.com.gsoft.system.model.dto.UserProfileRes;
+import vn.com.gsoft.system.model.dto.UserStaffProfileRes;
 import vn.com.gsoft.system.repository.UserProfileRepository;
 import vn.com.gsoft.system.service.UserProfileService;
 import vn.com.gsoft.system.util.system.DataUtils;
@@ -43,5 +44,12 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
     public Page<UserProfileRes> searchPageUserManagement(UserProfileReq req) throws Exception {
         Pageable pageable = PageRequest.of(req.getPaggingReq().getPage(), req.getPaggingReq().getLimit());
         return DataUtils.convertPage(hdrRepo.searchPageUserManagement(req, pageable), UserProfileRes.class);
+    }
+
+    @Override
+    public Page<UserStaffProfileRes> searchPageStaffManagement(UserProfileReq req) throws Exception {
+        Pageable pageable = PageRequest.of(req.getPaggingReq().getPage(), req.getPaggingReq().getLimit());
+        req.setMaNhaThuoc(getLoggedUser().getNhaThuoc().getMaNhaThuoc());
+        return DataUtils.convertPage(hdrRepo.searchPageStaffManagement(req, pageable), UserStaffProfileRes.class);
     }
 }

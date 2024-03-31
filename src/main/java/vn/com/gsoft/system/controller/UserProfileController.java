@@ -39,6 +39,13 @@ public class UserProfileController {
     return ResponseEntity.ok(ResponseUtils.ok(service.searchPageUserManagement(objReq)));
   }
 
+  @Operation(summary = "Tra cứu", description = "Tra cứu")
+  @PostMapping(value = "/search-page-staff-management", produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseEntity<BaseResponse> colectionPageStaffManagement(@RequestBody UserProfileReq objReq) throws Exception {
+    return ResponseEntity.ok(ResponseUtils.ok(service.searchPageStaffManagement(objReq)));
+  }
+
   @Operation(summary = "Tạo mới", description = "Tạo mới")
   @PostMapping(value = PathContains.URL_CREATE, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
