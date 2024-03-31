@@ -26,4 +26,5 @@ public class UserProfileReq extends BaseRequest {
     private String tokenDevice2;
     private String mobileDeviceId;
     private Long entityId;
+    private String roleName;
 }
