@@ -1,6 +1,5 @@
 package vn.com.gsoft.system.model.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

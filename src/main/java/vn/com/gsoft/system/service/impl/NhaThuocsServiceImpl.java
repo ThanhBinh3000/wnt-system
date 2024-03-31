@@ -10,8 +10,11 @@ import org.springframework.stereotype.Service;
 import vn.com.gsoft.system.entity.NhaThuocs;
 import vn.com.gsoft.system.model.dto.NhaThuocsReq;
 import vn.com.gsoft.system.model.dto.NhaThuocsRes;
+import vn.com.gsoft.system.model.system.Profile;
 import vn.com.gsoft.system.repository.NhaThuocsRepository;
 import vn.com.gsoft.system.service.NhaThuocsService;
+
+import java.util.Optional;
 
 @Service
 @Log4j2
