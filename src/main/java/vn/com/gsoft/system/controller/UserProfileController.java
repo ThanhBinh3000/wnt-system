@@ -61,8 +61,8 @@ public class UserProfileController {
     return ResponseEntity.ok(ResponseUtils.ok(service.update(objReq)));
   }
 
-  @Operation(summary = "change-password", description = "Đổi mật khẩu")
-  @PostMapping(value = PathContains.URL_UPDATE, produces = MediaType.APPLICATION_JSON_VALUE)
+  @Operation(summary = "Đổi mật khẩu", description = "Đổi mật khẩu")
+  @PostMapping(value = "change-password", produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
   public ResponseEntity<BaseResponse> changePassword(@Valid @RequestBody ChangePasswordReq objReq) throws Exception {
     return ResponseEntity.ok(ResponseUtils.ok(service.changePassword(objReq)));
