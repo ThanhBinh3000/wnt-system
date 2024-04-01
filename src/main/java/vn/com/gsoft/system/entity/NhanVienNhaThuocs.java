@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 public class NhanVienNhaThuocs extends BaseEntity{
     @Id
     @Column(name = "Id")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     @Column(name = "Role")
     private String role;

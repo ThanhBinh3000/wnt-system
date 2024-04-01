@@ -17,6 +17,7 @@ import vn.com.gsoft.system.model.dto.UserProfileRes;
 public class UserProfile extends BaseEntity{
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     @Column(name = "UserName")
     private String userName;

@@ -20,6 +20,7 @@ import java.util.Date;
 public class NhaThuocs extends BaseEntity{
     @Id
     @Column(name = "ID")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     @Column(name = "MaNhaThuoc")
     private String maNhaThuoc;

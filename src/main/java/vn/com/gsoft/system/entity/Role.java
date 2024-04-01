@@ -1,9 +1,7 @@
 package vn.com.gsoft.system.entity;
 
-import jakarta.persistence.Column;
+import jakarta.persistence.*;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.*;
 
 @Data
@@ -15,6 +13,7 @@ import lombok.*;
 public class Role extends BaseEntity {
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     @Column(name = "RoleName")
     private String roleName;

@@ -17,6 +17,7 @@ import jakarta.persistence.Entity;
 public class Privilege extends BaseEntity{
     @Id
     @Column(name = "Id")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "Code")
     private String code;

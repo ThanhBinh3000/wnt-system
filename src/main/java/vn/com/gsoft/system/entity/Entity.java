@@ -15,6 +15,7 @@ import jakarta.persistence.*;
 @Table(name = "Entity")
 public class Entity extends BaseEntity{
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "Id")
     private Integer id;
     @Column(name = "Code")

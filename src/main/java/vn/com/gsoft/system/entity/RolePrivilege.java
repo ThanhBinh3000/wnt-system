@@ -1,9 +1,7 @@
 package vn.com.gsoft.system.entity;
 
-import jakarta.persistence.Column;
+import jakarta.persistence.*;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.*;
 
 @Getter
@@ -16,6 +14,7 @@ import lombok.*;
 public class RolePrivilege extends BaseEntity{
     @Id
     @Column(name = "ID")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "RoleId")
