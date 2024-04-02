@@ -7,7 +7,7 @@ public class PathContains {
     public static final String URL_SEARCH_LIST = "/search-list";
     public static final String URL_CREATE = "/create";
     public static final String URL_UPDATE = "/update";
-    public static final String URL_DETAIL = "/chi-tiet/{id}";
+    public static final String URL_DETAIL = "/detail/{id}";
 
     public static final String URL_DELETE = "/delete";
 
