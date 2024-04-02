@@ -15,4 +15,6 @@ public interface UserProfileService extends BaseService<UserProfile, UserProfile
     Page<UserStaffProfileRes> searchPageStaffManagement(UserProfileReq objReq) throws Exception;
 
     Boolean changePassword(ChangePasswordReq objReq) throws Exception;
+
+    Boolean resetPassword(ChangePasswordReq objReq) throws Exception;
 }

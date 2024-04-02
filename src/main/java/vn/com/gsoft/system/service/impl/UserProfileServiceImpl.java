@@ -57,23 +57,38 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
 
     @Override
     public Boolean changePassword(ChangePasswordReq req) throws Exception {
-        Long userId = null;
-        if(!req.getNewPassword().equals(req.getConfirmPassword())){
+        Long userId = getLoggedUser().getId();
+        if (!req.getNewPassword().equals(req.getConfirmPassword())) {
             throw new Exception("Mật khẩu mới và xác nhận mật khẩu không trùng khớp!");
-        }
-        if (req.getUserId() == null) {
-            userId = getLoggedUser().getId();
-        } else {
-            userId = req.getUserId();
         }
         Optional<UserProfile> userProfile = this.hdrRepo.findById(userId);
         if (userProfile.isPresent()) {
             if (this.passwordEncoder.matches(req.getOldPassword(), userProfile.get().getPassword())) {
                 userProfile.get().setPassword(this.passwordEncoder.encode(req.getNewPassword()));
                 return true;
-            }else {
+            } else {
                 throw new Exception("Mật khẩu cũ không đúng!");
             }
+        }
+
+        return false;
+    }
+
+    @Override
+    public Boolean resetPassword(ChangePasswordReq req) throws Exception {
+        Long userId = null;
+        if (!req.getNewPassword().equals(req.getConfirmPassword())) {
+            throw new Exception("Mật khẩu mới và xác nhận mật khẩu không trùng khớp!");
+        }
+        if (req.getUserId() == null) {
+            throw new Exception("Không được để trống userId!");
+        } else {
+            userId = req.getUserId();
+        }
+        Optional<UserProfile> userProfile = this.hdrRepo.findById(userId);
+        if (userProfile.isPresent()) {
+            userProfile.get().setPassword(this.passwordEncoder.encode(req.getNewPassword()));
+            return true;
         }
 
         return false;
