@@ -17,4 +17,12 @@ public interface UserProfileService extends BaseService<UserProfile, UserProfile
     Boolean changePassword(ChangePasswordReq objReq) throws Exception;
 
     Boolean resetPassword(ChangePasswordReq objReq) throws Exception;
+
+    UserProfile insertUser(UserProfileReq objReq) throws Exception;
+
+    UserProfile updateUser(UserProfileReq objReq) throws Exception;
+
+    UserProfile insertStaff(UserProfileReq objReq) throws Exception;
+
+    UserProfile updateStaff(UserProfileReq objReq) throws Exception;
 }

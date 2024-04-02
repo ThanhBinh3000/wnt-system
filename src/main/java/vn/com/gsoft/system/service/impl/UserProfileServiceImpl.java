@@ -2,18 +2,22 @@ package vn.com.gsoft.system.service.impl;
 
 
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import vn.com.gsoft.system.constant.NhanVienRole;
+import vn.com.gsoft.system.constant.RecordStatusContains;
+import vn.com.gsoft.system.entity.NhaThuocs;
 import vn.com.gsoft.system.entity.UserProfile;
-import vn.com.gsoft.system.model.dto.ChangePasswordReq;
-import vn.com.gsoft.system.model.dto.UserProfileReq;
-import vn.com.gsoft.system.model.dto.UserProfileRes;
-import vn.com.gsoft.system.model.dto.UserStaffProfileRes;
+import vn.com.gsoft.system.model.dto.*;
+import vn.com.gsoft.system.model.system.Profile;
 import vn.com.gsoft.system.repository.UserProfileRepository;
+import vn.com.gsoft.system.service.NhaThuocsService;
+import vn.com.gsoft.system.service.NhanVienNhaThuocsService;
 import vn.com.gsoft.system.service.UserProfileService;
 import vn.com.gsoft.system.util.system.DataUtils;
 
@@ -26,12 +30,16 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
 
     private UserProfileRepository hdrRepo;
     private PasswordEncoder passwordEncoder;
+    private NhanVienNhaThuocsService nhanVienNhaThuocsService;
+    private NhaThuocsService nhaThuocsService;
 
     @Autowired
-    public UserProfileServiceImpl(UserProfileRepository hdrRepo, PasswordEncoder passwordEncoder) {
+    public UserProfileServiceImpl(UserProfileRepository hdrRepo, PasswordEncoder passwordEncoder, NhanVienNhaThuocsService nhanVienNhaThuocsService, NhaThuocsService nhaThuocsService) {
         super(hdrRepo);
         this.hdrRepo = hdrRepo;
         this.passwordEncoder = passwordEncoder;
+        this.nhanVienNhaThuocsService = nhanVienNhaThuocsService;
+        this.nhaThuocsService = nhaThuocsService;
     }
 
     @Override
@@ -92,5 +100,108 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
         }
 
         return false;
+    }
+
+    @Override
+    public UserProfile insertUser(UserProfileReq req) throws Exception {
+        Profile userInfo = this.getLoggedUser();
+        if (userInfo == null)
+            throw new Exception("Bad request.");
+        if (req.getMaNhaThuoc() == null)
+            throw new Exception("maNhaThuoc không được để trống!");
+        Optional<NhaThuocs> nhaThuocs = this.nhaThuocsService.findByMaNhaThuoc(req.getMaNhaThuoc());
+        if (nhaThuocs.isEmpty()) {
+            throw new Exception("Không tìm thấy maNhaThuoc!");
+        }
+        Optional<UserProfile> userProfile = this.hdrRepo.findByUserName(req.getUserName());
+        if (userProfile.isPresent()) {
+            throw new Exception("UserName đã tồn tại!");
+        }
+        UserProfile e = new UserProfile();
+        BeanUtils.copyProperties(req, e, "id");
+        if (e.getRecordStatusId() == null) {
+            e.setRecordStatusId(RecordStatusContains.ACTIVE);
+        }
+        e = hdrRepo.save(e);
+        NhanVienNhaThuocsReq nv = new NhanVienNhaThuocsReq();
+        nv.setUserUserId(e.getCreatedByUserId());
+        nv.setRole(NhanVienRole.ADMIN);
+        nv.setNhaThuocMaNhaThuoc(req.getMaNhaThuoc());
+        this.nhanVienNhaThuocsService.create(nv);
+
+        return e;
+    }
+
+    @Override
+    public UserProfile updateUser(UserProfileReq req) throws Exception {
+        Profile userInfo = this.getLoggedUser();
+        if (userInfo == null)
+            throw new Exception("Bad request.");
+
+        Optional<UserProfile> optional = hdrRepo.findById(req.getId());
+        if (optional.isEmpty()) {
+            throw new Exception("Không tìm thấy dữ liệu.");
+        }
+        if (!optional.get().getUserName().equals(req.getUserName())) {
+            Optional<UserProfile> userProfile = this.hdrRepo.findByUserName(req.getUserName());
+            if (userProfile.isPresent()) {
+                throw new Exception("UserName đã tồn tại!");
+            }
+        }
+        UserProfile e = optional.get();
+        BeanUtils.copyProperties(req, e, "id");
+        if (e.getRecordStatusId() == null) {
+            e.setRecordStatusId(RecordStatusContains.ACTIVE);
+        }
+        hdrRepo.save(e);
+        return e;
+    }
+
+    @Override
+    public UserProfile insertStaff(UserProfileReq req) throws Exception {
+        Profile userInfo = this.getLoggedUser();
+        if (userInfo == null)
+            throw new Exception("Bad request.");
+        Optional<UserProfile> userProfile = this.hdrRepo.findByUserName(req.getUserName());
+        if (userProfile.isPresent()) {
+            throw new Exception("UserName đã tồn tại!");
+        }
+        UserProfile e = new UserProfile();
+        BeanUtils.copyProperties(req, e, "id");
+        if (e.getRecordStatusId() == null) {
+            e.setRecordStatusId(RecordStatusContains.ACTIVE);
+        }
+        e = hdrRepo.save(e);
+        NhanVienNhaThuocsReq nv = new NhanVienNhaThuocsReq();
+        nv.setUserUserId(e.getCreatedByUserId());
+        nv.setRole(NhanVienRole.USER);
+        nv.setNhaThuocMaNhaThuoc(getLoggedUser().getNhaThuoc().getMaNhaThuoc());
+        this.nhanVienNhaThuocsService.create(nv);
+        return e;
+    }
+
+    @Override
+    public UserProfile updateStaff(UserProfileReq req) throws Exception {
+        Profile userInfo = this.getLoggedUser();
+        if (userInfo == null)
+            throw new Exception("Bad request.");
+
+        Optional<UserProfile> optional = hdrRepo.findById(req.getId());
+        if (optional.isEmpty()) {
+            throw new Exception("Không tìm thấy dữ liệu.");
+        }
+        if (!optional.get().getUserName().equals(req.getUserName())) {
+            Optional<UserProfile> userProfile = this.hdrRepo.findByUserName(req.getUserName());
+            if (userProfile.isPresent()) {
+                throw new Exception("UserName đã tồn tại!");
+            }
+        }
+        UserProfile e = optional.get();
+        BeanUtils.copyProperties(req, e, "id");
+        if (e.getRecordStatusId() == null) {
+            e.setRecordStatusId(RecordStatusContains.ACTIVE);
+        }
+        hdrRepo.save(e);
+        return e;
     }
 }

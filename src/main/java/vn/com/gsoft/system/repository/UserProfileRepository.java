@@ -11,6 +11,7 @@ import vn.com.gsoft.system.model.dto.UserProfileReq;
 import vn.com.gsoft.system.model.dto.UserProfileRes;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserProfileRepository extends BaseRepository<UserProfile, UserProfileReq, Long> {
@@ -142,4 +143,6 @@ public interface UserProfileRepository extends BaseRepository<UserProfile, UserP
                     " ORDER BY up.id desc", nativeQuery = true
     )
     Page<Tuple> searchPageStaffManagement(@Param("param") UserProfileReq param, Pageable pageable);
+
+    Optional<UserProfile> findByUserName(String userName);
 }

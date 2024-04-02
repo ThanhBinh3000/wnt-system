@@ -10,6 +10,7 @@ import vn.com.gsoft.system.model.dto.NhaThuocsReq;
 import vn.com.gsoft.system.model.dto.NhaThuocsRes;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface NhaThuocsRepository extends BaseRepository<NhaThuocs, NhaThuocsReq, Long> {
@@ -46,4 +47,6 @@ public interface NhaThuocsRepository extends BaseRepository<NhaThuocs, NhaThuocs
             " ORDER BY c.id desc"
     )
     Page<NhaThuocsRes> searchPageNhaThuoc(@Param("param") NhaThuocsReq req, Pageable pageable);
+
+    Optional<NhaThuocs> findByMaNhaThuoc(String maNhaThuoc);
 }

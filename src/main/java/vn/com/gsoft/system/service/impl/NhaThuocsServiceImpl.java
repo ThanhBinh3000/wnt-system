@@ -35,4 +35,9 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
         req.setRecordStatusId(0l);
         return hdrRepo.searchPageNhaThuoc(req, pageable);
     }
+
+    @Override
+    public Optional<NhaThuocs> findByMaNhaThuoc(String maNhaThuoc) {
+        return hdrRepo.findByMaNhaThuoc(maNhaThuoc);
+    }
 }
