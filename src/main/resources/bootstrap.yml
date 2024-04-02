@@ -1,9 +1,9 @@
 # Spring
 spring:
   application:
-    name: wnt-system-dev
+    name: wnt-system
   profiles:
-    active: dev
+    active: prod
   cloud:
     config:
       uri: http://10.0.13.41:30004
