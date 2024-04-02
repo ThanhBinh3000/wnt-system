@@ -1,10 +1,15 @@
 package vn.com.gsoft.system.service.impl;
 
 
+import jakarta.persistence.Column;
 import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +27,7 @@ import vn.com.gsoft.system.service.NhanVienNhaThuocsService;
 import vn.com.gsoft.system.service.UserProfileService;
 import vn.com.gsoft.system.util.system.DataUtils;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -124,6 +130,13 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
         if (e.getRecordStatusId() == null) {
             e.setRecordStatusId(RecordStatusContains.ACTIVE);
         }
+        e.setPassword(this.passwordEncoder.encode(e.getPassword()));
+        if (e.getHoatDong() == null) {
+            e.setHoatDong(true);
+        }
+        if (e.getEnableNT() == null) {
+            e.setEnableNT(true);
+        }
         e = hdrRepo.save(e);
         NhanVienNhaThuocsReq nv = new NhanVienNhaThuocsReq();
         nv.setUserUserId(e.getCreatedByUserId());
@@ -153,7 +166,7 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
             }
         }
         UserProfile e = optional.get();
-        BeanUtils.copyProperties(req, e, "id");
+        BeanUtils.copyProperties(req, e, "id", "password", "hoatDong", "enableNT", "created", "createdByUserId", "modified", "modifiedByUserId", "recordStatusId");
         if (e.getRecordStatusId() == null) {
             e.setRecordStatusId(RecordStatusContains.ACTIVE);
         }
@@ -175,6 +188,13 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
         BeanUtils.copyProperties(req, e, "id");
         if (e.getRecordStatusId() == null) {
             e.setRecordStatusId(RecordStatusContains.ACTIVE);
+        }
+        e.setPassword(this.passwordEncoder.encode(e.getPassword()));
+        if (e.getHoatDong() == null) {
+            e.setHoatDong(true);
+        }
+        if (e.getEnableNT() == null) {
+            e.setEnableNT(true);
         }
         e = hdrRepo.save(e);
         NhanVienNhaThuocsReq nv = new NhanVienNhaThuocsReq();
@@ -204,7 +224,7 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
             }
         }
         UserProfile e = optional.get();
-        BeanUtils.copyProperties(req, e, "id");
+        BeanUtils.copyProperties(req, e, "id", "password", "hoatDong", "enableNT", "created", "createdByUserId", "modified", "modifiedByUserId", "recordStatusId");
         if (e.getRecordStatusId() == null) {
             e.setRecordStatusId(RecordStatusContains.ACTIVE);
         }
