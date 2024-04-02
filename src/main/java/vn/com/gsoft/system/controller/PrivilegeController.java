@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import vn.com.gsoft.system.model.dto.PrivilegeReq;
 import vn.com.gsoft.system.response.BaseResponse;
 import vn.com.gsoft.system.service.PrivilegeService;
-import vn.com.gsoft.system.util.system.PathContains;
+import vn.com.gsoft.system.constant.PathContains;
 import vn.com.gsoft.system.util.system.ResponseUtils;
 
 @Slf4j

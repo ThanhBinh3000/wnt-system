@@ -1,4 +1,4 @@
-package vn.com.gsoft.system.util.system;
+package vn.com.gsoft.system.constant;
 
 public class PathContains {
     // Action

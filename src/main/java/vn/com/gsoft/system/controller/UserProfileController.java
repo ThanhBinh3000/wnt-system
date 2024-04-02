@@ -14,7 +14,7 @@ import vn.com.gsoft.system.model.dto.ChangePasswordReq;
 import vn.com.gsoft.system.model.dto.UserProfileReq;
 import vn.com.gsoft.system.response.BaseResponse;
 import vn.com.gsoft.system.service.UserProfileService;
-import vn.com.gsoft.system.util.system.PathContains;
+import vn.com.gsoft.system.constant.PathContains;
 import vn.com.gsoft.system.util.system.ResponseUtils;
 
 @RestController
