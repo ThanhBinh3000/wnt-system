@@ -10,16 +10,17 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "RolePrivilege")
-public class RolePrivilege extends BaseEntity{
+@Table(name = "RoleType")
+public class RoleType extends BaseEntity {
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(name = "RoleId")
     private Long roleId;
+    @Column(name = "RoleName")
+    private String roleName;
+    @Column(name = "Descripition")
+    private String descripition;
 
-    @Column(name = "PrivilegeId")
-    private Long privilegeId;
 }

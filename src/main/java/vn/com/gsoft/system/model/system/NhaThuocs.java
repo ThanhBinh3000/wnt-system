@@ -60,7 +60,7 @@ public class NhaThuocs {
     private Boolean isNationalDBConnected;
     private String imagePreviewUrl;
     private String imageThumbUrl;
-    private Integer totalNumberInvoices;
+    private Long totalNumberInvoices;
     private String connEInvoiceUserName;
     private String connEInvoicePassword;
     private String symbolCodeInvocie;

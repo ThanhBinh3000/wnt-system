@@ -17,7 +17,7 @@ public class Entity extends BaseEntity{
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "Id")
-    private Integer id;
+    private Long id;
     @Column(name = "Code")
     private String code;
     @Column(name = "Name")

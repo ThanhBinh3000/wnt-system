@@ -25,5 +25,7 @@ public class Role extends BaseEntity {
     private String description;
     @Column(name = "Type")
     private Integer type;
+    @Column(name = "IsDefault")
+    private Boolean isDefault;  // true là mặc định
 }
 

@@ -1,6 +1,6 @@
 package vn.com.gsoft.system.constant;
 
-public class PathContains {
+public class PathConstant {
     // Action
     public static final String URL_INIT = "/init";
     public static final String URL_SEARCH_PAGE = "/search-page";

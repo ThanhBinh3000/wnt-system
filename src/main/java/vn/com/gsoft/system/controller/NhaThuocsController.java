@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import vn.com.gsoft.system.model.dto.NhaThuocsReq;
 import vn.com.gsoft.system.response.BaseResponse;
 import vn.com.gsoft.system.service.NhaThuocsService;
-import vn.com.gsoft.system.constant.PathContains;
+import vn.com.gsoft.system.constant.PathConstant;
 import vn.com.gsoft.system.util.system.ResponseUtils;
 
 @Slf4j
@@ -22,7 +22,7 @@ public class NhaThuocsController {
     private NhaThuocsService service;
 
 
-    @PostMapping(value = PathContains.URL_SEARCH_PAGE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = PathConstant.URL_SEARCH_PAGE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BaseResponse> colection(@RequestBody NhaThuocsReq objReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.searchPage(objReq)));
@@ -35,35 +35,35 @@ public class NhaThuocsController {
     }
 
 
-    @PostMapping(value = PathContains.URL_SEARCH_LIST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = PathConstant.URL_SEARCH_LIST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BaseResponse> colectionList(@RequestBody NhaThuocsReq objReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.searchList(objReq)));
     }
 
 
-    @PostMapping(value = PathContains.URL_CREATE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = PathConstant.URL_CREATE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<BaseResponse> insert(@Valid @RequestBody NhaThuocsReq objReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.create(objReq)));
     }
 
 
-    @PostMapping(value = PathContains.URL_UPDATE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = PathConstant.URL_UPDATE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<BaseResponse> update(@Valid @RequestBody NhaThuocsReq objReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.update(objReq)));
     }
 
 
-    @GetMapping(value = PathContains.URL_DETAIL, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = PathConstant.URL_DETAIL, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BaseResponse> detail(@PathVariable("id") Long id) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.detail(id)));
     }
 
 
-    @PostMapping(value = PathContains.URL_DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = PathConstant.URL_DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BaseResponse> delete(@Valid @RequestBody NhaThuocsReq idSearchReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.delete(idSearchReq.getId())));

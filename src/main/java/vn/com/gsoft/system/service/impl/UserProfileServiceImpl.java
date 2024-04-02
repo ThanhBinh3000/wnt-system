@@ -1,33 +1,27 @@
 package vn.com.gsoft.system.service.impl;
 
 
-import jakarta.persistence.Column;
 import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import vn.com.gsoft.system.constant.NhanVienRole;
+import vn.com.gsoft.system.constant.NhanVienRoleConstant;
 import vn.com.gsoft.system.constant.RecordStatusContains;
+import vn.com.gsoft.system.constant.RoleTypeConstant;
 import vn.com.gsoft.system.entity.NhaThuocs;
+import vn.com.gsoft.system.entity.Role;
 import vn.com.gsoft.system.entity.UserProfile;
 import vn.com.gsoft.system.model.dto.*;
 import vn.com.gsoft.system.model.system.Profile;
 import vn.com.gsoft.system.repository.UserProfileRepository;
-import vn.com.gsoft.system.service.NhaThuocsService;
-import vn.com.gsoft.system.service.NhanVienNhaThuocsService;
-import vn.com.gsoft.system.service.UserProfileService;
+import vn.com.gsoft.system.service.*;
 import vn.com.gsoft.system.util.system.DataUtils;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,14 +33,18 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
     private PasswordEncoder passwordEncoder;
     private NhanVienNhaThuocsService nhanVienNhaThuocsService;
     private NhaThuocsService nhaThuocsService;
+    private RoleService roleService;
+    private UserRoleService userRoleService;
 
     @Autowired
-    public UserProfileServiceImpl(UserProfileRepository hdrRepo, PasswordEncoder passwordEncoder, NhanVienNhaThuocsService nhanVienNhaThuocsService, NhaThuocsService nhaThuocsService) {
+    public UserProfileServiceImpl(UserProfileRepository hdrRepo, PasswordEncoder passwordEncoder, NhanVienNhaThuocsService nhanVienNhaThuocsService, NhaThuocsService nhaThuocsService, RoleService roleService, UserRoleService userRoleService) {
         super(hdrRepo);
         this.hdrRepo = hdrRepo;
         this.passwordEncoder = passwordEncoder;
         this.nhanVienNhaThuocsService = nhanVienNhaThuocsService;
         this.nhaThuocsService = nhaThuocsService;
+        this.roleService = roleService;
+        this.userRoleService = userRoleService;
     }
 
     @Override
@@ -139,11 +137,20 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
         }
         e = hdrRepo.save(e);
         NhanVienNhaThuocsReq nv = new NhanVienNhaThuocsReq();
-        nv.setUserUserId(e.getCreatedByUserId());
-        nv.setRole(NhanVienRole.ADMIN);
+        nv.setUserUserId(e.getId());
+        nv.setRole(NhanVienRoleConstant.ADMIN);
         nv.setNhaThuocMaNhaThuoc(req.getMaNhaThuoc());
         nv.setStoreId(req.getStoreId());
         this.nhanVienNhaThuocsService.create(nv);
+
+        Optional<Role> role = this.roleService.findByTypeAndIsDefaultAndRoleName(0, true, RoleTypeConstant.ADMIN);
+        if (role.isEmpty()) {
+            throw new Exception("Không tìm thấy role mặc định!");
+        }
+        UserRoleReq ur = new UserRoleReq();
+        ur.setUserId(e.getId());
+        ur.setRoleId(role.get().getId());
+        this.userRoleService.create(ur);
 
         return e;
     }
@@ -198,11 +205,22 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
         }
         e = hdrRepo.save(e);
         NhanVienNhaThuocsReq nv = new NhanVienNhaThuocsReq();
-        nv.setUserUserId(e.getCreatedByUserId());
-        nv.setRole(NhanVienRole.USER);
+        nv.setUserUserId(e.getId());
+        nv.setRole(NhanVienRoleConstant.USER);
         nv.setNhaThuocMaNhaThuoc(getLoggedUser().getNhaThuoc().getMaNhaThuoc());
         nv.setStoreId(req.getStoreId());
         this.nhanVienNhaThuocsService.create(nv);
+        Optional<Role> role = this.roleService.findByMaNhaThuocAndTypeAndIsDefaultAndRoleName(getLoggedUser().getNhaThuoc().getMaNhaThuoc(), 1, true, RoleTypeConstant.USER);
+        if (role.isEmpty()) {
+            role = this.roleService.findByTypeAndIsDefaultAndRoleName(0, true, RoleTypeConstant.USER);
+            if (role.isEmpty()) {
+                throw new Exception("Không tìm thấy role mặc định!");
+            }
+        }
+        UserRoleReq ur = new UserRoleReq();
+        ur.setUserId(e.getId());
+        ur.setRoleId(role.get().getId());
+        this.userRoleService.create(ur);
         return e;
     }
 

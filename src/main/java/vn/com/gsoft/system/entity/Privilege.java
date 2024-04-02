@@ -18,7 +18,7 @@ public class Privilege extends BaseEntity{
     @Id
     @Column(name = "Id")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     @Column(name = "Code")
     private String code;
     @Column(name = "ParentCode")
