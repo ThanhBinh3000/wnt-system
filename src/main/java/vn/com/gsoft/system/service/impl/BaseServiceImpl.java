@@ -35,11 +35,13 @@ public class BaseServiceImpl<E extends BaseEntity,R extends BaseRequest, PK exte
     @Override
     public Page<E> searchPage(R req) throws Exception {
         Pageable pageable = PageRequest.of(req.getPaggingReq().getPage(), req.getPaggingReq().getLimit());
+        req.setRecordStatusId(0L);
         return repository.searchPage(req, pageable);
     }
 
     @Override
     public List<E> searchList(R req) throws Exception {
+        req.setRecordStatusId(0L);
         return repository.searchList(req);
     }
 
@@ -84,6 +86,10 @@ public class BaseServiceImpl<E extends BaseEntity,R extends BaseRequest, PK exte
         Optional<E> optional = repository.findById(id);
         if (optional.isEmpty()) {
             throw new Exception("Không tìm thấy dữ liệu.");
+        }else {
+            if(optional.get().getRecordStatusId() != 0L){
+                throw new Exception("Không tìm thấy dữ liệu.");
+            }
         }
         return optional.get();
     }
