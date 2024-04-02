@@ -54,7 +54,7 @@ public class UserProfileController {
     return ResponseEntity.ok(ResponseUtils.ok(service.create(objReq)));
   }
 
-  @Operation(summary = "Tạo mới", description = "Tạo mới")
+  @Operation(summary = "Update", description = "Update")
   @PostMapping(value = PathContains.URL_UPDATE, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
   public ResponseEntity<BaseResponse> update(@Valid @RequestBody UserProfileReq objReq) throws Exception {
