@@ -15,6 +15,7 @@ public interface NhanVienNhaThuocsRepository extends BaseRepository<NhanVienNhaT
     @Query("SELECT c FROM NhanVienNhaThuocs c " +
             "WHERE 1=1 "
             + " AND (:#{#param.id} IS NULL OR c.id = :#{#param.id}) "
+            + " AND (:#{#param.recordStatusId} IS NULL OR c.recordStatusId = :#{#param.recordStatusId})"
             + " AND (:#{#param.role} IS NULL OR lower(c.role) LIKE lower(concat('%',CONCAT(:#{#param.role},'%'))))"
             + " AND (:#{#param.nhaThuocMaNhaThuoc} IS NULL OR lower(c.nhaThuocMaNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.nhaThuocMaNhaThuoc},'%'))))"
             + " AND (:#{#param.userUserId} IS NULL OR c.userUserId = :#{#param.userUserId}) "
@@ -28,6 +29,7 @@ public interface NhanVienNhaThuocsRepository extends BaseRepository<NhanVienNhaT
     @Query("SELECT c FROM NhanVienNhaThuocs c " +
             "WHERE 1=1 "
             + " AND (:#{#param.id} IS NULL OR c.id = :#{#param.id}) "
+            + " AND (:#{#param.recordStatusId} IS NULL OR c.recordStatusId = :#{#param.recordStatusId})"
             + " AND (:#{#param.role} IS NULL OR lower(c.role) LIKE lower(concat('%',CONCAT(:#{#param.role},'%'))))"
             + " AND (:#{#param.nhaThuocMaNhaThuoc} IS NULL OR lower(c.nhaThuocMaNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.nhaThuocMaNhaThuoc},'%'))))"
             + " AND (:#{#param.userUserId} IS NULL OR c.userUserId = :#{#param.userUserId}) "

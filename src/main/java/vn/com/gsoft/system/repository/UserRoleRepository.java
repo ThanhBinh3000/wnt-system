@@ -15,6 +15,7 @@ public interface UserRoleRepository extends BaseRepository<UserRole, UserRoleReq
     @Query("SELECT c FROM UserRole c " +
             "WHERE 1=1 "
             + " AND (:#{#param.id} IS NULL OR c.id = :#{#param.id}) "
+            + " AND (:#{#param.recordStatusId} IS NULL OR c.recordStatusId = :#{#param.recordStatusId})"
             + " AND (:#{#param.userId} IS NULL OR c.userId = :#{#param.userId}) "
             + " AND (:#{#param.roleId} IS NULL OR c.roleId = :#{#param.roleId}) "
             + " ORDER BY c.id desc"
@@ -25,6 +26,7 @@ public interface UserRoleRepository extends BaseRepository<UserRole, UserRoleReq
     @Query("SELECT c FROM UserRole c " +
             "WHERE 1=1 "
             + " AND (:#{#param.id} IS NULL OR c.id = :#{#param.id}) "
+            + " AND (:#{#param.recordStatusId} IS NULL OR c.recordStatusId = :#{#param.recordStatusId})"
             + " AND (:#{#param.userId} IS NULL OR c.userId = :#{#param.userId}) "
             + " AND (:#{#param.roleId} IS NULL OR c.roleId = :#{#param.roleId}) "
             + " ORDER BY c.id desc"

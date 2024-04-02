@@ -15,6 +15,7 @@ public interface PrivilegeEntityRepository extends BaseRepository<PrivilegeEntit
   @Query("SELECT c FROM PrivilegeEntity c " +
          "WHERE 1=1 "
           + " AND (:#{#param.id} IS NULL OR c.id = :#{#param.id}) "
+          + " AND (:#{#param.recordStatusId} IS NULL OR c.recordStatusId = :#{#param.recordStatusId})"
           + " AND (:#{#param.privilegeId} IS NULL OR c.privilegeId = :#{#param.privilegeId}) "
           + " AND (:#{#param.entityId} IS NULL OR c.entityId = :#{#param.entityId}) "
           + " ORDER BY c.id desc"
@@ -25,6 +26,7 @@ public interface PrivilegeEntityRepository extends BaseRepository<PrivilegeEntit
   @Query("SELECT c FROM PrivilegeEntity c " +
          "WHERE 1=1 "
           + " AND (:#{#param.id} IS NULL OR c.id = :#{#param.id}) "
+          + " AND (:#{#param.recordStatusId} IS NULL OR c.recordStatusId = :#{#param.recordStatusId})"
           + " AND (:#{#param.privilegeId} IS NULL OR c.privilegeId = :#{#param.privilegeId}) "
           + " AND (:#{#param.entityId} IS NULL OR c.entityId = :#{#param.entityId}) "
           + " ORDER BY c.id desc"

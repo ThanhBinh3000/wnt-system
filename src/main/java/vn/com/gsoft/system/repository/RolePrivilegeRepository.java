@@ -15,6 +15,7 @@ public interface RolePrivilegeRepository extends BaseRepository<RolePrivilege, R
     @Query("SELECT c FROM RolePrivilege c " +
             "WHERE 1=1 "
             + " AND (:#{#param.id} IS NULL OR c.id = :#{#param.id}) "
+            + " AND (:#{#param.recordStatusId} IS NULL OR c.recordStatusId = :#{#param.recordStatusId})"
             + " AND (:#{#param.roleId} IS NULL OR c.roleId = :#{#param.roleId}) "
             + " AND (:#{#param.privilegeId} IS NULL OR c.id = :#{#param.privilegeId}) "
             + " ORDER BY c.id desc"
@@ -25,6 +26,7 @@ public interface RolePrivilegeRepository extends BaseRepository<RolePrivilege, R
     @Query("SELECT c FROM RolePrivilege c " +
             "WHERE 1=1 "
             + " AND (:#{#param.id} IS NULL OR c.id = :#{#param.id}) "
+            + " AND (:#{#param.recordStatusId} IS NULL OR c.recordStatusId = :#{#param.recordStatusId})"
             + " AND (:#{#param.roleId} IS NULL OR c.roleId = :#{#param.roleId}) "
             + " AND (:#{#param.privilegeId} IS NULL OR c.id = :#{#param.privilegeId}) "
             + " ORDER BY c.id desc"

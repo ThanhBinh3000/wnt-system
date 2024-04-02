@@ -15,6 +15,7 @@ public interface PrivilegeRepository extends BaseRepository<Privilege, Privilege
     @Query("SELECT c FROM Privilege c " +
             "WHERE 1=1 "
             + " AND (:#{#param.id} IS NULL OR c.id = :#{#param.id}) "
+            + " AND (:#{#param.recordStatusId} IS NULL OR c.recordStatusId = :#{#param.recordStatusId})"
             + " AND (:#{#param.code} IS NULL OR lower(c.code) LIKE lower(concat('%',CONCAT(:#{#param.code},'%'))))"
             + " AND (:#{#param.parentCode} IS NULL OR lower(c.parentCode) LIKE lower(concat('%',CONCAT(:#{#param.parentCode},'%'))))"
             + " AND (:#{#param.name} IS NULL OR lower(c.name) LIKE lower(concat('%',CONCAT(:#{#param.name},'%'))))"
@@ -26,6 +27,7 @@ public interface PrivilegeRepository extends BaseRepository<Privilege, Privilege
     @Query("SELECT c FROM Privilege c " +
             "WHERE 1=1 "
             + " AND (:#{#param.id} IS NULL OR c.id = :#{#param.id}) "
+            + " AND (:#{#param.recordStatusId} IS NULL OR c.recordStatusId = :#{#param.recordStatusId})"
             + " AND (:#{#param.code} IS NULL OR lower(c.code) LIKE lower(concat('%',CONCAT(:#{#param.code},'%'))))"
             + " AND (:#{#param.parentCode} IS NULL OR lower(c.parentCode) LIKE lower(concat('%',CONCAT(:#{#param.parentCode},'%'))))"
             + " AND (:#{#param.name} IS NULL OR lower(c.name) LIKE lower(concat('%',CONCAT(:#{#param.name},'%'))))"
