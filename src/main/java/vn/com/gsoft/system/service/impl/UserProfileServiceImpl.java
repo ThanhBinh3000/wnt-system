@@ -127,6 +127,7 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
         nv.setUserUserId(e.getCreatedByUserId());
         nv.setRole(NhanVienRole.ADMIN);
         nv.setNhaThuocMaNhaThuoc(req.getMaNhaThuoc());
+        nv.setStoreId(req.getStoreId());
         this.nhanVienNhaThuocsService.create(nv);
 
         return e;
@@ -176,6 +177,7 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
         nv.setUserUserId(e.getCreatedByUserId());
         nv.setRole(NhanVienRole.USER);
         nv.setNhaThuocMaNhaThuoc(getLoggedUser().getNhaThuoc().getMaNhaThuoc());
+        nv.setStoreId(req.getStoreId());
         this.nhanVienNhaThuocsService.create(nv);
         return e;
     }
