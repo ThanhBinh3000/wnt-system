@@ -1,6 +1,7 @@
 package vn.com.gsoft.system.service.impl;
 
 
+import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,6 +104,7 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
     }
 
     @Override
+    @Transactional
     public UserProfile insertUser(UserProfileReq req) throws Exception {
         Profile userInfo = this.getLoggedUser();
         if (userInfo == null)
@@ -134,6 +136,7 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
     }
 
     @Override
+    @Transactional
     public UserProfile updateUser(UserProfileReq req) throws Exception {
         Profile userInfo = this.getLoggedUser();
         if (userInfo == null)
@@ -159,6 +162,7 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
     }
 
     @Override
+    @Transactional
     public UserProfile insertStaff(UserProfileReq req) throws Exception {
         Profile userInfo = this.getLoggedUser();
         if (userInfo == null)
@@ -183,6 +187,7 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
     }
 
     @Override
+    @Transactional
     public UserProfile updateStaff(UserProfileReq req) throws Exception {
         Profile userInfo = this.getLoggedUser();
         if (userInfo == null)
