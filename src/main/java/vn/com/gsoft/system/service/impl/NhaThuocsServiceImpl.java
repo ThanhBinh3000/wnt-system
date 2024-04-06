@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import vn.com.gsoft.system.entity.NhaThuocs;
 import vn.com.gsoft.system.model.dto.NhaThuocsReq;
 import vn.com.gsoft.system.model.dto.NhaThuocsRes;
-import vn.com.gsoft.system.model.system.Profile;
 import vn.com.gsoft.system.repository.NhaThuocsRepository;
 import vn.com.gsoft.system.service.NhaThuocsService;
 
@@ -26,6 +25,13 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
     public NhaThuocsServiceImpl(NhaThuocsRepository hdrRepo) {
         super(hdrRepo);
         this.hdrRepo = hdrRepo;
+    }
+
+    @Override
+    public NhaThuocs detail(String code) throws Exception {
+        Optional<NhaThuocs> maNhaThuoc = hdrRepo.findByMaNhaThuoc(code);
+        maNhaThuoc.get().setNguoiPhuTrach(hdrRepo.findNguoiPhuTrachByMaNhaThuoc(code).get().getNguoiPhuTrach());
+        return maNhaThuoc.get();
     }
 
     @Override

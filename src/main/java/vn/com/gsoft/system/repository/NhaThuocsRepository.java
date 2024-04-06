@@ -38,7 +38,7 @@ public interface NhaThuocsRepository extends BaseRepository<NhaThuocs, NhaThuocs
             " join NhanVienNhaThuocs nv  on c.maNhaThuoc = nv.nhaThuocMaNhaThuoc " +
             " join UserProfile u on nv.userUserId = u.id " +
             " WHERE 1=1 AND nv.role = 'Admin' " +
-            " AND (:#{#param.recordStatusId} IS NULL OR c.recordStatusId = :#{#param.recordStatusId})"+
+            " AND (:#{#param.recordStatusId} IS NULL OR c.recordStatusId = :#{#param.recordStatusId})" +
             " AND u.id = :#{#param.userIdQueryData} " +
             " AND (:#{#param.maNhaThuoc} IS NULL OR lower(c.maNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.maNhaThuoc},'%'))))" +
             " AND (:#{#param.tenNhaThuoc} IS NULL OR lower(c.tenNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.tenNhaThuoc},'%'))))" +
@@ -49,4 +49,13 @@ public interface NhaThuocsRepository extends BaseRepository<NhaThuocs, NhaThuocs
     Page<NhaThuocsRes> searchPageNhaThuoc(@Param("param") NhaThuocsReq req, Pageable pageable);
 
     Optional<NhaThuocs> findByMaNhaThuoc(String maNhaThuoc);
+
+
+    @Query("SELECT new vn.com.gsoft.system.model.dto.NhaThuocsRes(c.id, c.maNhaThuoc, c.tenNhaThuoc, u.tenDayDu ) FROM NhaThuocs c " +
+            " join NhanVienNhaThuocs nv  on c.maNhaThuoc = nv.nhaThuocMaNhaThuoc " +
+            " join UserProfile u on nv.userUserId = u.id " +
+            " WHERE 1=1 AND nv.role = 'Admin' " +
+            " AND (c.maNhaThuoc  = ?1)"
+    )
+    Optional<NhaThuocsRes> findNguoiPhuTrachByMaNhaThuoc(String maNhaThuoc);
 }

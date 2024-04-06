@@ -17,10 +17,10 @@ import java.util.Date;
 @AllArgsConstructor
 @Entity
 @Table(name = "NhaThuocs")
-public class NhaThuocs extends BaseEntity{
+public class NhaThuocs extends BaseEntity {
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "MaNhaThuoc")
     private String maNhaThuoc;
@@ -200,5 +200,7 @@ public class NhaThuocs extends BaseEntity{
     private Long supporterId;
     @Column(name = "UpgradeToPlus")
     private Boolean upgradeToPlus;
+    @Transient
+    private String nguoiPhuTrach;
 }
 

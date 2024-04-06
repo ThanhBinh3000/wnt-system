@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface NhaThuocsService extends BaseService<NhaThuocs, NhaThuocsReq, Long> {
 
-
+    NhaThuocs detail (String code) throws Exception;
     Page<NhaThuocsRes> searchPageNhaThuoc(NhaThuocsReq objReq) throws Exception;
 
     Optional<NhaThuocs> findByMaNhaThuoc(String maNhaThuoc);

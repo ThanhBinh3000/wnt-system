@@ -62,6 +62,12 @@ public class NhaThuocsController {
         return ResponseEntity.ok(ResponseUtils.ok(service.detail(id)));
     }
 
+    @GetMapping(value = PathConstant.URL_DETAIL_CODE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<BaseResponse> detail(@PathVariable("code") String code) throws Exception {
+        return ResponseEntity.ok(ResponseUtils.ok(service.detail(code)));
+    }
+
 
     @PostMapping(value = PathConstant.URL_DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
