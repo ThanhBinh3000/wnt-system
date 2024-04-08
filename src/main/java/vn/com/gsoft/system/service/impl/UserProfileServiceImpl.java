@@ -249,4 +249,15 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
         hdrRepo.save(e);
         return e;
     }
+
+    @Override
+    public List<UserProfileRes> searchListUserManagement(UserProfileReq req) {
+        return DataUtils.convertList(hdrRepo.searchListUserManagement(req), UserProfileRes.class);
+    }
+
+    @Override
+    public List<UserStaffProfileRes> searchListStaffManagement(UserProfileReq req) throws Exception {
+        req.setMaNhaThuoc(getLoggedUser().getNhaThuoc().getMaNhaThuoc());
+        return DataUtils.convertList(hdrRepo.searchListStaffManagement(req), UserStaffProfileRes.class);
+    }
 }

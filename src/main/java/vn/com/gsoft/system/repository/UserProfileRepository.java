@@ -145,4 +145,72 @@ public interface UserProfileRepository extends BaseRepository<UserProfile, UserP
     Page<Tuple> searchPageStaffManagement(@Param("param") UserProfileReq param, Pageable pageable);
 
     Optional<UserProfile> findByUserName(String userName);
+
+    @Query(value =
+            "WITH UniqueDescriptions AS ( " +
+                    "    SELECT  " +
+                    "        up.id,  " +
+                    "        rt.Descripition " +
+                    "    FROM  " +
+                    "        UserProfile up " +
+                    "    JOIN  " +
+                    "        UserRole ur ON ur.userId = up.id " +
+                    "    JOIN  " +
+                    "        RoleType rt ON rt.roleId = ur.roleId " +
+                    " WHERE 1 = 1" +
+                    " AND (:#{#param.roleName} IS NULL OR rt.RoleName = :#{#param.roleName}) " +
+                    "    GROUP BY  " +
+                    "        up.id, rt.Descripition " +
+                    "), " +
+                    "AggregatedDescriptions AS ( " +
+                    "    SELECT  " +
+                    "        id,  " +
+                    "        STRING_AGG(Descripition, ', ') AS nhomQuyens " +
+                    "    FROM  " +
+                    "        UniqueDescriptions " +
+                    "    GROUP BY  " +
+                    "        id " +
+                    ")" +
+                    "SELECT  " +
+                    "    up.id as id,  " +
+                    "    up.UserName as userName,  " +
+                    "    STRING_AGG(nt.TenNhaThuoc, ', ') AS nhaThuocs,  " +
+                    "    ad.nhomQuyens, " +
+                    "    up.Email as email,  " +
+                    "    up.HoatDong as hoatDong,  " +
+                    "    up.TenDayDu as tenDayDu " +
+                    "FROM  " +
+                    "    UserProfile up " +
+                    "JOIN  " +
+                    "    NhanVienNhaThuocs nv ON up.id = nv.User_UserId " +
+                    "JOIN  " +
+                    "    NhaThuocs nt ON nt.MaNhaThuoc = nv.NhaThuoc_MaNhaThuoc   " +
+                    "JOIN  " +
+                    "    AggregatedDescriptions ad ON up.id = ad.id" +
+                    " WHERE 1 = 1" +
+                    " AND (:#{#param.userName} IS NULL OR lower(up.UserName) LIKE lower(concat('%',CONCAT(:#{#param.userName},'%'))))" +
+                    " AND (:#{#param.hoatDong} IS NULL OR up.HoatDong = :#{#param.hoatDong}) " +
+                    " AND (:#{#param.recordStatusId} IS NULL OR up.recordStatusId = :#{#param.recordStatusId})" +
+                    " AND (:#{#param.maNhaThuoc} IS NULL OR nv.NhaThuoc_MaNhaThuoc = :#{#param.maNhaThuoc}) " +
+                    " AND ((:#{#param.textSearch} IS NULL OR lower(nt.MaNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%'))))" +
+                    " OR (:#{#param.textSearch} IS NULL OR lower(nt.TenNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%')))))" +
+                    " GROUP BY up.id, up.UserName, ad.nhomQuyens, up.Email, up.HoatDong, up.TenDayDu" +
+                    " ORDER BY up.id desc", nativeQuery = true
+    )
+    List<Tuple> searchListUserManagement(@Param("param") UserProfileReq param);
+
+    @Query(value =
+            "SELECT  up.id as id, up.UserName as userName, up.SoDienThoai AS soDienThoai , nv.Role AS role, " +
+                    "  up.Email as email, up.HoatDong as hoatDong, up.TenDayDu as tenDayDu " +
+                    "FROM UserProfile up " +
+                    "JOIN NhanVienNhaThuocs nv ON  up.id = nv.User_UserId " +
+                    " WHERE 1 = 1" +
+                    " AND (:#{#param.hoatDong} IS NULL OR up.HoatDong = :#{#param.hoatDong}) " +
+                    " AND (:#{#param.recordStatusId} IS NULL OR up.recordStatusId = :#{#param.recordStatusId})" +
+                    " AND (:#{#param.maNhaThuoc} IS NULL OR nv.NhaThuoc_MaNhaThuoc = :#{#param.maNhaThuoc}) " +
+                    " AND ((:#{#param.textSearch} IS NULL OR lower(up.UserName) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%'))))" +
+                    " OR (:#{#param.textSearch} IS NULL OR lower(up.TenDayDu) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%')))))" +
+                    " ORDER BY up.id desc", nativeQuery = true
+    )
+    List<Tuple> searchListStaffManagement(@Param("param") UserProfileReq param);
 }

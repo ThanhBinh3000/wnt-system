@@ -34,17 +34,38 @@ public class UserProfileController {
     }
 
     @Operation(summary = "Tra cứu", description = "Tra cứu")
-    @PostMapping(value = "/search-page-user-management", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = PathConstant.URL_SEARCH_LIST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<BaseResponse> colectionList(@RequestBody UserProfileReq objReq) throws Exception {
+        return ResponseEntity.ok(ResponseUtils.ok(service.searchList(objReq)));
+    }
+
+    @Operation(summary = "Tra cứu", description = "Tra cứu")
+    @PostMapping(value = PathConstant.URL_SEARCH_PAGE + "-user-management", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BaseResponse> colectionPageUserManagement(@RequestBody UserProfileReq objReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.searchPageUserManagement(objReq)));
     }
 
     @Operation(summary = "Tra cứu", description = "Tra cứu")
-    @PostMapping(value = "/search-page-staff-management", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = PathConstant.URL_SEARCH_PAGE + "-staff-management", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BaseResponse> colectionPageStaffManagement(@RequestBody UserProfileReq objReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.searchPageStaffManagement(objReq)));
+    }
+
+    @Operation(summary = "Tra cứu", description = "Tra cứu")
+    @PostMapping(value = PathConstant.URL_SEARCH_LIST + "-user-management", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<BaseResponse> colectionListUserManagement(@RequestBody UserProfileReq objReq) throws Exception {
+        return ResponseEntity.ok(ResponseUtils.ok(service.searchListUserManagement(objReq)));
+    }
+
+    @Operation(summary = "Tra cứu", description = "Tra cứu")
+    @PostMapping(value = PathConstant.URL_SEARCH_LIST + "-staff-management", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<BaseResponse> colectionListStaffManagement(@RequestBody UserProfileReq objReq) throws Exception {
+        return ResponseEntity.ok(ResponseUtils.ok(service.searchListStaffManagement(objReq)));
     }
 
     @Operation(summary = "Tạo mới", description = "Tạo mới")

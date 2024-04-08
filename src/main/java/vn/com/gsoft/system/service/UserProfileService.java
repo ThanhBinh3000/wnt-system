@@ -7,6 +7,8 @@ import vn.com.gsoft.system.model.dto.UserProfileReq;
 import vn.com.gsoft.system.model.dto.UserProfileRes;
 import vn.com.gsoft.system.model.dto.UserStaffProfileRes;
 
+import java.util.List;
+
 public interface UserProfileService extends BaseService<UserProfile, UserProfileReq, Long> {
 
 
@@ -25,4 +27,8 @@ public interface UserProfileService extends BaseService<UserProfile, UserProfile
     UserProfile insertStaff(UserProfileReq objReq) throws Exception;
 
     UserProfile updateStaff(UserProfileReq objReq) throws Exception;
+
+    List<UserProfileRes> searchListUserManagement(UserProfileReq objReq);
+
+    List<UserStaffProfileRes> searchListStaffManagement(UserProfileReq objReq) throws Exception;
 }
