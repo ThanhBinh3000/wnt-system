@@ -45,6 +45,9 @@ public interface NhaThuocsRepository extends BaseRepository<NhaThuocs, NhaThuocs
             + " AND ((:#{#param.createdByUserId} IS NULL) OR (c.createdByUserId = :#{#param.createdByUserId} )) "
             + " AND ((:#{#param.tinhThanhId} IS NULL) OR (c.tinhThanhId = :#{#param.tinhThanhId} )) "
 //            + " AND ((:#{#param.numDaysNoTrans} IS NULL) OR (c.lastTransDate < CURRENT_DATE + :#{#param.numDaysNoTrans} )) " //todo
+            + " AND ((:#{#param.lastTransDate} IS NULL) OR (c.lastTransDate < :#{#param.lastTransDate} )) "
+//            + " AND ((:#{#param.expiredType} IS NULL) OR (c.expiredDate < :#{#param.expiredDate} )) "   //todo
+            + " AND ((:#{#param.expiredDate} IS NULL) OR (c.expiredDate < :#{#param.expiredDate} )) "
             + " AND ((:#{#param.storeDeployTypeId} IS NULL) OR (c.maNhaThuoc in (select d.maNhaThuoc from TrienKhais d where d.tieuChiTrienKhaiId = :#{#param.storeDeployTypeId}))) "
             + " AND ((:#{#param.idTypeBasic} IS NULL) OR (c.idTypeBasic = :#{#param.idTypeBasic} )) "
             + " AND ((:#{#param.supporterId} IS NULL) OR (c.supporterId = :#{#param.supporterId} )) "

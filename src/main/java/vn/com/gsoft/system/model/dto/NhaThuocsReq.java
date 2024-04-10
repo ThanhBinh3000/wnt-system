@@ -19,7 +19,9 @@ public class NhaThuocsReq extends BaseRequest {
     private String email;
     private String mobile;
     private String duocSy;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
     private Date created;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
     private Date modified;
     private Long createdByUserId;
     private Long modifiedByUserId;
@@ -42,6 +44,7 @@ public class NhaThuocsReq extends BaseRequest {
     private Long regionId;
     private Long cityId;
     private Long wardId;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
     private Date lastTransDate;
     private String supportPhones;
     private String deliveryPolicy;
@@ -62,8 +65,10 @@ public class NhaThuocsReq extends BaseRequest {
     private Boolean isNationalSampleConnected;
     private String connectivityCodeMeidcal;
     private String connectivityPasswordMedical;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
     private Date expiredDate;
     private String businessDescription;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
     private Date paidDate;
     private Boolean isUploading;
     private String connEInvoiceSerialCert;
@@ -114,5 +119,4 @@ public class NhaThuocsReq extends BaseRequest {
     private Integer expiredType;
     private Boolean outOfInvoice;
     private Integer typeZNS;
-
 }
