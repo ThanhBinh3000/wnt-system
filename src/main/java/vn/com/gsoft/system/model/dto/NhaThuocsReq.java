@@ -1,10 +1,12 @@
 package vn.com.gsoft.system.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import vn.com.gsoft.system.model.system.BaseRequest;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class NhaThuocsReq extends BaseRequest {
@@ -99,4 +101,18 @@ public class NhaThuocsReq extends BaseRequest {
     private Integer evaluate;
     private Long supporterId;
     private Boolean upgradeToPlus;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
+    private Date fromDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
+    private Date toDate;
+    private Long storeTypeId;
+    private Long storePaymentTypeId;
+    private Integer numDaysNoTrans;
+    private Integer typeDate;
+    private Long storeDeployTypeId;
+    private Integer expiredType;
+    private Boolean outOfInvoice;
+    private Integer typeZNS;
+
 }
