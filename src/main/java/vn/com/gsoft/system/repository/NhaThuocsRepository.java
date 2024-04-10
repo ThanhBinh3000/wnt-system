@@ -48,6 +48,7 @@ public interface NhaThuocsRepository extends BaseRepository<NhaThuocs, NhaThuocs
             + " AND ((:#{#param.storeDeployTypeId} IS NULL) OR (c.maNhaThuoc in (select d.maNhaThuoc from TrienKhais d where d.tieuChiTrienKhaiId = :#{#param.storeDeployTypeId}))) "
             + " AND ((:#{#param.idTypeBasic} IS NULL) OR (c.idTypeBasic = :#{#param.idTypeBasic} )) "
             + " AND ((:#{#param.supporterId} IS NULL) OR (c.supporterId = :#{#param.supporterId} )) "
+//            + " AND ((:#{#param.outOfInvoice} IS NULL) OR ((:#{#param.outOfInvoice} = true AND (c.totalNumberInvoices < ((select count(n) from PhieuNhaps n) + (select count(x) from PhieuXuats x))  ) ) OR 1=1)) " //todo
             + " AND ((:#{#param.textSearch} IS NULL OR lower(c.maNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%'))))"
             + " OR (:#{#param.textSearch} IS NULL OR lower(c.tenNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%'))))"
             + " OR (:#{#param.textSearch} IS NULL OR lower(c.diaChi) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%')))))"
