@@ -15,6 +15,7 @@ import vn.com.gsoft.system.service.BaseService;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,6 +58,8 @@ public class BaseServiceImpl<E extends BaseEntity,R extends BaseRequest, PK exte
         if(e.getRecordStatusId() == null){
             e.setRecordStatusId(RecordStatusContains.ACTIVE);
         }
+        e.setCreated(new Date());
+        e.setCreatedByUserId(getLoggedUser().getId());
         repository.save(e);
         return e;
     }
@@ -73,10 +76,12 @@ public class BaseServiceImpl<E extends BaseEntity,R extends BaseRequest, PK exte
         }
 
         E e = optional.get();
-        BeanUtils.copyProperties(req, e, "id");
+        BeanUtils.copyProperties(req, e, "id", "created", "createdByUserId");
         if(e.getRecordStatusId() == null){
             e.setRecordStatusId(RecordStatusContains.ACTIVE);
         }
+        e.setModified(new Date());
+        e.setModifiedByUserId(getLoggedUser().getId());
         repository.save(e);
         return e;
     }
@@ -108,7 +113,7 @@ public class BaseServiceImpl<E extends BaseEntity,R extends BaseRequest, PK exte
         if (optional.isEmpty()) {
             throw new Exception("Không tìm thấy dữ liệu.");
         }
-        optional.get().setRecordStatusId(2l);
+        optional.get().setRecordStatusId(RecordStatusContains.DELETED);
         repository.save(optional.get());
         return true;
     }
