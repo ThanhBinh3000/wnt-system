@@ -1,5 +1,7 @@
 package vn.com.gsoft.system.repository;
 
+import jakarta.persistence.Tuple;
+import org.apache.kafka.common.protocol.types.Field;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +13,7 @@ import vn.com.gsoft.system.constant.ETypeDate;
 import vn.com.gsoft.system.constant.StoreSettingKeys;
 import vn.com.gsoft.system.constant.EZNSType;
 import vn.com.gsoft.system.entity.NhaThuocs;
+import vn.com.gsoft.system.model.dto.NhaThuocDongBoPhieuRes;
 import vn.com.gsoft.system.model.dto.NhaThuocsReq;
 import vn.com.gsoft.system.model.dto.NhaThuocsRes;
 
@@ -94,4 +97,15 @@ public interface NhaThuocsRepository extends BaseRepository<NhaThuocs, NhaThuocs
             " AND (c.maNhaThuoc  = ?1)"
     )
     Optional<NhaThuocsRes> findNguoiPhuTrachByMaNhaThuoc(String maNhaThuoc);
+    @Query(value = "SELECT a.SettingValue FROM ApplicationSetting a " +
+            "WHERE a.DrugStoreId = :storeCode AND a.SettingKey = 'TARGET_STORE_FOR_SYN_NOTES'" +
+            "AND a.Activated = 1"
+            , nativeQuery = true)
+    Optional<String> findNhaThuocDongBoPhieuByMaNhaThuoc(@Param("storeCode") String storeCode);
+    //lấy ra danh sách nhà thuốc theo mã
+    @Query(value = "SELECT c.ID AS id, c.MaNhaThuoc AS maNhaThuoc, c.TenNhaThuoc AS tenNhaThuoc" +
+            " FROM NhaThuocs c WHERE c.HoatDong = 1" +
+            " AND c.MaNhaThuoc in (:storeCodes)"
+            , nativeQuery = true)
+    Page<Tuple> searchPageNhaThuocDongBoPhieu(@Param("storeCodes") String[] storeCodes, Pageable pageable);
 }
