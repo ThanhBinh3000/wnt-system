@@ -7,12 +7,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import vn.com.gsoft.system.entity.NhaThuocs;
-import vn.com.gsoft.system.model.dto.NhaThuocsReq;
-import vn.com.gsoft.system.model.dto.NhaThuocsRes;
-import vn.com.gsoft.system.repository.NhaThuocsRepository;
+import vn.com.gsoft.system.entity.*;
+import vn.com.gsoft.system.model.dto.*;
+import vn.com.gsoft.system.model.system.Profile;
+import vn.com.gsoft.system.repository.*;
 import vn.com.gsoft.system.service.NhaThuocsService;
+import vn.com.gsoft.system.util.system.DataUtils;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -22,6 +25,18 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
     private NhaThuocsRepository hdrRepo;
 
     @Autowired
+    public TinhThanhsRepository tinhThanhsRepository;
+
+    @Autowired
+    public UserProfileRepository userProfileRepository;
+
+    @Autowired
+    public TypeBasisRepository typeBasisRepository;
+
+    @Autowired
+    public TrienKhaisRepository trienKhaisRepository;
+
+    @Autowired
     public NhaThuocsServiceImpl(NhaThuocsRepository hdrRepo) {
         super(hdrRepo);
         this.hdrRepo = hdrRepo;
@@ -29,9 +44,45 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
 
     @Override
     public NhaThuocs detail(String code) throws Exception {
-        Optional<NhaThuocs> maNhaThuoc = hdrRepo.findByMaNhaThuoc(code);
-        maNhaThuoc.get().setNguoiPhuTrach(hdrRepo.findNguoiPhuTrachByMaNhaThuoc(code).get().getNguoiPhuTrach());
-        return maNhaThuoc.get();
+        Optional<NhaThuocs> byMaNhaThuoc = hdrRepo.findByMaNhaThuoc(code);
+        NhaThuocs nhaThuocs = byMaNhaThuoc.get();
+        nhaThuocs.setNguoiPhuTrach(hdrRepo.findNguoiPhuTrachByMaNhaThuoc(code).get().getNguoiPhuTrach());
+        if(nhaThuocs.getMaNhaThuocCha() != null && !nhaThuocs.getMaNhaThuocCha().isEmpty() && !Objects.equals(nhaThuocs.getMaNhaThuoc(), nhaThuocs.getMaNhaThuocCha())){
+            nhaThuocs.setNhaThuocQuanLy(hdrRepo.findByMaNhaThuoc(nhaThuocs.getMaNhaThuocCha()).get().getTenNhaThuoc());
+        }
+        return nhaThuocs;
+    }
+
+    @Override
+    public Page<NhaThuocs> searchPage(NhaThuocsReq req) throws Exception {
+        Profile userInfo = this.getLoggedUser();
+        if (userInfo == null)
+            throw new Exception("Bad request.");
+        Pageable pageable = PageRequest.of(req.getPaggingReq().getPage(), req.getPaggingReq().getLimit());
+        Page<NhaThuocs> nhaThuocs = hdrRepo.searchPage(req, pageable);
+        nhaThuocs.getContent().forEach( item -> {
+            if(item.getTinhThanhId() != null){
+                Optional<TinhThanhs> byTTId = tinhThanhsRepository.findById(item.getTinhThanhId());
+                byTTId.ifPresent(tt -> item.setTenTinhThanh(tt.getTenTinhThanh()));
+            }
+            if(item.getCreatedByUserId() != null){
+                Optional<UserProfile> byUserId = userProfileRepository.findById(item.getCreatedByUserId());
+                byUserId.ifPresent(user -> item.setCreatedByUserName(user.getTenDayDu()));
+            }
+            if(item.getIdTypeBasic() != null){
+                Optional<TypeBasis> byTBId = typeBasisRepository.findById(item.getIdTypeBasic());
+                byTBId.ifPresent(type -> item.setNameTypeBasis(type.getNameType()));
+            }
+            TrienKhaisReq trienKhaisReq = new TrienKhaisReq();
+            trienKhaisReq.setMaNhaThuoc(item.getMaNhaThuoc());
+            trienKhaisReq.setType(0L);
+            trienKhaisReq.setActive(true);
+            List<TrienKhaisRes> trienKhaisResList = DataUtils.convertList(trienKhaisRepository.searchListTrienKhaiManagement(trienKhaisReq), TrienKhaisRes.class);
+            if(!trienKhaisResList.isEmpty()){
+                item.setResultBusinessId(trienKhaisResList.get(0).getId());
+            }
+        });
+        return nhaThuocs;
     }
 
     @Override
