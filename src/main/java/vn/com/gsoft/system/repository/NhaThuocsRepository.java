@@ -87,7 +87,7 @@ public interface NhaThuocsRepository extends BaseRepository<NhaThuocs, NhaThuocs
     Optional<NhaThuocs> findByMaNhaThuoc(String maNhaThuoc);
 
 
-    @Query("SELECT new vn.com.gsoft.system.model.dto.NhaThuocsRes(c.id, c.maNhaThuoc, c.tenNhaThuoc, u.tenDayDu ) FROM NhaThuocs c " +
+    @Query("SELECT new vn.com.gsoft.system.model.dto.NhaThuocsRes(c.id, c.maNhaThuoc, c.tenNhaThuoc, u.userName ) FROM NhaThuocs c " +
             " join NhanVienNhaThuocs nv  on c.maNhaThuoc = nv.nhaThuocMaNhaThuoc " +
             " join UserProfile u on nv.userUserId = u.id " +
             " WHERE 1=1 AND nv.role = 'Admin' " +

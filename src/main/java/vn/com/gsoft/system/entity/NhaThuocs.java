@@ -200,7 +200,24 @@ public class NhaThuocs extends BaseEntity {
     private Long supporterId;
     @Column(name = "UpgradeToPlus")
     private Boolean upgradeToPlus;
+
+    // @Transient
     @Transient
     private String nguoiPhuTrach;
+
+    @Transient
+    private String nhaThuocQuanLy;
+
+    @Transient
+    private String tenTinhThanh;
+
+    @Transient
+    private String createdByUserName;
+
+    @Transient
+    private String nameTypeBasis;
+
+    @Transient
+    private Long resultBusinessId;
 }
 
