@@ -92,9 +92,24 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
         req.setRecordStatusId(0l);
         return hdrRepo.searchPageNhaThuoc(req, pageable);
     }
-
     @Override
     public Optional<NhaThuocs> findByMaNhaThuoc(String maNhaThuoc) {
         return hdrRepo.findByMaNhaThuoc(maNhaThuoc);
+    }
+    @Override
+    public Page<NhaThuocDongBoPhieuRes> searchPageNhaThuocDongBoPhieu(NhaThuocDongBoPhieuReq req) throws Exception {
+        Profile userInfo = this.getLoggedUser();
+        if (userInfo == null)
+            throw new Exception("Bad request.");
+        var storeCode = userInfo.getNhaThuoc().getMaNhaThuoc();
+        Optional<String> e = hdrRepo.findNhaThuocDongBoPhieuByMaNhaThuoc(storeCode);
+        if (e.get().isEmpty()) return null;
+
+        //lấy ra danh sách mã dồng bộ
+        var storeCodes = e.get().split(",");
+        if (storeCodes.length == 0) return null;
+
+        Pageable pageable = PageRequest.of(req.getPaggingReq().getPage(), req.getPaggingReq().getLimit());
+        return DataUtils.convertPage(hdrRepo.searchPageNhaThuocDongBoPhieu(storeCodes, pageable), NhaThuocDongBoPhieuRes.class);
     }
 }

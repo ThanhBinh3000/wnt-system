@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vn.com.gsoft.system.model.dto.NhaThuocDongBoPhieuReq;
 import vn.com.gsoft.system.model.dto.NhaThuocsReq;
 import vn.com.gsoft.system.response.BaseResponse;
 import vn.com.gsoft.system.service.NhaThuocsService;
@@ -73,5 +74,10 @@ public class NhaThuocsController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BaseResponse> delete(@Valid @RequestBody NhaThuocsReq idSearchReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.delete(idSearchReq.getId())));
+    }
+    @PostMapping(value = "/search-page-nha-thuoc-dong-bo-phieu", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<BaseResponse> colectionNhaThuocDongBoPhieu(@RequestBody NhaThuocDongBoPhieuReq objReq) throws Exception {
+        return ResponseEntity.ok(ResponseUtils.ok(service.searchPageNhaThuocDongBoPhieu(objReq)));
     }
 }
