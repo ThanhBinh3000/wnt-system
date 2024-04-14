@@ -90,7 +90,7 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
         Pageable pageable = PageRequest.of(req.getPaggingReq().getPage(), req.getPaggingReq().getLimit());
         req.setUserIdQueryData(getLoggedUser().getId());
         req.setRecordStatusId(0l);
-        return hdrRepo.searchPageNhaThuoc(req, pageable);
+        return DataUtils.convertPage(hdrRepo.searchPageNhaThuoc(req, pageable), NhaThuocsRes.class);
     }
     @Override
     public Optional<NhaThuocs> findByMaNhaThuoc(String maNhaThuoc) {

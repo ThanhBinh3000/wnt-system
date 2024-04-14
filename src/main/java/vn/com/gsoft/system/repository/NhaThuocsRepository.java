@@ -72,20 +72,21 @@ public interface NhaThuocsRepository extends BaseRepository<NhaThuocs, NhaThuocs
     )
     List<NhaThuocs> searchList(@Param("param") NhaThuocsReq param);
 
-    @Query("SELECT new vn.com.gsoft.system.model.dto.NhaThuocsRes(c.id, c.maNhaThuoc, c.tenNhaThuoc, u.tenDayDu ) " +
+    @Query(value = "SELECT c.id, c.maNhaThuoc, c.tenNhaThuoc, " +
+            " (SELECT ua.tenDayDu From UserProfile ua JOIN  NhanVienNhaThuocs nva on nva.User_UserId = ua.id where nva.role = 'Admin' and nva.NhaThuoc_MaNhaThuoc = c.maNhaThuoc  ) as  nguoiPhuTrach " +
             " FROM NhaThuocs c " +
-            " join NhanVienNhaThuocs nv  on c.maNhaThuoc = nv.nhaThuocMaNhaThuoc " +
-            " join UserProfile u on nv.userUserId = u.id " +
-            " WHERE 1=1 AND nv.role = 'Admin' " +
+            " join NhanVienNhaThuocs nv  on c.maNhaThuoc = nv.NhaThuoc_MaNhaThuoc " +
+            " join UserProfile u on nv.User_UserId = u.id " +
+            " WHERE 1=1 " +
             " AND (:#{#param.recordStatusId} IS NULL OR c.recordStatusId = :#{#param.recordStatusId})" +
             " AND u.id = :#{#param.userIdQueryData} " +
             " AND (:#{#param.maNhaThuoc} IS NULL OR lower(c.maNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.maNhaThuoc},'%'))))" +
             " AND (:#{#param.tenNhaThuoc} IS NULL OR lower(c.tenNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.tenNhaThuoc},'%'))))" +
             " AND ((:#{#param.textSearch} IS NULL OR lower(c.maNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%'))))" +
             " OR (:#{#param.textSearch} IS NULL OR lower(c.tenNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%')))))" +
-            " ORDER BY c.id desc"
+            " ORDER BY c.id desc", nativeQuery = true
     )
-    Page<NhaThuocsRes> searchPageNhaThuoc(@Param("param") NhaThuocsReq req, Pageable pageable);
+    Page<Tuple> searchPageNhaThuoc(@Param("param") NhaThuocsReq req, Pageable pageable);
 
     Optional<NhaThuocs> findByMaNhaThuoc(String maNhaThuoc);
 
@@ -102,6 +103,7 @@ public interface NhaThuocsRepository extends BaseRepository<NhaThuocs, NhaThuocs
             "AND a.Activated = 1"
             , nativeQuery = true)
     Optional<String> findNhaThuocDongBoPhieuByMaNhaThuoc(@Param("storeCode") String storeCode);
+
     //lấy ra danh sách nhà thuốc theo mã
     @Query(value = "SELECT c.ID AS id, c.MaNhaThuoc AS maNhaThuoc, c.TenNhaThuoc AS tenNhaThuoc" +
             " FROM NhaThuocs c WHERE c.HoatDong = 1" +
