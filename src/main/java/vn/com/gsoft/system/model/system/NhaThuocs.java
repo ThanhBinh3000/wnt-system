@@ -1,6 +1,7 @@
 package vn.com.gsoft.system.model.system;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -112,5 +113,6 @@ public class NhaThuocs {
     private Integer evaluate;
     private Long supporterId;
     private Boolean upgradeToPlus;
+    private String role;
 }
 
