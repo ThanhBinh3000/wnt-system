@@ -13,6 +13,7 @@ import vn.com.gsoft.system.model.system.Profile;
 import vn.com.gsoft.system.repository.*;
 import vn.com.gsoft.system.service.NhaThuocsService;
 import vn.com.gsoft.system.util.system.DataUtils;
+import vn.com.gsoft.system.util.system.StoreHelper;
 
 import java.util.List;
 import java.util.Objects;
@@ -96,6 +97,31 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
     public Optional<NhaThuocs> findByMaNhaThuoc(String maNhaThuoc) {
         return hdrRepo.findByMaNhaThuoc(maNhaThuoc);
     }
+
+    @Override
+    public String getNewStoreCode() throws Exception {
+        String code = "0000";
+        Optional<NhaThuocs> optional = hdrRepo.findLatestRecord();
+        if (optional.isEmpty()) return code;
+        NhaThuocs lastDs = optional.get();
+        Long lastDsIdNumber;
+        try {
+            lastDsIdNumber = Long.parseLong(lastDs.getMaNhaThuoc());
+        } catch (NumberFormatException e) {
+            lastDsIdNumber = 0L;
+        }
+        if (lastDsIdNumber == 0) lastDsIdNumber = lastDs.getId();
+        lastDsIdNumber++;
+        code = StoreHelper.getCodeBasedOnNumber(lastDsIdNumber);
+        while (true) {
+            Optional<NhaThuocs> byMaNT = hdrRepo.findByMaNhaThuoc(code);
+            if (byMaNT.isEmpty()) break;
+            lastDsIdNumber++;
+            code = StoreHelper.getCodeBasedOnNumber(lastDsIdNumber);
+        }
+        return code;
+    }
+
     @Override
     public Page<NhaThuocDongBoPhieuRes> searchPageNhaThuocDongBoPhieu(NhaThuocDongBoPhieuReq req) throws Exception {
         Profile userInfo = this.getLoggedUser();

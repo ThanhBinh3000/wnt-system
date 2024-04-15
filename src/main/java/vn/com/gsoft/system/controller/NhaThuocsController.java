@@ -69,12 +69,18 @@ public class NhaThuocsController {
         return ResponseEntity.ok(ResponseUtils.ok(service.detail(code)));
     }
 
-
     @PostMapping(value = PathConstant.URL_DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BaseResponse> delete(@Valid @RequestBody NhaThuocsReq idSearchReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.delete(idSearchReq.getId())));
     }
+
+    @GetMapping(value = "/new-store-code", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<BaseResponse> getNewStoreCode() throws Exception {
+        return ResponseEntity.ok(ResponseUtils.ok(service.getNewStoreCode()));
+    }
+
     @PostMapping(value = "/search-page-nha-thuoc-dong-bo-phieu", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BaseResponse> colectionNhaThuocDongBoPhieu(@RequestBody NhaThuocDongBoPhieuReq objReq) throws Exception {
