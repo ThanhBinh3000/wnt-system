@@ -15,5 +15,9 @@ public interface NhaThuocsService extends BaseService<NhaThuocs, NhaThuocsReq, L
     Page<NhaThuocsRes> searchPageNhaThuoc(NhaThuocsReq objReq) throws Exception;
 
     Optional<NhaThuocs> findByMaNhaThuoc(String maNhaThuoc);
+
+    String getNewStoreCode() throws Exception;
+
     Page<NhaThuocDongBoPhieuRes> searchPageNhaThuocDongBoPhieu(NhaThuocDongBoPhieuReq req) throws Exception;
+
 }

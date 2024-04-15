@@ -13,4 +13,6 @@ public class UserProfileRes {
     private String email;
     private Boolean HoatDong;
     private String tenDayDu;
+    private String soDienThoai;
+    private String soCMT;
 }

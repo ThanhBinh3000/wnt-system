@@ -108,7 +108,9 @@ public interface UserProfileRepository extends BaseRepository<UserProfile, UserP
                     "    ad.nhomQuyens, " +
                     "    up.Email as email,  " +
                     "    up.HoatDong as hoatDong,  " +
-                    "    up.TenDayDu as tenDayDu " +
+                    "    up.TenDayDu as tenDayDu, " +
+                    "    up.SoDienThoai as soDienThoai, " +
+                    "    up.SoCMT as soCMT " +
                     "FROM  " +
                     "    UserProfile up " +
                     "JOIN  " +
@@ -123,8 +125,9 @@ public interface UserProfileRepository extends BaseRepository<UserProfile, UserP
                     " AND (:#{#param.recordStatusId} IS NULL OR up.recordStatusId = :#{#param.recordStatusId})" +
                     " AND (:#{#param.maNhaThuoc} IS NULL OR nv.NhaThuoc_MaNhaThuoc = :#{#param.maNhaThuoc}) " +
                     " AND ((:#{#param.textSearch} IS NULL OR lower(nt.MaNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%'))))" +
-                    " OR (:#{#param.textSearch} IS NULL OR lower(nt.TenNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%')))))" +
-                    " GROUP BY up.id, up.UserName, ad.nhomQuyens, up.Email, up.HoatDong, up.TenDayDu" +
+                    " OR (:#{#param.textSearch} IS NULL OR lower(nt.TenNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%'))))" +
+                    " OR (:#{#param.textSearch} IS NULL OR lower(up.UserName) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%')))))" +
+                    " GROUP BY up.id, up.UserName, ad.nhomQuyens, up.Email, up.HoatDong, up.TenDayDu, up.SoDienThoai, up.SoCMT" +
                     " ORDER BY up.id desc", nativeQuery = true
     )
     Page<Tuple> searchPageUserManagement(@Param("param") UserProfileReq param, Pageable pageable);
@@ -178,7 +181,9 @@ public interface UserProfileRepository extends BaseRepository<UserProfile, UserP
                     "    ad.nhomQuyens, " +
                     "    up.Email as email,  " +
                     "    up.HoatDong as hoatDong,  " +
-                    "    up.TenDayDu as tenDayDu " +
+                    "    up.TenDayDu as tenDayDu, " +
+                    "    up.SoDienThoai as soDienThoai, " +
+                    "    up.SoCMT as soCMT " +
                     "FROM  " +
                     "    UserProfile up " +
                     "JOIN  " +
@@ -194,7 +199,7 @@ public interface UserProfileRepository extends BaseRepository<UserProfile, UserP
                     " AND (:#{#param.maNhaThuoc} IS NULL OR nv.NhaThuoc_MaNhaThuoc = :#{#param.maNhaThuoc}) " +
                     " AND ((:#{#param.textSearch} IS NULL OR lower(nt.MaNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%'))))" +
                     " OR (:#{#param.textSearch} IS NULL OR lower(nt.TenNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%')))))" +
-                    " GROUP BY up.id, up.UserName, ad.nhomQuyens, up.Email, up.HoatDong, up.TenDayDu" +
+                    " GROUP BY up.id, up.UserName, ad.nhomQuyens, up.Email, up.HoatDong, up.TenDayDu, up.SoDienThoai, up.SoCMT" +
                     " ORDER BY up.id desc", nativeQuery = true
     )
     List<Tuple> searchListUserManagement(@Param("param") UserProfileReq param);
