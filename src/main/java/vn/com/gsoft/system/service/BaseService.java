@@ -2,7 +2,6 @@ package vn.com.gsoft.system.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
-import vn.com.gsoft.system.model.system.Profile;
 
 import java.io.Serializable;
 import java.util.List;
@@ -23,4 +22,8 @@ public interface BaseService<E,R, PK extends Serializable> {
 
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     boolean delete(PK id) throws Exception;
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
+    boolean restore(PK id) throws Exception;
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
+    boolean deleteForever(PK id) throws Exception;
 }
