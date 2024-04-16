@@ -90,7 +90,7 @@ public class NhaThuocsController {
 
     @PostMapping(value = PathConstant.URL_UPDATE+ "-thong-tin-khu-vuc", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<BaseResponse> updateMappingZaloOa(@Valid @RequestBody ThongTinKhuVucReq objReq) throws Exception {
+    public ResponseEntity<BaseResponse> updateThongTinKhuVuc(@Valid @RequestBody ThongTinKhuVucReq objReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.updateThongTinKhuVuc(objReq)));
     }
 }
