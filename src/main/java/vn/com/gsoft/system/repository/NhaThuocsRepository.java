@@ -1,19 +1,14 @@
 package vn.com.gsoft.system.repository;
 
 import jakarta.persistence.Tuple;
-import org.apache.kafka.common.protocol.types.Field;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import vn.com.gsoft.system.constant.EStorePaymentType;
-import vn.com.gsoft.system.constant.EStoreType;
-import vn.com.gsoft.system.constant.ETypeDate;
-import vn.com.gsoft.system.constant.StoreSettingKeys;
-import vn.com.gsoft.system.constant.EZNSType;
+import vn.com.gsoft.system.constant.*;
 import vn.com.gsoft.system.entity.NhaThuocs;
-import vn.com.gsoft.system.model.dto.NhaThuocDongBoPhieuRes;
 import vn.com.gsoft.system.model.dto.NhaThuocsReq;
 import vn.com.gsoft.system.model.dto.NhaThuocsRes;
 
@@ -22,47 +17,56 @@ import java.util.Optional;
 
 @Repository
 public interface NhaThuocsRepository extends BaseRepository<NhaThuocs, NhaThuocsReq, Long> {
-    @Query("SELECT c FROM NhaThuocs c " +
+    @Query(value = "SELECT * FROM NhaThuocs c " +
             "WHERE 1=1 "
-            + " AND (:#{#param.recordStatusId} IS NULL OR c.recordStatusId = :#{#param.recordStatusId})"
-            + " AND (:#{#param.maNhaThuoc} IS NULL OR lower(c.maNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.maNhaThuoc},'%'))))"
-            + " AND (:#{#param.tenNhaThuoc} IS NULL OR lower(c.tenNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.tenNhaThuoc},'%'))))"
-            + " AND (:#{#param.typeDate} IS NULL OR ((:#{#param.typeDate} = "+ ETypeDate.NGAY_TAO +" AND :#{#param.fromDate} IS NULL OR c.created >= :#{#param.fromDate}) OR 1=1))"
-            + " AND (:#{#param.typeDate} IS NULL OR ((:#{#param.typeDate} = "+ ETypeDate.NGAY_TAO +" AND :#{#param.toDate} IS NULL OR c.created <= :#{#param.toDate}) OR 1=1))"
-//            + " AND (:#{#param.typeDate} IS NULL OR ((:#{#param.typeDate} = "+ ETypeDate.NGAY_GIAO_DICH +" AND :#{#param.fromDate} IS NULL OR c.created >= :#{#param.fromDate}) OR 1=1))" //todo
-//            + " AND (:#{#param.typeDate} IS NULL OR ((:#{#param.typeDate} = "+ ETypeDate.NGAY_GIAO_DICH +" AND :#{#param.toDate} IS NULL OR c.created <= :#{#param.toDate}) OR 1=1))" //todo
-            + " AND (:#{#param.typeDate} IS NULL OR ((:#{#param.typeDate} = "+ ETypeDate.NGAY_THU_TIEN +" AND :#{#param.fromDate} IS NULL OR c.paidDate >= :#{#param.fromDate}) OR 1=1))"
-            + " AND (:#{#param.typeDate} IS NULL OR ((:#{#param.typeDate} = "+ ETypeDate.NGAY_THU_TIEN +" AND :#{#param.toDate} IS NULL OR c.paidDate <= :#{#param.toDate}) OR 1=1))"
+            + " AND (:#{#param.recordStatusId} IS NULL OR c.RecordStatusId = :#{#param.recordStatusId})"
+            + " AND (:#{#param.maNhaThuoc} IS NULL OR lower(c.MaNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.maNhaThuoc},'%'))))"
+            + " AND (:#{#param.tenNhaThuoc} IS NULL OR lower(c.TenNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.tenNhaThuoc},'%'))))"
+            + " AND (:#{#param.typeDate} IS NULL OR ((:#{#param.typeDate} = "+ ETypeDate.NGAY_TAO +" AND (:#{#param.fromDate} IS NULL OR c.Created >= :#{#param.fromDate}) AND (:#{#param.toDate} IS NULL OR c.Created <= :#{#param.toDate}))"
+            + " OR (:#{#param.typeDate} = "+ ETypeDate.NGAY_THU_TIEN +" AND (:#{#param.fromDate} IS NULL OR c.PaidDate >= :#{#param.fromDate}) AND (:#{#param.toDate} IS NULL OR c.PaidDate <= :#{#param.toDate}))"
+            + " OR (:#{#param.typeDate} = "+ ETypeDate.NGAY_TAO_VA_NGAY_THU_TIEN +" AND (:#{#param.fromDate} IS NULL OR (c.Created >= :#{#param.fromDate} AND c.PaidDate >= :#{#param.fromDate})) AND (:#{#param.toDate} IS NULL OR (c.Created <= :#{#param.toDate} AND c.PaidDate <= :#{#param.toDate})))))"
             + " AND ((:#{#param.storeTypeId} IS NULL)"
-            + " OR ((:#{#param.storeTypeId} = " + EStoreType.Connectivity + " AND  c.isConnectivity = true)"
-            + " OR (:#{#param.storeTypeId} = " + EStoreType.Management + " AND  c.isConnectivity = false AND c.maNhaThuoc not in (select d.storeCode from OrderStoreMapping d))"
-            + " OR (:#{#param.storeTypeId} = " + EStoreType.Order + " AND c.maNhaThuoc in (select d.storeCode from OrderStoreMapping d))"
-            + " OR (:#{#param.storeTypeId} = " + EStoreType.Company + " AND  c.isGeneralPharmacy = true)"
-            + " OR (:#{#param.storeTypeId} = " + EStoreType.Clinic + " AND c.maNhaThuoc in (select d.drugStoreId from ApplicationSetting d where d.settingKey = '" + StoreSettingKeys.UseClinicIntegration + "' AND d.activated = true))"
-            + " OR (:#{#param.storeTypeId} = " + EStoreType.GeneralStoreOrder + " AND  c.maNhaThuoc in (select d.targetStoreCode from OrderStoreMapping d)))) "
+            + " OR ((:#{#param.storeTypeId} = " + EStoreType.Connectivity + " AND  c.IsConnectivity = 1)"
+            + " OR (:#{#param.storeTypeId} = " + EStoreType.Management + " AND  c.IsConnectivity = 0 AND c.MaNhaThuoc not in (select d.StoreCode from OrderStoreMapping d))"
+            + " OR (:#{#param.storeTypeId} = " + EStoreType.Order + " AND c.MaNhaThuoc in (select d.StoreCode from OrderStoreMapping d))"
+            + " OR (:#{#param.storeTypeId} = " + EStoreType.Company + " AND  c.IsGeneralPharmacy = 1)"
+            + " OR (:#{#param.storeTypeId} = " + EStoreType.Clinic + " AND c.MaNhaThuoc in (select d.DrugStoreId from ApplicationSetting d where d.SettingKey = '" + StoreSettingKeys.UseClinicIntegration + "' AND d.Activated = 1))"
+            + " OR (:#{#param.storeTypeId} = " + EStoreType.GeneralStoreOrder + " AND  c.MaNhaThuoc in (select d.TargetStoreCode from OrderStoreMapping d)))) "
             + " AND ((:#{#param.storePaymentTypeId} IS NULL)"
-            + " OR ((:#{#param.storePaymentTypeId} = " + EStorePaymentType.UnPaid + " AND  c.paidMoney = 0 AND  c.paidAmount >= 0)"
-            + " OR (:#{#param.storePaymentTypeId} = " + EStorePaymentType.UnderPayment + " AND  c.paidMoney > 0 AND c.paidMoney < c.paidAmount AND c.paidAmount >0)"
-            + " OR (:#{#param.storePaymentTypeId} = " + EStorePaymentType.IsPaid + " AND c.paidMoney = c.paidAmount AND c.paidAmount >0))) "
+            + " OR ((:#{#param.storePaymentTypeId} = " + EStorePaymentType.UnPaid + " AND  c.PaidMoney = 0 AND  c.PaidAmount >= 0)"
+            + " OR (:#{#param.storePaymentTypeId} = " + EStorePaymentType.UnderPayment + " AND  c.PaidMoney > 0 AND c.PaidMoney < c.PaidAmount AND c.PaidAmount >0)"
+            + " OR (:#{#param.storePaymentTypeId} = " + EStorePaymentType.IsPaid + " AND c.PaidMoney = c.PaidAmount AND c.PaidAmount >0))) "
             + " AND ((:#{#param.typeZNS} IS NULL)"
-            + " OR ((:#{#param.typeZNS} = " + EZNSType.ConfirmPayment + " AND c.zNSStatusSendPayment = true)"
-            + " OR (:#{#param.typeZNS} = " + EZNSType.CreateAccount + " AND c.zNSStatusSendCreateAccount = true))) "
-            + " AND ((:#{#param.active} IS NULL) OR (c.active = :#{#param.active} )) "
-            + " AND ((:#{#param.hoatDong} IS NULL) OR (c.hoatDong = :#{#param.hoatDong} )) "
-            + " AND ((:#{#param.createdByUserId} IS NULL) OR (c.createdByUserId = :#{#param.createdByUserId} )) "
-            + " AND ((:#{#param.tinhThanhId} IS NULL) OR (c.tinhThanhId = :#{#param.tinhThanhId} )) "
-//            + " AND ((:#{#param.numDaysNoTrans} IS NULL) OR (c.lastTransDate < CURRENT_DATE + :#{#param.numDaysNoTrans} )) " //todo
-            + " AND ((:#{#param.lastTransDate} IS NULL) OR (c.lastTransDate < :#{#param.lastTransDate} )) "
-//            + " AND ((:#{#param.expiredType} IS NULL) OR (c.expiredDate < :#{#param.expiredDate} )) "   //todo
-            + " AND ((:#{#param.expiredDate} IS NULL) OR (c.expiredDate < :#{#param.expiredDate} )) "
-            + " AND ((:#{#param.storeDeployTypeId} IS NULL) OR (c.maNhaThuoc in (select d.maNhaThuoc from TrienKhais d where d.tieuChiTrienKhaiId = :#{#param.storeDeployTypeId} and d.active = true))) "
-            + " AND ((:#{#param.idTypeBasic} IS NULL) OR (c.idTypeBasic = :#{#param.idTypeBasic} )) "
-            + " AND ((:#{#param.supporterId} IS NULL) OR (c.supporterId = :#{#param.supporterId} )) "
-//            + " AND ((:#{#param.outOfInvoice} IS NULL) OR ((:#{#param.outOfInvoice} = true AND (c.totalNumberInvoices < ((select count(n) from PhieuNhaps n) + (select count(x) from PhieuXuats x))  ) ) OR 1=1)) " //todo
-            + " AND ((:#{#param.textSearch} IS NULL OR lower(c.maNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%'))))"
-            + " OR (:#{#param.textSearch} IS NULL OR lower(c.tenNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%'))))"
-            + " OR (:#{#param.textSearch} IS NULL OR lower(c.diaChi) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%')))))"
-            + " ORDER BY c.id desc"
+            + " OR ((:#{#param.typeZNS} = " + EZNSType.ConfirmPayment + " AND c.ZNS_StatusSendPayment = 1)"
+            + " OR (:#{#param.typeZNS} = " + EZNSType.CreateAccount + " AND c.ZNS_StatusSendCreateAccount = 1))) "
+            + " AND ((:#{#param.active} IS NULL) OR (c.Active = :#{#param.active} )) "
+            + " AND ((:#{#param.hoatDong} IS NULL) OR (c.HoatDong = :#{#param.hoatDong} )) "
+            + " AND ((:#{#param.createdByUserId} IS NULL) OR (c.CreatedBy_UserId = :#{#param.createdByUserId} )) "
+            + " AND ((:#{#param.tinhThanhId} IS NULL) OR (c.TinhThanhId = :#{#param.tinhThanhId} )) "
+            + " AND ((:#{#param.numDaysNoTrans} IS NULL) OR (c.LastTransDate IS NULL OR c.LastTransDate <= :#{#param.dateBeforeNumDaysNoTrans})) "
+            + " AND ((:#{#param.expiredType} IS NULL)"
+            + " OR ((:#{#param.expiredType} = " + StoreExpiredTypeConstant.DonHaveExpiredType + " AND c.ExpiredDate IS NULL)"
+            + " OR (:#{#param.expiredType} = " + StoreExpiredTypeConstant.HaveExpiredType + " AND c.ExpiredDate IS NOT NULL)"
+            + " OR (:#{#param.expiredType} = " + StoreExpiredTypeConstant.LessThan30Days + " AND c.ExpiredDate IS NOT NULL AND c.ExpiredDate > :#{#param.dateNow} AND :#{#param.dateDiff} <= 30)"
+            + " OR (:#{#param.expiredType} = " + StoreExpiredTypeConstant.LessThan7Days + " AND c.ExpiredDate IS NOT NULL AND c.ExpiredDate > :#{#param.dateNow} AND :#{#param.dateDiff} <= 7)"
+            + " OR (:#{#param.expiredType} = " + StoreExpiredTypeConstant.OverExpired + " AND c.ExpiredDate IS NOT NULL AND c.ExpiredDate <= :#{#param.dateNow})))"
+            + " AND ((:#{#param.storeDeployTypeId} IS NULL) OR (c.MaNhaThuoc in (select d.NhaThuoc_MaNhaThuoc from TrienKhais d where d.TieuChiTrienKhai_Id = :#{#param.storeDeployTypeId} and d.Active = 1))) "
+            + " AND ((:#{#param.idTypeBasic} IS NULL) OR (c.IdTypeBasic = :#{#param.idTypeBasic} )) "
+            + " AND ((:#{#param.supporterId} IS NULL) OR (c.SupporterId = :#{#param.supporterId} )) "
+            + " AND ((:#{#param.outOfInvoice} IS NULL)"
+            + " OR (:#{#param.outOfInvoice} = 0)"
+            + " OR ((:#{#param.outOfInvoice} = 1"
+            + " AND (c.totalNumberInvoices > 0"
+            + " AND c.totalNumberInvoices < "
+            + "(select count(*) from PhieuNhaps n where n.NhaThuoc_MaNhaThuoc = :#{#param.maNhaThuoc} AND n.NgayNhap > '2019-1-1' AND n.Id >= 0 AND n.RecordStatusID = " + RecordStatusContains.ACTIVE + "AND n.LoaiXuatNhap_MaLoaiXuatNhap IN (" + NoteTypeConstant.Receipt + "," + NoteTypeConstant.ReturnFromCustomer + "," + NoteTypeConstant.InventoryAdjustment + ") AND (n.ConnectivityStatusID = " + ConnectivityStatusConstant.Connected + " OR n.ConnectivityStatusID = "+ ConnectivityStatusConstant.BillConnected +")) +"
+            + "(select count(*) from PhieuXuats x where x.NhaThuoc_MaNhaThuoc = :#{#param.maNhaThuoc} AND x.NgayXuat > '2019-1-1' AND x.Id >= 0 AND x.RecordStatusID = " + RecordStatusContains.ACTIVE + "AND x.MaLoaiXuatNhap IN (" + NoteTypeConstant.Delivery + "," + NoteTypeConstant.ReturnToSupplier + "," + NoteTypeConstant.InventoryAdjustment + "," + NoteTypeConstant.CancelDelivery + ") AND (x.ConnectivityStatusID = " + ConnectivityStatusConstant.Connected + " OR x.ConnectivityStatusID = "+ ConnectivityStatusConstant.BillConnected +" ) )))))"
+            + " AND ((:#{#param.excludeCurrentStore} IS NULL)"
+            + " OR (:#{#param.excludeCurrentStore} = 0)"
+            + " OR (:#{#param.excludeCurrentStore} = 1 AND (:#{#param.currentStoreCode} IS NULL OR c.MaNhaThuoc != :#{#param.currentStoreCode}))) "
+            + " AND ((:#{#param.textSearch} IS NULL OR lower(c.MaNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%'))))"
+            + " OR (:#{#param.textSearch} IS NULL OR lower(c.TenNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%'))))"
+            + " OR (:#{#param.textSearch} IS NULL OR lower(c.DiaChi) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%')))))"
+            + " ORDER BY c.Id desc", nativeQuery = true
     )
     Page<NhaThuocs> searchPage(@Param("param") NhaThuocsReq param, Pageable pageable);
 

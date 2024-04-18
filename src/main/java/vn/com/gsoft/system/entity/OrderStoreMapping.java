@@ -23,5 +23,12 @@ public class OrderStoreMapping extends BaseEntity{
     private String storeCode;
 
     @Column(name = "TargetStoreCode")
-    private String  targetStoreCode;
+    private String targetStoreCode;
+
+    @Column(name = "IsDefault")
+    private Boolean isDefault;
+
+    @Column(name = "MappingTypeId")
+    private Long mappingTypeId;
+
 }
