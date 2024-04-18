@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.com.gsoft.system.model.dto.NhaThuocDongBoPhieuReq;
 import vn.com.gsoft.system.model.dto.NhaThuocsReq;
+import vn.com.gsoft.system.model.dto.ThongTinKhuVucReq;
 import vn.com.gsoft.system.response.BaseResponse;
 import vn.com.gsoft.system.service.NhaThuocsService;
 import vn.com.gsoft.system.constant.PathConstant;
@@ -85,6 +86,12 @@ public class NhaThuocsController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BaseResponse> colectionNhaThuocDongBoPhieu(@RequestBody NhaThuocDongBoPhieuReq objReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.searchPageNhaThuocDongBoPhieu(objReq)));
+    }
+
+    @PostMapping(value = PathConstant.URL_UPDATE+ "-thong-tin-khu-vuc", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<BaseResponse> updateThongTinKhuVuc(@Valid @RequestBody ThongTinKhuVucReq objReq) throws Exception {
+        return ResponseEntity.ok(ResponseUtils.ok(service.updateThongTinKhuVuc(objReq)));
     }
 
     @PostMapping(value = PathConstant.URL_SEARCH_PAGE + "-nha-thuoc-tong", produces = MediaType.APPLICATION_JSON_VALUE)

@@ -208,6 +208,20 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
     }
 
     @Override
+    public Integer updateThongTinKhuVuc(ThongTinKhuVucReq req) throws Exception {
+        Profile userInfo = this.getLoggedUser();
+        if (userInfo == null)
+            throw new Exception("Bad request.");
+        if(req.getId() < 0) return  0;
+        Optional<NhaThuocs> optional = hdrRepo.findById(req.getId());
+        NhaThuocs e = optional.get();
+        e.setWardId(req.getWardId());
+        e.setCityId(req.getCityId());
+        e.setRegionId(req.getRegionId());
+        e = hdrRepo.save(e);
+        return 1;
+    }
+
     public Page<NhaThuocs> searchPageNhaThuocTong(NhaThuocsReq req) throws Exception {
         Profile userInfo = this.getLoggedUser();
         if (userInfo == null)
