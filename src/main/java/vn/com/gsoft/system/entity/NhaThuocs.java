@@ -203,6 +203,12 @@ public class NhaThuocs extends BaseEntity {
 
     // @Transient
     @Transient
+    private String storeHat;
+
+    @Transient
+    private String storeHatTitle;
+
+    @Transient
     private String nguoiPhuTrach;
 
     @Transient
@@ -219,5 +225,17 @@ public class NhaThuocs extends BaseEntity {
 
     @Transient
     private Long resultBusinessId;
+
+    @Transient
+    private Boolean orderingActivated;
+
+    @Transient
+    private Boolean preOrderingActivated;
+
+    @Transient
+    private Boolean isDefault;
+
+    @Transient
+    private String zNSConfirmPaymentResult;
 }
 

@@ -93,4 +93,10 @@ public class NhaThuocsController {
     public ResponseEntity<BaseResponse> updateThongTinKhuVuc(@Valid @RequestBody ThongTinKhuVucReq objReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.updateThongTinKhuVuc(objReq)));
     }
+
+    @PostMapping(value = PathConstant.URL_SEARCH_PAGE + "-nha-thuoc-tong", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<BaseResponse> colectionNhaThuocTong(@RequestBody NhaThuocsReq objReq) throws Exception {
+        return ResponseEntity.ok(ResponseUtils.ok(service.searchPageNhaThuocTong(objReq)));
+    }
 }

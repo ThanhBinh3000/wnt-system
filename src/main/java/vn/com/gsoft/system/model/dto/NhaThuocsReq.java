@@ -5,6 +5,7 @@ import lombok.Data;
 import vn.com.gsoft.system.model.system.BaseRequest;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -114,9 +115,15 @@ public class NhaThuocsReq extends BaseRequest {
     private Long storeTypeId;
     private Long storePaymentTypeId;
     private Integer numDaysNoTrans;
+    private Date dateBeforeNumDaysNoTrans;
     private Integer typeDate;
+    private Date dateNow;
+    private Long dateDiff;
     private Long storeDeployTypeId;
     private Integer expiredType;
     private Boolean outOfInvoice;
     private Integer typeZNS;
+    private Integer connectivityFilterTypeId;
+    private Boolean excludeCurrentStore;
+    private String currentStoreCode;
 }
