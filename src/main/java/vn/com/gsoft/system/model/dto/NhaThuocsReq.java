@@ -114,6 +114,9 @@ public class NhaThuocsReq extends BaseRequest {
     private Date toDate;
     private Long storeTypeId;
     private Long storePaymentTypeId;
+    private Long storeClassifyId;
+    private Long storeEvaluateId;
+    private Long storeMobileAppUsedStatusId;
     private Integer numDaysNoTrans;
     private Date dateBeforeNumDaysNoTrans;
     private Integer typeDate;

@@ -215,12 +215,6 @@ public class NhaThuocs extends BaseEntity {
     private String nhaThuocQuanLy;
 
     @Transient
-    private String tenTinhThanh;
-
-    @Transient
-    private String createdByUserName;
-
-    @Transient
     private String nameTypeBasis;
 
     @Transient
@@ -237,5 +231,26 @@ public class NhaThuocs extends BaseEntity {
 
     @Transient
     private String zNSConfirmPaymentResult;
+
+    @Transient
+    private Boolean isUsedMobileApp;
+
+    @Transient
+    private String thamChieuDanhMuc;
+
+    @Transient
+    private Long totalDrug;
+
+    @Transient
+    private Long totalDrugConnectivity;
+
+    @Transient
+    private Boolean isAdviseStaff;
+
+    @Transient
+    private Boolean isScoreRate;
+
+    @Transient
+    private Long totalStaff;
 }
 

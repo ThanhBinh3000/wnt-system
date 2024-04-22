@@ -26,6 +26,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -34,13 +35,7 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
     private NhaThuocsRepository hdrRepo;
 
     @Autowired
-    public TinhThanhsRepository tinhThanhsRepository;
-
-    @Autowired
     public UserProfileRepository userProfileRepository;
-
-    @Autowired
-    public TypeBasisRepository typeBasisRepository;
 
     @Autowired
     public TrienKhaisRepository trienKhaisRepository;
@@ -50,6 +45,12 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
 
     @Autowired
     public ApplicationSettingRepository applicationSettingRepository;
+
+    @Autowired
+    public ThuocsRepository thuocsRepository;
+
+    @Autowired
+    public NhanVienNhaThuocsRepository nhanVienNhaThuocsRepository;
 
     @Autowired
     public NhaThuocsServiceImpl(NhaThuocsRepository hdrRepo) {
@@ -84,68 +85,9 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
         req.setDateNow(Date.from(now.atStartOfDay(ZoneId.systemDefault()).toInstant()));
         Page<NhaThuocs> nhaThuocs = hdrRepo.searchPage(req, pageable);
         nhaThuocs.getContent().forEach(item -> {
-            ApplicationSettingReq applicationSettingReq = new ApplicationSettingReq();
-            applicationSettingReq.setDrugStoreId(item.getMaNhaThuoc());
-            applicationSettingReq.setActivated(true);
-            List<ApplicationSetting> applicationSettingList = applicationSettingRepository.searchList(applicationSettingReq);
-            if (!applicationSettingList.isEmpty()) {
-                String storeHat = "";
-                String storeHatTitle = "";
-                if(item.getIsConnectivity()){
-                    if(item.getUpgradeToPlus()){
-                        storeHat = "LT+";
-                        storeHatTitle = "Liên thông PLUS";
-                    }
-                    else if (applicationSettingList.stream().filter(setting -> setting.getSettingKey().equals(StoreSettingKeys.EnableConnectivityStoreToManageStore)).findFirst().isPresent()){
-                        storeHat = "QL + LT";
-                        storeHatTitle = "Quản lý và Liên thông";
-                    }
-                    else {
-                        storeHat = "LT";
-                        storeHatTitle = "Liên thông";
-                    }
-                } else if (item.getIsGeneralPharmacy()){
-                    if(applicationSettingList.stream().filter(setting -> setting.getSettingKey().equals(StoreSettingKeys.UseClinicIntegration)).findFirst().isPresent()){
-                        storeHat = "PK";
-                        storeHatTitle = "Phòng khám";
-                    }
-                    else {
-                        storeHat = "CTY";
-                        storeHatTitle = "Công ty";
-                    }
-                } else {
-                    if(applicationSettingList.stream().filter(setting -> setting.getSettingKey().equals(StoreSettingKeys.UseClinicIntegration)).findFirst().isPresent()){
-                        storeHat = "PK";
-                        storeHatTitle = "Phòng khám";
-                    }
-                    else {
-                        storeHat = "QL";
-                        storeHatTitle = "Quản lý";
-                    }
-                }
-                item.setStoreHat(storeHat);
-                item.setStoreHatTitle(storeHatTitle);
-            }
-            if (item.getTinhThanhId() != null) {
-                Optional<TinhThanhs> byTTId = tinhThanhsRepository.findById(item.getTinhThanhId());
-                byTTId.ifPresent(tt -> item.setTenTinhThanh(tt.getTenTinhThanh()));
-            }
-            if (item.getCreatedByUserId() != null) {
-                Optional<UserProfile> byUserId = userProfileRepository.findById(item.getCreatedByUserId());
-                byUserId.ifPresent(user -> item.setCreatedByUserName(user.getTenDayDu()));
-            }
-            if (item.getIdTypeBasic() != null) {
-                Optional<TypeBasis> byTBId = typeBasisRepository.findById(item.getIdTypeBasic());
-                byTBId.ifPresent(type -> item.setNameTypeBasis(type.getNameType()));
-            }
-            TrienKhaisReq trienKhaisReq = new TrienKhaisReq();
-            trienKhaisReq.setMaNhaThuoc(item.getMaNhaThuoc());
-            trienKhaisReq.setType(0L);
-            trienKhaisReq.setActive(true);
-            List<TrienKhaisRes> trienKhaisResList = DataUtils.convertList(trienKhaisRepository.searchListTrienKhaiManagement(trienKhaisReq), TrienKhaisRes.class);
-            if (!trienKhaisResList.isEmpty()) {
-                item.setResultBusinessId(trienKhaisResList.get(0).getId());
-            }
+            List<ApplicationSetting> settings = getApplicationSetting(item);
+            getLoaiCoSo(item, settings);
+            getTrangThaiTrienKhai(item);
             if(item.getCodeErrorConfirmPaymentZNS() != null){
                 item.setZNSConfirmPaymentResult(ZNSUtils.getResultByZNSCode(item.getCodeErrorConfirmPaymentZNS()));
             }
@@ -222,6 +164,7 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
         return 1;
     }
 
+    @Override
     public Page<NhaThuocs> searchPageNhaThuocTong(NhaThuocsReq req) throws Exception {
         Profile userInfo = this.getLoggedUser();
         if (userInfo == null)
@@ -250,4 +193,158 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
         });
         return nhaThuocs;
     }
+
+    @Override
+    public Page<NhaThuocs> searchPageNhaThuocTrienKhai(NhaThuocsReq req) throws Exception {
+        Profile userInfo = this.getLoggedUser();
+        if (userInfo == null)
+            throw new Exception("Bad request.");
+
+        Pageable pageable = PageRequest.of(req.getPaggingReq().getPage(), req.getPaggingReq().getLimit());
+        Page<NhaThuocs> nhaThuocs = hdrRepo.searchPage(req, pageable);
+        nhaThuocs.getContent().forEach(item -> {
+            List<ApplicationSetting> settings = getApplicationSetting(item);
+            getLoaiCoSo(item, settings);
+            if(item.getCodeErrorConfirmPaymentZNS() != null){
+                item.setZNSConfirmPaymentResult(ZNSUtils.getResultByZNSCode(item.getCodeErrorConfirmPaymentZNS()));
+            }
+            getTrangThaiTaiApp(item);
+            getThamChieuDanhMuc(item, settings);
+            getTotalDrug(item);
+            getTotalNote(item);
+            getTotalVisit(item);
+            getTrangThaiTrienKhai(item);
+            getIsScoreRate(item, settings);
+            getTotalStaff(item);
+            getLevel(item);
+        });
+        return nhaThuocs;
+    }
+
+    //region Private Methods
+    private List<ApplicationSetting> getApplicationSetting(NhaThuocs item){
+        ApplicationSettingReq applicationSettingReq = new ApplicationSettingReq();
+        applicationSettingReq.setDrugStoreId(item.getMaNhaThuoc());
+        applicationSettingReq.setActivated(true);
+        return applicationSettingRepository.searchList(applicationSettingReq);
+    }
+
+    private void getLoaiCoSo(NhaThuocs item, List<ApplicationSetting> settings){
+        if (!settings.isEmpty()) {
+            String storeHat = "";
+            String storeHatTitle = "";
+            if(item.getIsConnectivity()){
+                if(item.getUpgradeToPlus()){
+                    storeHat = "LT+";
+                    storeHatTitle = "Liên thông PLUS";
+                }
+                else if (settings.stream().filter(setting -> setting.getSettingKey().equals(StoreSettingKeys.EnableConnectivityStoreToManageStore)).findFirst().isPresent()){
+                    storeHat = "QL + LT";
+                    storeHatTitle = "Quản lý và Liên thông";
+                }
+                else {
+                    storeHat = "LT";
+                    storeHatTitle = "Liên thông";
+                }
+            } else if (item.getIsGeneralPharmacy()){
+                if(settings.stream().filter(setting -> setting.getSettingKey().equals(StoreSettingKeys.UseClinicIntegration)).findFirst().isPresent()){
+                    storeHat = "PK";
+                    storeHatTitle = "Phòng khám";
+                }
+                else {
+                    storeHat = "CTY";
+                    storeHatTitle = "Công ty";
+                }
+            } else {
+                if(settings.stream().filter(setting -> setting.getSettingKey().equals(StoreSettingKeys.UseClinicIntegration)).findFirst().isPresent()){
+                    storeHat = "PK";
+                    storeHatTitle = "Phòng khám";
+                }
+                else {
+                    storeHat = "QL";
+                    storeHatTitle = "Quản lý";
+                }
+            }
+            if (item.getExpiredDate() != null){
+                storeHat = "PLUS";
+                storeHatTitle = "PLUS";
+            }
+            item.setStoreHat(storeHat);
+            item.setStoreHatTitle(storeHatTitle);
+        }
+    }
+
+    private void getTrangThaiTrienKhai(NhaThuocs item){
+        TrienKhaisReq trienKhaisReq = new TrienKhaisReq();
+        trienKhaisReq.setMaNhaThuoc(item.getMaNhaThuoc());
+        trienKhaisReq.setType(0L);
+        trienKhaisReq.setActive(true);
+        List<TrienKhaisRes> trienKhaisResList = DataUtils.convertList(trienKhaisRepository.searchListTrienKhaiManagement(trienKhaisReq), TrienKhaisRes.class);
+        if (!trienKhaisResList.isEmpty()) {
+            item.setResultBusinessId(trienKhaisResList.get(0).getId());
+        }
+    }
+
+    private void getTrangThaiTaiApp(NhaThuocs item) {
+        UserProfileReq userProfileReq = new UserProfileReq();
+        userProfileReq.setMaNhaThuoc(item.getMaNhaThuoc());
+        userProfileReq.setRoleName("Admin");
+        List<UserProfile> userProfiles = userProfileRepository.searchList(userProfileReq);
+        item.setIsUsedMobileApp(false);
+        if(!userProfiles.isEmpty()){
+            for (UserProfile u : userProfiles) {
+                if (u.getTokenDevice() != null && !u.getTokenDevice().isEmpty()) {
+                    item.setIsUsedMobileApp(true);
+                    break;
+                }
+            }
+        }
+    }
+
+    private void getThamChieuDanhMuc(NhaThuocs item, List<ApplicationSetting> settings) {
+        if (!settings.isEmpty()) {
+            ApplicationSetting referenceStoreForProducts = settings.stream().filter(setting -> setting.getSettingKey().equals(StoreSettingKeys.ReferenceStoreForProducts)).findFirst().orElse(null);
+            if(referenceStoreForProducts != null){
+                item.setThamChieuDanhMuc(referenceStoreForProducts.getSettingValue());
+            }
+        }
+    }
+
+    private void getTotalDrug(NhaThuocs item) {
+        ThuocsReq thuocsReq = new ThuocsReq();
+        thuocsReq.setMaNhaThuoc(item.getMaNhaThuocCha());
+        thuocsReq.setRecordStatusId(RecordStatusContains.ACTIVE);
+        List<Thuocs> thuocsList = thuocsRepository.searchList(thuocsReq);
+        item.setTotalDrug((long) thuocsList.size());
+        item.setTotalDrugConnectivity(thuocsList.stream().filter(thuoc -> thuoc.getConnectivityDrugID() > 0).count());
+        item.setIsAdviseStaff(thuocsList.stream().anyMatch(Thuocs::getDiscountByRevenue));
+    }
+
+    private void getTotalNote(NhaThuocs item) {
+        // Xem lai
+    }
+
+    private void getTotalVisit(NhaThuocs item) {
+        // DB MedReport
+    }
+
+    private void getIsScoreRate(NhaThuocs item, List<ApplicationSetting> settings) {
+        if (!settings.isEmpty()) {
+            settings.stream().filter(s -> s.getSettingKey().equals(StoreSettingKeys.ScoreRate)).findFirst().ifPresent(setting -> item.setIsScoreRate(Boolean.parseBoolean(setting.getSettingValue())));
+        }
+    }
+
+    private void getTotalStaff(NhaThuocs item) {
+        NhanVienNhaThuocsReq nhanVienNhaThuocsReq = new NhanVienNhaThuocsReq();
+        nhanVienNhaThuocsReq.setNhaThuocMaNhaThuoc(item.getMaNhaThuoc());
+        nhanVienNhaThuocsReq.setRecordStatusId(RecordStatusContains.ACTIVE);
+        nhanVienNhaThuocsReq.setRole("User");
+        List<NhanVienNhaThuocs> nhanVienNhaThuocsList = nhanVienNhaThuocsRepository.searchList(nhanVienNhaThuocsReq);
+        item.setTotalStaff((long) nhanVienNhaThuocsList.size());
+    }
+
+    private void getLevel(NhaThuocs item) {
+        // Xem lai
+    }
+    //endregion Private Methods
 }
