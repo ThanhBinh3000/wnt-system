@@ -99,4 +99,10 @@ public class NhaThuocsController {
     public ResponseEntity<BaseResponse> colectionNhaThuocTong(@RequestBody NhaThuocsReq objReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.searchPageNhaThuocTong(objReq)));
     }
+
+    @PostMapping(value = PathConstant.URL_SEARCH_PAGE + "-nha-thuoc-trien-khai", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<BaseResponse> colectionNhaThuocTrienKhai(@RequestBody NhaThuocsReq objReq) throws Exception {
+        return ResponseEntity.ok(ResponseUtils.ok(service.searchPageNhaThuocTrienKhai(objReq)));
+    }
 }
