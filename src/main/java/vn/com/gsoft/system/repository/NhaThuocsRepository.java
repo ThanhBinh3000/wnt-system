@@ -22,9 +22,9 @@ public interface NhaThuocsRepository extends BaseRepository<NhaThuocs, NhaThuocs
             + " AND (:#{#param.recordStatusId} IS NULL OR c.RecordStatusId = :#{#param.recordStatusId})"
             + " AND (:#{#param.maNhaThuoc} IS NULL OR lower(c.MaNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.maNhaThuoc},'%'))))"
             + " AND (:#{#param.tenNhaThuoc} IS NULL OR lower(c.TenNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.tenNhaThuoc},'%'))))"
-            + " AND (:#{#param.typeDate} IS NULL OR ((:#{#param.typeDate} = "+ ETypeDate.NGAY_TAO +" AND (:#{#param.fromDate} IS NULL OR c.Created >= :#{#param.fromDate}) AND (:#{#param.toDate} IS NULL OR c.Created <= :#{#param.toDate}))"
-            + " OR (:#{#param.typeDate} = "+ ETypeDate.NGAY_THU_TIEN +" AND (:#{#param.fromDate} IS NULL OR c.PaidDate >= :#{#param.fromDate}) AND (:#{#param.toDate} IS NULL OR c.PaidDate <= :#{#param.toDate}))"
-            + " OR (:#{#param.typeDate} = "+ ETypeDate.NGAY_TAO_VA_NGAY_THU_TIEN +" AND (:#{#param.fromDate} IS NULL OR (c.Created >= :#{#param.fromDate} AND c.PaidDate >= :#{#param.fromDate})) AND (:#{#param.toDate} IS NULL OR (c.Created <= :#{#param.toDate} AND c.PaidDate <= :#{#param.toDate})))))"
+            + " AND (:#{#param.typeDate} IS NULL OR ((:#{#param.typeDate} = " + ETypeDate.NGAY_TAO + " AND (:#{#param.fromDate} IS NULL OR c.Created >= :#{#param.fromDate}) AND (:#{#param.toDate} IS NULL OR c.Created <= :#{#param.toDate}))"
+            + " OR (:#{#param.typeDate} = " + ETypeDate.NGAY_THU_TIEN + " AND (:#{#param.fromDate} IS NULL OR c.PaidDate >= :#{#param.fromDate}) AND (:#{#param.toDate} IS NULL OR c.PaidDate <= :#{#param.toDate}))"
+            + " OR (:#{#param.typeDate} = " + ETypeDate.NGAY_TAO_VA_NGAY_THU_TIEN + " AND (:#{#param.fromDate} IS NULL OR (c.Created >= :#{#param.fromDate} AND c.PaidDate >= :#{#param.fromDate})) AND (:#{#param.toDate} IS NULL OR (c.Created <= :#{#param.toDate} AND c.PaidDate <= :#{#param.toDate})))))"
             + " AND ((:#{#param.storeTypeId} IS NULL)"
             + " OR ((:#{#param.storeTypeId} = " + EStoreType.Connectivity + " AND  c.IsConnectivity = 1)"
             + " OR (:#{#param.storeTypeId} = " + EStoreType.Management + " AND  c.IsConnectivity = 0 AND c.MaNhaThuoc not in (select d.StoreCode from OrderStoreMapping d))"
@@ -58,8 +58,8 @@ public interface NhaThuocsRepository extends BaseRepository<NhaThuocs, NhaThuocs
             + " OR ((:#{#param.outOfInvoice} = 1"
             + " AND (c.totalNumberInvoices > 0"
             + " AND c.totalNumberInvoices < "
-            + "(select count(*) from PhieuNhaps n where n.NhaThuoc_MaNhaThuoc = :#{#param.maNhaThuoc} AND n.NgayNhap > '2019-1-1' AND n.Id >= 0 AND n.RecordStatusID = " + RecordStatusContains.ACTIVE + "AND n.LoaiXuatNhap_MaLoaiXuatNhap IN (" + NoteTypeConstant.Receipt + "," + NoteTypeConstant.ReturnFromCustomer + "," + NoteTypeConstant.InventoryAdjustment + ") AND (n.ConnectivityStatusID = " + ConnectivityStatusConstant.Connected + " OR n.ConnectivityStatusID = "+ ConnectivityStatusConstant.BillConnected +")) +"
-            + "(select count(*) from PhieuXuats x where x.NhaThuoc_MaNhaThuoc = :#{#param.maNhaThuoc} AND x.NgayXuat > '2019-1-1' AND x.Id >= 0 AND x.RecordStatusID = " + RecordStatusContains.ACTIVE + "AND x.MaLoaiXuatNhap IN (" + NoteTypeConstant.Delivery + "," + NoteTypeConstant.ReturnToSupplier + "," + NoteTypeConstant.InventoryAdjustment + "," + NoteTypeConstant.CancelDelivery + ") AND (x.ConnectivityStatusID = " + ConnectivityStatusConstant.Connected + " OR x.ConnectivityStatusID = "+ ConnectivityStatusConstant.BillConnected +" ) )))))"
+            + "(select count(*) from PhieuNhaps n where n.NhaThuoc_MaNhaThuoc = :#{#param.maNhaThuoc} AND n.NgayNhap > '2019-1-1' AND n.Id >= 0 AND n.RecordStatusID = " + RecordStatusContains.ACTIVE + "AND n.LoaiXuatNhap_MaLoaiXuatNhap IN (" + NoteTypeConstant.Receipt + "," + NoteTypeConstant.ReturnFromCustomer + "," + NoteTypeConstant.InventoryAdjustment + ") AND (n.ConnectivityStatusID = " + ConnectivityStatusConstant.Connected + " OR n.ConnectivityStatusID = " + ConnectivityStatusConstant.BillConnected + ")) +"
+            + "(select count(*) from PhieuXuats x where x.NhaThuoc_MaNhaThuoc = :#{#param.maNhaThuoc} AND x.NgayXuat > '2019-1-1' AND x.Id >= 0 AND x.RecordStatusID = " + RecordStatusContains.ACTIVE + "AND x.MaLoaiXuatNhap IN (" + NoteTypeConstant.Delivery + "," + NoteTypeConstant.ReturnToSupplier + "," + NoteTypeConstant.InventoryAdjustment + "," + NoteTypeConstant.CancelDelivery + ") AND (x.ConnectivityStatusID = " + ConnectivityStatusConstant.Connected + " OR x.ConnectivityStatusID = " + ConnectivityStatusConstant.BillConnected + " ) )))))"
             + " AND ((:#{#param.excludeCurrentStore} IS NULL)"
             + " OR (:#{#param.excludeCurrentStore} = 0)"
             + " OR (:#{#param.excludeCurrentStore} = 1 AND (:#{#param.currentStoreCode} IS NULL OR c.MaNhaThuoc != :#{#param.currentStoreCode}))) "
@@ -71,6 +71,9 @@ public interface NhaThuocsRepository extends BaseRepository<NhaThuocs, NhaThuocs
             + " AND ((:#{#param.textSearch} IS NULL OR lower(c.MaNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%'))))"
             + " OR (:#{#param.textSearch} IS NULL OR lower(c.TenNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%'))))"
             + " OR (:#{#param.textSearch} IS NULL OR lower(c.DiaChi) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%')))))"
+            + " AND (:#{#param.maNhaThuocCha} IS NULL OR c.MaNhaThuocCha = :#{#param.maNhaThuocCha})"
+            + " AND (:#{#param.isConnectivity} IS NULL OR c.IsConnectivity = :#{#param.isConnectivity})"
+            + " AND (:#{#param.hoatDong} IS NULL OR c.HoatDong = :#{#param.hoatDong})"
             + " ORDER BY c.Id desc", nativeQuery = true
     )
     Page<NhaThuocs> searchPage(@Param("param") NhaThuocsReq param, Pageable pageable);
@@ -79,6 +82,9 @@ public interface NhaThuocsRepository extends BaseRepository<NhaThuocs, NhaThuocs
     @Query("SELECT c FROM NhaThuocs c " +
             "WHERE 1=1 "
             + " AND (:#{#param.recordStatusId} IS NULL OR c.recordStatusId = :#{#param.recordStatusId})"
+            + " AND (:#{#param.maNhaThuocCha} IS NULL OR c.maNhaThuocCha = :#{#param.maNhaThuocCha})"
+            + " AND (:#{#param.isConnectivity} IS NULL OR c.isConnectivity = :#{#param.isConnectivity})"
+            + " AND (:#{#param.hoatDong} IS NULL OR c.hoatDong = :#{#param.hoatDong})"
             + " AND (:#{#param.maNhaThuoc} IS NULL OR lower(c.maNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.maNhaThuoc},'%'))))"
             + " AND (:#{#param.tenNhaThuoc} IS NULL OR lower(c.tenNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.tenNhaThuoc},'%'))))"
             + " ORDER BY c.id desc"
@@ -95,6 +101,9 @@ public interface NhaThuocsRepository extends BaseRepository<NhaThuocs, NhaThuocs
             " AND u.id = :#{#param.userIdQueryData} " +
             " AND (:#{#param.maNhaThuoc} IS NULL OR lower(c.maNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.maNhaThuoc},'%'))))" +
             " AND (:#{#param.tenNhaThuoc} IS NULL OR lower(c.tenNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.tenNhaThuoc},'%'))))" +
+            " AND (:#{#param.maNhaThuocCha} IS NULL OR c.MaNhaThuocCha = :#{#param.maNhaThuocCha})" +
+            " AND (:#{#param.isConnectivity} IS NULL OR c.IsConnectivity = :#{#param.isConnectivity})" +
+            " AND (:#{#param.hoatDong} IS NULL OR c.HoatDong = :#{#param.hoatDong})" +
             " AND ((:#{#param.textSearch} IS NULL OR lower(c.maNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%'))))" +
             " OR (:#{#param.textSearch} IS NULL OR lower(c.tenNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%')))))" +
             " ORDER BY c.id desc", nativeQuery = true

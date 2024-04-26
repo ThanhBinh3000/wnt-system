@@ -30,7 +30,7 @@ public class NhaThuocsController {
         return ResponseEntity.ok(ResponseUtils.ok(service.searchPage(objReq)));
     }
 
-    @PostMapping(value = "/search-page-nha-thuoc", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = PathConstant.URL_SEARCH_PAGE + "-nha-thuoc", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BaseResponse> colectionNhaThuoc(@RequestBody NhaThuocsReq objReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.searchPageNhaThuoc(objReq)));
@@ -82,13 +82,13 @@ public class NhaThuocsController {
         return ResponseEntity.ok(ResponseUtils.ok(service.getNewStoreCode()));
     }
 
-    @PostMapping(value = "/search-page-nha-thuoc-dong-bo-phieu", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = PathConstant.URL_SEARCH_PAGE +"-nha-thuoc-dong-bo-phieu", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BaseResponse> colectionNhaThuocDongBoPhieu(@RequestBody NhaThuocDongBoPhieuReq objReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.searchPageNhaThuocDongBoPhieu(objReq)));
     }
 
-    @PostMapping(value = PathConstant.URL_UPDATE+ "-thong-tin-khu-vuc", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = PathConstant.URL_UPDATE + "-thong-tin-khu-vuc", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<BaseResponse> updateThongTinKhuVuc(@Valid @RequestBody ThongTinKhuVucReq objReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.updateThongTinKhuVuc(objReq)));
