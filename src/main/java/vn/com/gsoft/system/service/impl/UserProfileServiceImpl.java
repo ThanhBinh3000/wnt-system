@@ -272,7 +272,7 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
         e.setWardId(objReq.getWardId());
         e.setCityId(objReq.getCityId());
         e.setRegionId(objReq.getRegionId());
-        e.setAddresses(objReq.getAddresses());
+        e.setAddresses(objReq.getDiaChi());
         e = hdrRepo.save(e);
         return true;
     }

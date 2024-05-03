@@ -160,6 +160,7 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
         e.setWardId(req.getWardId());
         e.setCityId(req.getCityId());
         e.setRegionId(req.getRegionId());
+        e.setDiaChi(req.getDiaChi());
         e = hdrRepo.save(e);
         return 1;
     }
