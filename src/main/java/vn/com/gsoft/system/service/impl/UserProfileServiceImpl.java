@@ -260,4 +260,20 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
         req.setMaNhaThuoc(getLoggedUser().getNhaThuoc().getMaNhaThuoc());
         return DataUtils.convertList(hdrRepo.searchListStaffManagement(req), UserStaffProfileRes.class);
     }
+
+    @Override
+    public Boolean updateThongTinKhuVuc(ThongTinKhuVucReq objReq) throws Exception {
+        Profile userInfo = this.getLoggedUser();
+        if (userInfo == null)
+            throw new Exception("Bad request.");
+        if (objReq.getId() == null || objReq.getId() == 0) return false;
+        Optional<UserProfile> optional = hdrRepo.findById(objReq.getId());
+        UserProfile e = optional.get();
+        e.setWardId(objReq.getWardId());
+        e.setCityId(objReq.getCityId());
+        e.setRegionId(objReq.getRegionId());
+        e.setAddresses(objReq.getAddresses());
+        e = hdrRepo.save(e);
+        return true;
+    }
 }

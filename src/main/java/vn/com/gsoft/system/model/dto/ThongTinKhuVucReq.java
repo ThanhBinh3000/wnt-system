@@ -9,4 +9,5 @@ public class ThongTinKhuVucReq extends BaseRequest {
     private Long cityId;
     private Long wardId;
     private Long regionId;
+    private String addresses;
 }

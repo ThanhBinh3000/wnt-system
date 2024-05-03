@@ -2,10 +2,7 @@ package vn.com.gsoft.system.service;
 
 import org.springframework.data.domain.Page;
 import vn.com.gsoft.system.entity.UserProfile;
-import vn.com.gsoft.system.model.dto.ChangePasswordReq;
-import vn.com.gsoft.system.model.dto.UserProfileReq;
-import vn.com.gsoft.system.model.dto.UserProfileRes;
-import vn.com.gsoft.system.model.dto.UserStaffProfileRes;
+import vn.com.gsoft.system.model.dto.*;
 
 import java.util.List;
 
@@ -31,4 +28,6 @@ public interface UserProfileService extends BaseService<UserProfile, UserProfile
     List<UserProfileRes> searchListUserManagement(UserProfileReq objReq);
 
     List<UserStaffProfileRes> searchListStaffManagement(UserProfileReq objReq) throws Exception;
+
+    Boolean updateThongTinKhuVuc(ThongTinKhuVucReq objReq) throws Exception;
 }
