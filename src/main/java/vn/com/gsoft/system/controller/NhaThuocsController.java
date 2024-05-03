@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import vn.com.gsoft.system.model.dto.NhaThuocDongBoPhieuReq;
 import vn.com.gsoft.system.model.dto.NhaThuocsReq;
 import vn.com.gsoft.system.model.dto.ThongTinKhuVucReq;
-import vn.com.gsoft.system.response.BaseResponse;
+import vn.com.gsoft.system.model.system.BaseResponse;
 import vn.com.gsoft.system.service.NhaThuocsService;
 import vn.com.gsoft.system.constant.PathConstant;
 import vn.com.gsoft.system.util.system.ResponseUtils;
