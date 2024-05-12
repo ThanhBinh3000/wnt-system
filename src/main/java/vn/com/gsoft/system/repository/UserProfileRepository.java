@@ -114,11 +114,11 @@ public interface UserProfileRepository extends BaseRepository<UserProfile, UserP
                     "    up.SoCMT as soCMT " +
                     "FROM  " +
                     "    UserProfile up " +
-                    "JOIN  " +
+                    "LEFT JOIN  " +
                     "    NhanVienNhaThuocs nv ON up.id = nv.User_UserId " +
-                    "JOIN  " +
+                    "LEFT JOIN  " +
                     "    NhaThuocs nt ON nt.MaNhaThuoc = nv.NhaThuoc_MaNhaThuoc   " +
-                    "JOIN  " +
+                    "LEFT JOIN  " +
                     "    AggregatedDescriptions ad ON up.id = ad.id" +
                     " WHERE 1 = 1" +
                     " AND (:#{#param.userName} IS NULL OR lower(up.UserName) LIKE lower(concat('%',CONCAT(:#{#param.userName},'%'))))" +
@@ -157,11 +157,11 @@ public interface UserProfileRepository extends BaseRepository<UserProfile, UserP
                     "    count(up.id)  " +
                     "FROM  " +
                     "    UserProfile up " +
-                    "JOIN  " +
+                    "LEFT JOIN  " +
                     "    NhanVienNhaThuocs nv ON up.id = nv.User_UserId " +
-                    "JOIN  " +
+                    "LEFT JOIN  " +
                     "    NhaThuocs nt ON nt.MaNhaThuoc = nv.NhaThuoc_MaNhaThuoc   " +
-                    "JOIN  " +
+                    "LEFT JOIN  " +
                     "    AggregatedDescriptions ad ON up.id = ad.id" +
                     " WHERE 1 = 1" +
                     " AND (:#{#param.userName} IS NULL OR lower(up.UserName) LIKE lower(concat('%',CONCAT(:#{#param.userName},'%'))))" +

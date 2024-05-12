@@ -98,8 +98,14 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
     @Override
     public Page<NhaThuocsRes> searchPageNhaThuoc(NhaThuocsReq req) throws Exception {
         Pageable pageable = PageRequest.of(req.getPaggingReq().getPage(), req.getPaggingReq().getLimit());
-        req.setUserIdQueryData(getLoggedUser().getId());
         req.setRecordStatusId(RecordStatusContains.ACTIVE);
+        req.setHoatDong(true);
+        // check is user hệ thống
+        Optional<vn.com.gsoft.system.model.system.Role> role = getLoggedUser().getRoles().stream().filter(item -> "Super User".equals(item.getRoleName())).findFirst();
+        if(role.isEmpty()){
+            req.setUserIdQueryData(getLoggedUser().getId());
+        }
+
         return DataUtils.convertPage(hdrRepo.searchPageNhaThuoc(req, pageable), NhaThuocsRes.class);
     }
     @Override
