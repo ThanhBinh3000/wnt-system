@@ -94,8 +94,8 @@ public interface NhaThuocsRepository extends BaseRepository<NhaThuocs, NhaThuocs
     @Query(value = "SELECT c.id, c.maNhaThuoc, c.tenNhaThuoc, " +
             " (SELECT ua.tenDayDu From UserProfile ua JOIN  NhanVienNhaThuocs nva on nva.User_UserId = ua.id where nva.role = 'Admin' and nva.NhaThuoc_MaNhaThuoc = c.maNhaThuoc  ) as  nguoiPhuTrach " +
             " FROM NhaThuocs c " +
-            " left join NhanVienNhaThuocs nv  on c.maNhaThuoc = nv.NhaThuoc_MaNhaThuoc " +
-            " left join UserProfile u on nv.User_UserId = u.id " +
+            " join NhanVienNhaThuocs nv  on c.maNhaThuoc = nv.NhaThuoc_MaNhaThuoc " +
+            " join UserProfile u on nv.User_UserId = u.id " +
             " WHERE 1=1 " +
             " AND (:#{#param.recordStatusId} IS NULL OR c.recordStatusId = :#{#param.recordStatusId})" +
             " AND (:#{#param.userIdQueryData} IS NULL OR u.id = :#{#param.userIdQueryData} )" +
@@ -106,11 +106,15 @@ public interface NhaThuocsRepository extends BaseRepository<NhaThuocs, NhaThuocs
             " AND (:#{#param.hoatDong} IS NULL OR c.HoatDong = :#{#param.hoatDong})" +
             " AND ((:#{#param.textSearch} IS NULL OR lower(c.maNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%'))))" +
             " OR (:#{#param.textSearch} IS NULL OR lower(c.tenNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%')))))" +
+            " GROUP BY c.id, c.maNhaThuoc, c.tenNhaThuoc" +
             " ORDER BY c.maNhaThuoc asc",
-            countQuery = "SELECT count(c.id) " +
+            countQuery =
+                    "SELECT COUNT(*) FROM ( " +
+                    " SELECT c.id, c.maNhaThuoc, c.tenNhaThuoc, " +
+                    " (SELECT ua.tenDayDu From UserProfile ua JOIN  NhanVienNhaThuocs nva on nva.User_UserId = ua.id where nva.role = 'Admin' and nva.NhaThuoc_MaNhaThuoc = c.maNhaThuoc  ) as  nguoiPhuTrach " +
                     " FROM NhaThuocs c " +
-                    " left join NhanVienNhaThuocs nv  on c.maNhaThuoc = nv.NhaThuoc_MaNhaThuoc " +
-                    " left join UserProfile u on nv.User_UserId = u.id " +
+                    " join NhanVienNhaThuocs nv  on c.maNhaThuoc = nv.NhaThuoc_MaNhaThuoc " +
+                    " join UserProfile u on nv.User_UserId = u.id " +
                     " WHERE 1=1 " +
                     " AND (:#{#param.recordStatusId} IS NULL OR c.recordStatusId = :#{#param.recordStatusId})" +
                     " AND (:#{#param.userIdQueryData} IS NULL OR u.id = :#{#param.userIdQueryData} )" +
@@ -120,7 +124,9 @@ public interface NhaThuocsRepository extends BaseRepository<NhaThuocs, NhaThuocs
                     " AND (:#{#param.isConnectivity} IS NULL OR c.IsConnectivity = :#{#param.isConnectivity})" +
                     " AND (:#{#param.hoatDong} IS NULL OR c.HoatDong = :#{#param.hoatDong})" +
                     " AND ((:#{#param.textSearch} IS NULL OR lower(c.maNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%'))))" +
-                    " OR (:#{#param.textSearch} IS NULL OR lower(c.tenNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%')))))",
+                    " OR (:#{#param.textSearch} IS NULL OR lower(c.tenNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%')))))" +
+                    " GROUP BY c.id, c.maNhaThuoc, c.tenNhaThuoc" +
+                    " ) AS countMaNhaThuoc",
             nativeQuery = true
     )
     Page<Tuple> searchPageNhaThuoc(@Param("param") NhaThuocsReq req, Pageable pageable);
