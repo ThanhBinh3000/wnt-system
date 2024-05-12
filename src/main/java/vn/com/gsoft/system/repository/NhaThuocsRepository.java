@@ -106,7 +106,7 @@ public interface NhaThuocsRepository extends BaseRepository<NhaThuocs, NhaThuocs
             " AND (:#{#param.hoatDong} IS NULL OR c.HoatDong = :#{#param.hoatDong})" +
             " AND ((:#{#param.textSearch} IS NULL OR lower(c.maNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%'))))" +
             " OR (:#{#param.textSearch} IS NULL OR lower(c.tenNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%')))))" +
-            " ORDER BY c.id desc",
+            " ORDER BY c.maNhaThuoc asc",
             countQuery = "SELECT count(c.id) " +
                     " FROM NhaThuocs c " +
                     " left join NhanVienNhaThuocs nv  on c.maNhaThuoc = nv.NhaThuoc_MaNhaThuoc " +
