@@ -59,6 +59,16 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
     }
 
     @Override
+    public NhaThuocs create(NhaThuocsReq req) throws Exception {
+        return super.create(req);
+    }
+
+    @Override
+    public NhaThuocs update(NhaThuocsReq req) throws Exception {
+        return super.update(req);
+    }
+
+    @Override
     public NhaThuocs detail(String code) throws Exception {
         Optional<NhaThuocs> byMaNhaThuoc = hdrRepo.findByMaNhaThuoc(code);
         NhaThuocs nhaThuocs = byMaNhaThuoc.get();
