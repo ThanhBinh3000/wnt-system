@@ -7,4 +7,5 @@ import vn.com.gsoft.system.model.system.BaseRequest;
 @Data
 @NoArgsConstructor
 public class NhaThuocDongBoPhieuReq extends BaseRequest {
+    private String tenNhaThuoc;
 }

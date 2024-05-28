@@ -157,8 +157,9 @@ public interface NhaThuocsRepository extends BaseRepository<NhaThuocs, NhaThuocs
     //lấy ra danh sách nhà thuốc theo mã
     @Query(value = "SELECT c.ID AS id, c.MaNhaThuoc AS maNhaThuoc, c.TenNhaThuoc AS tenNhaThuoc" +
             " FROM NhaThuocs c WHERE c.HoatDong = 1" +
+            " AND(:tenNhaThuoc IS NULL OR lower(c.tenNhaThuoc) LIKE lower(concat('%',CONCAT(:tenNhaThuoc,'%'))))"+
             " AND c.MaNhaThuoc in (:storeCodes)"
             , nativeQuery = true)
-    Page<Tuple> searchPageNhaThuocDongBoPhieu(@Param("storeCodes") String[] storeCodes, Pageable pageable);
+    Page<Tuple> searchPageNhaThuocDongBoPhieu(@Param("storeCodes") String[] storeCodes, @Param("tenNhaThuoc") String tenNhaThuoc, Pageable pageable);
 
 }

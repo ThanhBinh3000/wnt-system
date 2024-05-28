@@ -161,7 +161,7 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
         if (storeCodes.length == 0) return null;
 
         Pageable pageable = PageRequest.of(req.getPaggingReq().getPage(), req.getPaggingReq().getLimit());
-        return DataUtils.convertPage(hdrRepo.searchPageNhaThuocDongBoPhieu(storeCodes, pageable), NhaThuocDongBoPhieuRes.class);
+        return DataUtils.convertPage(hdrRepo.searchPageNhaThuocDongBoPhieu(storeCodes,req.getTenNhaThuoc(), pageable), NhaThuocDongBoPhieuRes.class);
     }
 
     @Override
