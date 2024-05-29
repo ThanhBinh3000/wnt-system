@@ -54,7 +54,6 @@ public interface UserProfileRepository extends BaseRepository<UserProfile, UserP
             + " AND (:#{#param.tenDayDu} IS NULL OR lower(c.tenDayDu) LIKE lower(concat('%',CONCAT(:#{#param.tenDayDu},'%'))))"
             + " AND (:#{#param.email} IS NULL OR lower(c.email) LIKE lower(concat('%',CONCAT(:#{#param.email},'%'))))"
             + " AND (:#{#param.soDienThoai} IS NULL OR lower(c.soDienThoai) LIKE lower(concat('%',CONCAT(:#{#param.soDienThoai},'%'))))"
-//            + " AND (:#{#param.maNhaThuoc} IS NULL OR lower(c.maNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.maNhaThuoc},'%'))))"
             + " AND (:#{#param.soCMT} IS NULL OR lower(c.soCMT) LIKE lower(concat('%',CONCAT(:#{#param.soCMT},'%'))))"
             + " AND (:#{#param.archivedId} IS NULL OR c.archivedId = :#{#param.archivedId}) "
             + " AND (:#{#param.storeId} IS NULL OR c.storeId = :#{#param.storeId}) "
@@ -71,7 +70,7 @@ public interface UserProfileRepository extends BaseRepository<UserProfile, UserP
             + " AND (:#{#param.hoatDong} IS NULL OR c.hoatDong = :#{#param.hoatDong}) "
             + " AND (:#{#param.recordStatusId} IS NULL OR c.recordStatusId = :#{#param.recordStatusId})"
             + " AND (:#{#param.recordStatusIds} IS NULL OR c.recordStatusId in :#{#param.recordStatusIds}) "
-            + " AND (:#{#param.maNhaThuoc} IS NULL OR nv.nhaThuocMaNhaThuoc = :#{#param.maNhaThuoc}) "
+            + " AND (:#{#param.maNhaThuoc} IS NULL OR c.maNhaThuoc = :#{#param.maNhaThuoc}) "
             + " AND (:#{#param.roleName} IS NULL OR nv.role = :#{#param.roleName}) "
             + " ORDER BY c.id desc"
     )
