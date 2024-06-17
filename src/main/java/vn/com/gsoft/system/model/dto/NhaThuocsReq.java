@@ -129,4 +129,6 @@ public class NhaThuocsReq extends BaseRequest {
     private Integer connectivityFilterTypeId;
     private Boolean excludeCurrentStore;
     private String currentStoreCode;
+
+    private Long nguoiPhuTrach;
 }

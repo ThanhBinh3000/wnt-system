@@ -32,4 +32,6 @@ public interface ApplicationSettingRepository extends BaseRepository<Application
           + " ORDER BY c.id asc"
   )
   List<ApplicationSetting> searchList(@Param("param") ApplicationSettingReq param);
+
+  List<ApplicationSetting> findByDrugStoreIdAndSettingKey(String storeCode, String notAllowDeliverOverQuantity);
 }

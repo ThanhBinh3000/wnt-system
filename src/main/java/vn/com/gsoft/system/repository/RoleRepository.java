@@ -16,10 +16,10 @@ import java.util.Optional;
 public interface RoleRepository extends BaseRepository<Role, RoleReq, Long> {
     @Query("SELECT c FROM Role c " +
             "WHERE 1=1 "
+            + " AND (:#{#param.maNhaThuoc} IS NULL OR  ( c.maNhaThuoc = :#{#param.maNhaThuoc} OR c.isDefault = true)) "
             + " AND (:#{#param.id} IS NULL OR c.id = :#{#param.id}) "
             + " AND (:#{#param.recordStatusId} IS NULL OR c.recordStatusId = :#{#param.recordStatusId})"
             + " AND (:#{#param.roleName} IS NULL OR lower(c.roleName) LIKE lower(concat('%',CONCAT(:#{#param.roleName},'%'))))"
-            + " AND (:#{#param.maNhaThuoc} IS NULL OR lower(c.maNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.maNhaThuoc},'%'))))"
             + " AND (:#{#param.description} IS NULL OR lower(c.description) LIKE lower(concat('%',CONCAT(:#{#param.description},'%'))))"
             + " AND (:#{#param.type} IS NULL OR c.type = :#{#param.type}) "
             + " ORDER BY c.id desc"
@@ -29,10 +29,10 @@ public interface RoleRepository extends BaseRepository<Role, RoleReq, Long> {
 
     @Query("SELECT c FROM Role c " +
             "WHERE 1=1 "
+            + " AND (:#{#param.maNhaThuoc} IS NULL OR  ( c.maNhaThuoc = :#{#param.maNhaThuoc} OR c.isDefault = true)) "
             + " AND (:#{#param.id} IS NULL OR c.id = :#{#param.id}) "
             + " AND (:#{#param.recordStatusId} IS NULL OR c.recordStatusId = :#{#param.recordStatusId})"
             + " AND (:#{#param.roleName} IS NULL OR lower(c.roleName) LIKE lower(concat('%',CONCAT(:#{#param.roleName},'%'))))"
-            + " AND (:#{#param.maNhaThuoc} IS NULL OR lower(c.maNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.maNhaThuoc},'%'))))"
             + " AND (:#{#param.description} IS NULL OR lower(c.description) LIKE lower(concat('%',CONCAT(:#{#param.description},'%'))))"
             + " AND (:#{#param.type} IS NULL OR c.type = :#{#param.type}) "
             + " ORDER BY c.id desc"

@@ -21,4 +21,8 @@ public class UserRoleServiceImpl extends BaseServiceImpl<UserRole, UserRoleReq, 
         this.hdrRepo = hdrRepo;
     }
 
+    @Override
+    public UserRole findByUserIdAndRoleId(Long userId, Long roleId) {
+        return hdrRepo.findByUserIdAndRoleId(userId, roleId);
+    }
 }

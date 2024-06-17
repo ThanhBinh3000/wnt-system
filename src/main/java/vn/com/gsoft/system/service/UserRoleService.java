@@ -6,4 +6,5 @@ import vn.com.gsoft.system.model.dto.UserRoleReq;
 public interface UserRoleService extends BaseService<UserRole, UserRoleReq, Long> {
 
 
+    UserRole findByUserIdAndRoleId(Long tkQuanLyCu, Long id);
 }

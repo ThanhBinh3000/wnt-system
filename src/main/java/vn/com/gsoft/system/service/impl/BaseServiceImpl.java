@@ -34,6 +34,12 @@ public class BaseServiceImpl<E extends BaseEntity,R extends BaseRequest, PK exte
             throw new Exception("Token invalid!");
         }
     }
+
+    public Boolean haveRole(String roleName) throws Exception {
+        Profile loggedUser = getLoggedUser();
+       return loggedUser.getRoles().stream().anyMatch(item -> roleName.equals(item.getRoleName()));
+    }
+
     @Override
     public Page<E> searchPage(R req) throws Exception {
         Pageable pageable = PageRequest.of(req.getPaggingReq().getPage(), req.getPaggingReq().getLimit());

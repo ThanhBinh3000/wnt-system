@@ -33,4 +33,5 @@ public interface UserRoleRepository extends BaseRepository<UserRole, UserRoleReq
     )
     List<UserRole> searchList(@Param("param") UserRoleReq param);
 
+    UserRole findByUserIdAndRoleId(Long userId, Long roleId);
 }
