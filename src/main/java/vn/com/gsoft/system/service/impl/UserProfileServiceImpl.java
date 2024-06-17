@@ -16,9 +16,12 @@ import vn.com.gsoft.system.constant.RoleTypeConstant;
 import vn.com.gsoft.system.entity.NhaThuocs;
 import vn.com.gsoft.system.entity.Role;
 import vn.com.gsoft.system.entity.UserProfile;
+import vn.com.gsoft.system.entity.UserRole;
 import vn.com.gsoft.system.model.dto.*;
 import vn.com.gsoft.system.model.system.Profile;
+import vn.com.gsoft.system.repository.RoleRepository;
 import vn.com.gsoft.system.repository.UserProfileRepository;
+import vn.com.gsoft.system.repository.UserRoleRepository;
 import vn.com.gsoft.system.service.*;
 import vn.com.gsoft.system.util.system.DataUtils;
 
@@ -29,15 +32,17 @@ import java.util.Optional;
 @Log4j2
 public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserProfileReq, Long> implements UserProfileService {
 
+    private final RoleRepository roleRepository;
     private UserProfileRepository hdrRepo;
     private PasswordEncoder passwordEncoder;
     private NhanVienNhaThuocsService nhanVienNhaThuocsService;
     private NhaThuocsService nhaThuocsService;
     private RoleService roleService;
     private UserRoleService userRoleService;
+    private UserRoleRepository userRoleRepository;
 
     @Autowired
-    public UserProfileServiceImpl(UserProfileRepository hdrRepo, PasswordEncoder passwordEncoder, NhanVienNhaThuocsService nhanVienNhaThuocsService, NhaThuocsService nhaThuocsService, RoleService roleService, UserRoleService userRoleService) {
+    public UserProfileServiceImpl(UserProfileRepository hdrRepo, PasswordEncoder passwordEncoder, NhanVienNhaThuocsService nhanVienNhaThuocsService, NhaThuocsService nhaThuocsService, RoleService roleService, UserRoleService userRoleService, RoleRepository roleRepository,UserRoleRepository userRoleRepository) {
         super(hdrRepo);
         this.hdrRepo = hdrRepo;
         this.passwordEncoder = passwordEncoder;
@@ -45,6 +50,8 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
         this.nhaThuocsService = nhaThuocsService;
         this.roleService = roleService;
         this.userRoleService = userRoleService;
+        this.roleRepository = roleRepository;
+        this.userRoleRepository =userRoleRepository;
     }
 
     @Override
@@ -52,20 +59,32 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
         Pageable pageable = PageRequest.of(req.getPaggingReq().getPage(), req.getPaggingReq().getLimit());
         req.setRecordStatusIds(List.of(0L, 1L, 2L));
         req.setMaNhaThuoc(getLoggedUser().getNhaThuoc().getMaNhaThuoc());
-        return hdrRepo.searchPage(req, pageable);
+        Page<UserProfile> userProfiles = hdrRepo.searchPage(req, pageable);
+        for(UserProfile up: userProfiles){
+            up.setRoles(roleRepository.findByMaNhaThuocAndUserId(getLoggedUser().getNhaThuoc().getMaNhaThuoc(), up.getId()));
+        }
+        return userProfiles;
     }
 
     @Override
     public Page<UserProfileRes> searchPageUserManagement(UserProfileReq req) throws Exception {
         Pageable pageable = PageRequest.of(req.getPaggingReq().getPage(), req.getPaggingReq().getLimit());
-        return DataUtils.convertPage(hdrRepo.searchPageUserManagement(req, pageable), UserProfileRes.class);
+        Page<UserProfileRes> userProfiles = DataUtils.convertPage(hdrRepo.searchPageUserManagement(req, pageable), UserProfileRes.class);
+        for(UserProfileRes up: userProfiles){
+            up.setRoles(roleRepository.findByMaNhaThuocAndUserId(getLoggedUser().getNhaThuoc().getMaNhaThuoc(), up.getId()));
+        }
+        return userProfiles;
     }
 
     @Override
     public Page<UserStaffProfileRes> searchPageStaffManagement(UserProfileReq req) throws Exception {
         Pageable pageable = PageRequest.of(req.getPaggingReq().getPage(), req.getPaggingReq().getLimit());
         req.setMaNhaThuoc(getLoggedUser().getNhaThuoc().getMaNhaThuoc());
-        return DataUtils.convertPage(hdrRepo.searchPageStaffManagement(req, pageable), UserStaffProfileRes.class);
+        Page<UserStaffProfileRes> userProfiles =  DataUtils.convertPage(hdrRepo.searchPageStaffManagement(req, pageable), UserStaffProfileRes.class);
+        for(UserStaffProfileRes up: userProfiles){
+            up.setRoles(roleRepository.findByMaNhaThuocAndUserId(getLoggedUser().getNhaThuoc().getMaNhaThuoc(), up.getId()));
+        }
+        return userProfiles;
     }
 
     @Override
@@ -252,13 +271,25 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
 
     @Override
     public List<UserProfileRes> searchListUserManagement(UserProfileReq req) {
-        return DataUtils.convertList(hdrRepo.searchListUserManagement(req), UserProfileRes.class);
+        List<UserProfileRes> list = DataUtils.convertList(hdrRepo.searchListUserManagement(req), UserProfileRes.class);
+        for(UserProfileRes up: list){
+            if(req.getMaNhaThuoc() !=null){
+                up.setRoles(roleRepository.findByMaNhaThuocAndUserId(req.getMaNhaThuoc(), up.getId()));
+            }
+        }
+        return list;
     }
 
     @Override
     public List<UserStaffProfileRes> searchListStaffManagement(UserProfileReq req) throws Exception {
         req.setMaNhaThuoc(getLoggedUser().getNhaThuoc().getMaNhaThuoc());
-        return DataUtils.convertList(hdrRepo.searchListStaffManagement(req), UserStaffProfileRes.class);
+        List<UserStaffProfileRes> list = DataUtils.convertList(hdrRepo.searchListStaffManagement(req), UserStaffProfileRes.class);
+        for(UserStaffProfileRes up: list){
+            if(req.getMaNhaThuoc() !=null){
+                up.setRoles(roleRepository.findByMaNhaThuocAndUserId(getLoggedUser().getNhaThuoc().getMaNhaThuoc(), up.getId()));
+            }
+        }
+        return list;
     }
 
     @Override
@@ -274,6 +305,24 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
         e.setRegionId(objReq.getRegionId());
         e.setAddresses(objReq.getDiaChi());
         e = hdrRepo.save(e);
+        return true;
+    }
+
+    @Override
+    public Boolean changeRole(ChangeRoleReq objReq) throws Exception {
+        if(objReq.getMaNhaThuoc() ==null){
+            throw new Exception("Mã nhà thuốc không được để trống!");
+        }
+        if(objReq.getUserId() ==null){
+            throw new Exception("User không được để trống!");
+        }
+        userRoleRepository.deleteByMaNhaThuocAndUserId(objReq.getMaNhaThuoc(), objReq.getUserId());
+        for(Long roleId: objReq.getRoleIds()){
+            UserRoleReq ur = new UserRoleReq();
+            ur.setUserId(objReq.getUserId());
+            ur.setRoleId(roleId);
+            userRoleService.create(ur);
+        }
         return true;
     }
 }

@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import vn.com.gsoft.system.model.dto.UserProfileRes;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -61,5 +63,8 @@ public class UserProfile extends BaseEntity{
     private String mobileDeviceId;
     @Column(name = "EntityId")
     private Long entityId;
+
+    @Transient
+    private List<Role> roles;
 }
 

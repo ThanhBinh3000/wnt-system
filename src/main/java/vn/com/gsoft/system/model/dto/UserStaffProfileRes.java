@@ -2,6 +2,9 @@ package vn.com.gsoft.system.model.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import vn.com.gsoft.system.entity.Role;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -13,4 +16,6 @@ public class UserStaffProfileRes {
     private String email;
     private Boolean HoatDong;
     private String tenDayDu;
+
+    private List<Role> roles;
 }

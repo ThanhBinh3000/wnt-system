@@ -1,5 +1,6 @@
 package vn.com.gsoft.system.repository;
 
+import org.springframework.data.jpa.repository.Modifying;
 import vn.com.gsoft.system.entity.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.domain.Page;
@@ -34,4 +35,7 @@ public interface UserRoleRepository extends BaseRepository<UserRole, UserRoleReq
     List<UserRole> searchList(@Param("param") UserRoleReq param);
 
     UserRole findByUserIdAndRoleId(Long userId, Long roleId);
+    @Modifying
+    @Query("delete from UserRole b where b.roleId in (select r.id from Role r where (r.maNhaThuoc =?1 or r.isDefault)) and b.userId =?2")
+    void deleteByMaNhaThuocAndUserId(String maNhaThuoc, Long userId);
 }

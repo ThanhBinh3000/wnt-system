@@ -59,4 +59,12 @@ public interface RoleRepository extends BaseRepository<Role, RoleReq, Long> {
             + " AND (rt.roleName = ?4)"
     )
     Optional<Role> findByMaNhaThuocAndTypeAndIsDefault(String maNhaThuoc, int type, boolean isDefault, String roleName);
+    @Query("SELECT c FROM Role c " +
+            "join UserRole ur on ur.roleId = c.id " +
+            "WHERE 1=1 "
+            + " AND (c.maNhaThuoc = ?1 OR  c.isDefault = true) "
+            + " AND (c.recordStatusId = " + RecordStatusContains.ACTIVE + ")"
+            + " AND (ur.userId = ?1) "
+    )
+    List<Role> findByMaNhaThuocAndUserId(String maNhaThuoc, Long userId);
 }

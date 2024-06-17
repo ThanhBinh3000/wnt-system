@@ -30,4 +30,6 @@ public interface UserProfileService extends BaseService<UserProfile, UserProfile
     List<UserStaffProfileRes> searchListStaffManagement(UserProfileReq objReq) throws Exception;
 
     Boolean updateThongTinKhuVuc(ThongTinKhuVucReq objReq) throws Exception;
+
+    Boolean changeRole(ChangeRoleReq objReq) throws Exception;
 }

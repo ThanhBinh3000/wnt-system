@@ -1,7 +1,11 @@
 package vn.com.gsoft.system.model.dto;
 
+import jakarta.persistence.Transient;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import vn.com.gsoft.system.entity.Role;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -15,4 +19,6 @@ public class UserProfileRes {
     private String tenDayDu;
     private String soDienThoai;
     private String soCMT;
+
+    private List<Role> roles;
 }

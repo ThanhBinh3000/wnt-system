@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.com.gsoft.system.model.dto.ChangePasswordReq;
+import vn.com.gsoft.system.model.dto.ChangeRoleReq;
 import vn.com.gsoft.system.model.dto.ThongTinKhuVucReq;
 import vn.com.gsoft.system.model.dto.UserProfileReq;
 import vn.com.gsoft.system.model.system.BaseResponse;
@@ -131,6 +132,13 @@ public class UserProfileController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BaseResponse> detail(@PathVariable("id") Long id) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.detail(id)));
+    }
+
+    @Operation(summary = "Change role", description = "Đổi mật khẩu")
+    @PostMapping(value = "change-role", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<BaseResponse> changeRole(@Valid @RequestBody ChangeRoleReq objReq) throws Exception {
+        return ResponseEntity.ok(ResponseUtils.ok(service.changeRole(objReq)));
     }
 
 
