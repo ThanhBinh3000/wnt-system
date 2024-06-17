@@ -105,4 +105,9 @@ public class NhaThuocsController {
     public ResponseEntity<BaseResponse> colectionNhaThuocTrienKhai(@RequestBody NhaThuocsReq objReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.searchPageNhaThuocTrienKhai(objReq)));
     }
+
+    @PostMapping(value = "check-connectivity", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<BaseResponse> onCheckConnectivity(@Valid @RequestBody NhaThuocsReq objReq) throws Exception {
+        return ResponseEntity.ok(ResponseUtils.ok(service.onCheckConnectivity(objReq)));
+    }
 }

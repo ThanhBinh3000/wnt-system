@@ -148,6 +148,7 @@ public class UserProfileController {
     public ResponseEntity<BaseResponse> delete(@Valid @RequestBody UserProfileReq idSearchReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.delete(idSearchReq.getId())));
     }
+
     @PostMapping(value = PathConstant.URL_UPDATE+ "-thong-tin-khu-vuc", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<BaseResponse> updateMappingZaloOa(@Valid @RequestBody ThongTinKhuVucReq objReq) throws Exception {

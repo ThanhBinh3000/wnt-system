@@ -4,11 +4,16 @@ package vn.com.gsoft.system.service.impl;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import vn.com.gsoft.system.constant.*;
 import vn.com.gsoft.system.entity.*;
 import vn.com.gsoft.system.model.dto.*;
@@ -82,6 +87,9 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
 
     @Autowired
     private UserRoleRepository userRoleRepository;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Autowired
     public NhaThuocsServiceImpl(NhaThuocsRepository hdrRepo) {
@@ -262,7 +270,7 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
         }
         NhaThuocs nhaThuoc = optional.get();
         BeanUtils.copyProperties(req, nhaThuoc, "id", "created", "createdByUserId");
-        if(nhaThuoc.getRecordStatusId() == null){
+        if (nhaThuoc.getRecordStatusId() == null) {
             nhaThuoc.setRecordStatusId(RecordStatusContains.ACTIVE);
         }
         nhaThuoc.setModified(new Date());
@@ -272,15 +280,15 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
         }
         nhaThuoc = hdrRepo.save(nhaThuoc);
         NhanVienNhaThuocs nhanVienNhaThuocs = nhanVienNhaThuocsRepository.findByNhaThuocMaNhaThuocAndRole(nhaThuoc.getMaNhaThuoc(), RoleConstant.ADMIN);
-        Long tkQuanLyCu =null;
-        if(nhanVienNhaThuocs ==null){
+        Long tkQuanLyCu = null;
+        if (nhanVienNhaThuocs == null) {
             NhanVienNhaThuocs nhanVienNhaThuoc = new NhanVienNhaThuocs();
             nhanVienNhaThuoc.setRole(RoleConstant.ADMIN);
             nhanVienNhaThuoc.setNhaThuocMaNhaThuoc(nhaThuoc.getMaNhaThuoc());
             nhanVienNhaThuoc.setStoreId(nhaThuoc.getId());
             nhanVienNhaThuoc.setUserUserId(tkQuanLy.get().getId());
             nhanVienNhaThuocsRepository.save(nhanVienNhaThuoc);
-        }else {
+        } else {
             // Xử lý nhân viên cũ thành user thường
             NhanVienNhaThuocs nhanVienNhaThuocCu = new NhanVienNhaThuocs();
             nhanVienNhaThuocCu.setRole(RoleConstant.USER);
@@ -300,12 +308,12 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
             throw new Exception("Không tìm thấy role mặc định!");
         }
         UserRole userRole = userRoleService.findByUserIdAndRoleId(tkQuanLyCu, roleAdmin.get().getId());
-        if(userRole == null){
+        if (userRole == null) {
             UserRoleReq ur = new UserRoleReq();
             ur.setUserId(tkQuanLy.get().getId());
             ur.setRoleId(roleAdmin.get().getId());
             this.userRoleService.create(ur);
-        }else {
+        } else {
             // xử lý role user cũ
             Optional<Role> roleUser = this.roleService.findByMaNhaThuocAndTypeAndIsDefaultAndRoleName(getLoggedUser().getNhaThuoc().getMaNhaThuoc(), 1, true, RoleTypeConstant.USER);
             if (roleUser.isEmpty()) {
@@ -437,6 +445,35 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
         e.setDiaChi(req.getDiaChi());
         e = hdrRepo.save(e);
         return 1;
+    }
+
+    @Override
+    public LoginRespData onCheckConnectivity(NhaThuocsReq objReq) throws Exception {
+        Optional<NhaThuocs> nhaThuoc = hdrRepo.findByMaNhaThuoc(objReq.getMaNhaThuoc());
+        if (nhaThuoc.isEmpty()) {
+            throw new Exception("Không tìm thấy dữ liệu!");
+        }
+        if (nhaThuoc.get().getConnectivityCode() == null || nhaThuoc.get().getConnectivityUserName() != null || nhaThuoc.get().getConnectivityPassword() != null) {
+            log.debug("StoreCode: {}. Can't login.", objReq.getMaNhaThuoc());
+            return null;
+        }
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setUsr(nhaThuoc.get().getConnectivityUserName());
+        loginRequest.setPwd(nhaThuoc.get().getConnectivityPassword());
+
+        ResponseEntity<ConnectivityResp<LoginRespData>> responseEntity = restTemplate.exchange("https://duocquocgia.com.vn/api/tai_khoan/dang_nhap", HttpMethod.POST, new HttpEntity<>(loginRequest), new ParameterizedTypeReference<ConnectivityResp<LoginRespData>>() {});
+        ConnectivityResp<LoginRespData> resp = responseEntity.getBody();
+
+        if (resp == null || resp.getData() == null) {
+            nhaThuoc.get().setIsNationalDBConnected(false);
+            hdrRepo.save(nhaThuoc.get());
+            log.debug("StoreCode: {}. Can't login.", objReq.getMaNhaThuoc());
+            return null;
+        }
+        nhaThuoc.get().setIsNationalDBConnected(true);
+        hdrRepo.save(nhaThuoc.get());
+        resp.getData().setConnectivityDsCode( nhaThuoc.get().getConnectivityCode());
+        return resp.getData();
     }
 
     @Override

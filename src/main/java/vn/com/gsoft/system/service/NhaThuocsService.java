@@ -20,4 +20,6 @@ public interface NhaThuocsService extends BaseService<NhaThuocs, NhaThuocsReq, L
     Page<NhaThuocs> searchPageNhaThuocTrienKhai(NhaThuocsReq req) throws Exception;
 
     Integer updateThongTinKhuVuc(ThongTinKhuVucReq req) throws Exception;
+
+    LoginRespData onCheckConnectivity(NhaThuocsReq objReq) throws Exception;
 }
