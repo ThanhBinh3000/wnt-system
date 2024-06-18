@@ -31,7 +31,9 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, RoleReq, Long> implem
     @Override
     public List<Role> searchList(RoleReq req) throws Exception {
         req.setRecordStatusId(RecordStatusContains.ACTIVE);
-        req.setMaNhaThuoc(getLoggedUser().getNhaThuoc().getMaNhaThuoc());
+        if(req.getMaNhaThuoc() == null){
+            req.setMaNhaThuoc(getLoggedUser().getNhaThuoc().getMaNhaThuoc());
+        }
         return hdrRepo.searchList(req);
     }
 
@@ -39,7 +41,9 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, RoleReq, Long> implem
     public Page<Role> searchPage(RoleReq req) throws Exception {
         Pageable pageable = PageRequest.of(req.getPaggingReq().getPage(), req.getPaggingReq().getLimit());
         req.setRecordStatusId(RecordStatusContains.ACTIVE);
-        req.setMaNhaThuoc(getLoggedUser().getNhaThuoc().getMaNhaThuoc());
+        if(req.getMaNhaThuoc() == null){
+            req.setMaNhaThuoc(getLoggedUser().getNhaThuoc().getMaNhaThuoc());
+        }
         return hdrRepo.searchPage(req, pageable);
     }
 

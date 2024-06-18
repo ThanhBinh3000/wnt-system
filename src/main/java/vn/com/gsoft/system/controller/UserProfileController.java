@@ -134,8 +134,8 @@ public class UserProfileController {
         return ResponseEntity.ok(ResponseUtils.ok(service.detail(id)));
     }
 
-    @Operation(summary = "Change role", description = "Đổi mật khẩu")
-    @PostMapping(value = "change-role", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Change role", description = "Change role")
+    @PostMapping(value = "/change-role", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<BaseResponse> changeRole(@Valid @RequestBody ChangeRoleReq objReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.changeRole(objReq)));
