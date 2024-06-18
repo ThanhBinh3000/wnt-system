@@ -2,6 +2,9 @@ package vn.com.gsoft.system.model.dto;
 
 import lombok.Data;
 import vn.com.gsoft.system.model.system.BaseRequest;
+
+import java.util.List;
+
 @Data
 public class RoleReq extends BaseRequest {
     private String roleName;
@@ -9,4 +12,6 @@ public class RoleReq extends BaseRequest {
     private String maNhaThuoc;
     private String description;
     private Integer type;
+
+    private List<Long> privileges;
 }
