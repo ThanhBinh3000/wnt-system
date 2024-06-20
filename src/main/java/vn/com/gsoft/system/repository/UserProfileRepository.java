@@ -177,7 +177,7 @@ public interface UserProfileRepository extends BaseRepository<UserProfile, UserP
 
     @Query(value =
             "SELECT  up.id as id, up.UserName as userName, up.SoDienThoai AS soDienThoai , nv.Role AS role, " +
-                    "  up.Email as email, up.HoatDong as hoatDong, up.TenDayDu as tenDayDu " +
+                    "  up.Email as email, up.HoatDong as hoatDong, up.TenDayDu as tenDayDu, nv.NhaThuoc_MaNhaThuoc as maNhaThuoc " +
                     "FROM UserProfile up " +
                     "JOIN NhanVienNhaThuocs nv ON  up.id = nv.User_UserId " +
                     " WHERE 1 = 1" +

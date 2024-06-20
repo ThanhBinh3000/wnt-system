@@ -16,6 +16,7 @@ public class UserStaffProfileRes {
     private String email;
     private Boolean HoatDong;
     private String tenDayDu;
+    private String maNhaThuoc;
 
     private List<Role> roles;
 }

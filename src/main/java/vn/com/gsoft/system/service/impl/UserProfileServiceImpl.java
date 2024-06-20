@@ -71,7 +71,7 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
         Pageable pageable = PageRequest.of(req.getPaggingReq().getPage(), req.getPaggingReq().getLimit());
         Page<UserProfileRes> userProfiles = DataUtils.convertPage(hdrRepo.searchPageUserManagement(req, pageable), UserProfileRes.class);
         for(UserProfileRes up: userProfiles){
-            up.setRoles(roleRepository.findByMaNhaThuocAndUserId(getLoggedUser().getNhaThuoc().getMaNhaThuoc(), up.getId()));
+            up.setRoles(roleRepository.findByMaNhaThuocAndUserId(up.getNhaThuocs(), up.getId()));
         }
         return userProfiles;
     }
@@ -82,7 +82,7 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
         req.setMaNhaThuoc(getLoggedUser().getNhaThuoc().getMaNhaThuoc());
         Page<UserStaffProfileRes> userProfiles =  DataUtils.convertPage(hdrRepo.searchPageStaffManagement(req, pageable), UserStaffProfileRes.class);
         for(UserStaffProfileRes up: userProfiles){
-            up.setRoles(roleRepository.findByMaNhaThuocAndUserId(getLoggedUser().getNhaThuoc().getMaNhaThuoc(), up.getId()));
+            up.setRoles(roleRepository.findByMaNhaThuocAndUserId(up.getMaNhaThuoc(), up.getId()));
         }
         return userProfiles;
     }
