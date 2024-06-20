@@ -64,7 +64,7 @@ public interface RoleRepository extends BaseRepository<Role, RoleReq, Long> {
             "WHERE 1=1 "
             + " AND (c.maNhaThuoc = ?1 OR  c.isDefault = true) "
             + " AND (c.recordStatusId = " + RecordStatusContains.ACTIVE + ")"
-            + " AND (ur.userId = ?1) "
+            + " AND (ur.userId = ?2) "
     )
     List<Role> findByMaNhaThuocAndUserId(String maNhaThuoc, Long userId);
 }

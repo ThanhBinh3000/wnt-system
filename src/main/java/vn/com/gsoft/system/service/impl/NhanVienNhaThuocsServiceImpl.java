@@ -27,4 +27,9 @@ public class NhanVienNhaThuocsServiceImpl extends BaseServiceImpl<NhanVienNhaThu
 		super(hdrRepo);
 		this.hdrRepo = hdrRepo;
 	}
+
+	@Override
+	public List<NhanVienNhaThuocs> findByUserUserId(Long userId) {
+		return hdrRepo.findByUserUserId(userId);
+	}
 }

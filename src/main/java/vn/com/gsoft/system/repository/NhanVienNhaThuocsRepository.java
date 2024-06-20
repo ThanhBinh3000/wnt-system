@@ -40,4 +40,6 @@ public interface NhanVienNhaThuocsRepository extends BaseRepository<NhanVienNhaT
     List<NhanVienNhaThuocs> searchList(@Param("param") NhanVienNhaThuocsReq param);
 
     NhanVienNhaThuocs findByNhaThuocMaNhaThuocAndRole(String maNhaThuoc, String role);
+
+    List<NhanVienNhaThuocs> findByUserUserId(Long userId);
 }

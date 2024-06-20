@@ -1,6 +1,8 @@
 package vn.com.gsoft.system.util.system;
 
 import jakarta.persistence.Tuple;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 
 import java.lang.reflect.Field;
@@ -9,16 +11,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class DataUtils {
+    private static final Logger log = LoggerFactory.getLogger(DataUtils.class);
+
     public static <T> Page<T> convertPage(Page<Tuple> tuples, Class<T> clazz) {
         Page<T> page = tuples.map(tuple -> {
             try {
                 T e = clazz.getDeclaredConstructor().newInstance();
                 for (Field field : clazz.getDeclaredFields()) {
-                    var value = tuple.get(field.getName());
-                    if (value != null) {
-                        value = convertValueIfNeeded(value, field.getType());
-                        field.setAccessible(true);
-                        field.set(e, value);
+                    try {
+                        var value = tuple.get(field.getName());
+                        if (value != null) {
+                            value = convertValueIfNeeded(value, field.getType());
+                            field.setAccessible(true);
+                            field.set(e, value);
+                        }
+                    } catch (Exception exception) {
+                        continue;
                     }
                 }
                 return e;
@@ -36,11 +44,15 @@ public class DataUtils {
             try {
                 T e = clazz.getDeclaredConstructor().newInstance(); // Sử dụng getDeclaredConstructor().newInstance() để tạo instance
                 for (Field field : clazz.getDeclaredFields()) {
-                    field.setAccessible(true); // Cho phép truy cập các thuộc tính
-                    Object value = tuple.get(field.getName());
-                    if (value != null) {
-                        value = convertValueIfNeeded(value, field.getType());
-                        field.set(e, value);
+                    try {
+                        field.setAccessible(true); // Cho phép truy cập các thuộc tính
+                        Object value = tuple.get(field.getName());
+                        if (value != null) {
+                            value = convertValueIfNeeded(value, field.getType());
+                            field.set(e, value);
+                        }
+                    } catch (Exception exception) {
+                        continue;
                     }
                 }
                 return e;
@@ -56,11 +68,15 @@ public class DataUtils {
         try {
             T e = clazz.getDeclaredConstructor().newInstance(); // Sử dụng getDeclaredConstructor().newInstance() để tạo instance
             for (Field field : clazz.getDeclaredFields()) {
-                field.setAccessible(true); // Cho phép truy cập các thuộc tính
-                Object value = tuple.get(field.getName());
-                if (value != null) {
-                    value = convertValueIfNeeded(value, field.getType());
-                    field.set(e, value);
+                try {
+                    field.setAccessible(true); // Cho phép truy cập các thuộc tính
+                    Object value = tuple.get(field.getName());
+                    if (value != null) {
+                        value = convertValueIfNeeded(value, field.getType());
+                        field.set(e, value);
+                    }
+                } catch (Exception exception) {
+                    continue;
                 }
             }
             return e;

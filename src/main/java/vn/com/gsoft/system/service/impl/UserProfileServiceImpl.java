@@ -13,10 +13,7 @@ import org.springframework.stereotype.Service;
 import vn.com.gsoft.system.constant.NhanVienRoleConstant;
 import vn.com.gsoft.system.constant.RecordStatusContains;
 import vn.com.gsoft.system.constant.RoleTypeConstant;
-import vn.com.gsoft.system.entity.NhaThuocs;
-import vn.com.gsoft.system.entity.Role;
-import vn.com.gsoft.system.entity.UserProfile;
-import vn.com.gsoft.system.entity.UserRole;
+import vn.com.gsoft.system.entity.*;
 import vn.com.gsoft.system.model.dto.*;
 import vn.com.gsoft.system.model.system.Profile;
 import vn.com.gsoft.system.repository.RoleRepository;
@@ -71,7 +68,12 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
         Pageable pageable = PageRequest.of(req.getPaggingReq().getPage(), req.getPaggingReq().getLimit());
         Page<UserProfileRes> userProfiles = DataUtils.convertPage(hdrRepo.searchPageUserManagement(req, pageable), UserProfileRes.class);
         for(UserProfileRes up: userProfiles){
-            up.setRoles(roleRepository.findByMaNhaThuocAndUserId(up.getNhaThuocs(), up.getId()));
+            List<NhanVienNhaThuocs> nhanVienNhaThuocs = nhanVienNhaThuocsService.findByUserUserId(up.getId());
+            if(!nhanVienNhaThuocs.isEmpty()){
+                for(NhanVienNhaThuocs nv: nhanVienNhaThuocs){
+                    up.setRoles(roleRepository.findByMaNhaThuocAndUserId(nv.getNhaThuocMaNhaThuoc(), up.getId()));
+                }
+            }
         }
         return userProfiles;
     }
