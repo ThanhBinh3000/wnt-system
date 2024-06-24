@@ -56,4 +56,10 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, RoleReq, Long> implem
     public Optional<Role> findByMaNhaThuocAndTypeAndIsDefaultAndRoleName(String maNhaThuoc, int type, boolean isDefault, String roleName) {
         return this.hdrRepo.findByMaNhaThuocAndTypeAndIsDefault(maNhaThuoc, type, isDefault, roleName);
     }
+
+    @Override
+    public List<Role> searchListSystem(RoleReq req) throws Exception {
+        req.setRecordStatusId(RecordStatusContains.ACTIVE);
+        return hdrRepo.searchListSystem(req.getRoleName());
+    }
 }

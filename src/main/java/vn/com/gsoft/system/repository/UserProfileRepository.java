@@ -86,7 +86,9 @@ public interface UserProfileRepository extends BaseRepository<UserProfile, UserP
                     "    JOIN  " +
                     "        UserRole ur ON ur.userId = up.id " +
                     "    JOIN  " +
-                    "        RoleType rt ON rt.roleId = ur.roleId " +
+                    "        Role r ON r.id = ur.roleId " +
+                    "    JOIN  " +
+                    "        RoleType rt ON rt.id = r.roleTypeId " +
                     " WHERE 1 = 1" +
                     " AND (:#{#param.roleName} IS NULL OR rt.RoleName = :#{#param.roleName}) " +
                     "    GROUP BY  " +
@@ -137,7 +139,9 @@ public interface UserProfileRepository extends BaseRepository<UserProfile, UserP
                     "    JOIN  " +
                     "        UserRole ur ON ur.userId = up.id " +
                     "    JOIN  " +
-                    "        RoleType rt ON rt.roleId = ur.roleId " +
+                    "        Role r ON r.id = ur.roleId " +
+                    "    JOIN  " +
+                    "        RoleType rt ON rt.id = r.roleTypeId " +
                     " WHERE 1 = 1" +
                     " AND (:#{#param.roleName} IS NULL OR rt.RoleName = :#{#param.roleName}) " +
                     "    GROUP BY  " +
@@ -202,7 +206,9 @@ public interface UserProfileRepository extends BaseRepository<UserProfile, UserP
                     "    JOIN  " +
                     "        UserRole ur ON ur.userId = up.id " +
                     "    JOIN  " +
-                    "        RoleType rt ON rt.roleId = ur.roleId " +
+                    "        Role r ON r.id = ur.roleId " +
+                    "    JOIN  " +
+                    "        RoleType rt ON rt.id = r.roleTypeId " +
                     " WHERE 1 = 1" +
                     " AND (:#{#param.roleName} IS NULL OR rt.RoleName = :#{#param.roleName}) " +
                     "    GROUP BY  " +

@@ -23,8 +23,8 @@ public class Role extends BaseEntity {
     private String maNhaThuoc;
     @Column(name = "Description")
     private String description;
-    @Column(name = "Type")
-    private Integer type;
+    @Column(name = "RoleTypeId")
+    private Long roleTypeId;
     @Column(name = "IsDefault")
     private Boolean isDefault;  // true là mặc định
 }

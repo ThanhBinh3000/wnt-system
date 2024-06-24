@@ -148,7 +148,7 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
         addDefaultSettingForAdmin(nhaThuoc.getMaNhaThuoc());
 
         // Xử lý role cho use quản lý
-        Optional<Role> role = this.roleService.findByTypeAndIsDefaultAndRoleName(0, true, RoleTypeConstant.ADMIN);
+        Optional<Role> role = this.roleService.findByTypeAndIsDefaultAndRoleName(2, true, RoleTypeConstant.ADMIN);
         if (role.isEmpty()) {
             throw new Exception("Không tìm thấy role mặc định!");
         }
@@ -303,7 +303,7 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
         }
 
         // Xử lý role cho use quản lý
-        Optional<Role> roleAdmin = this.roleService.findByTypeAndIsDefaultAndRoleName(0, true, RoleTypeConstant.ADMIN);
+        Optional<Role> roleAdmin = this.roleService.findByTypeAndIsDefaultAndRoleName(2, true, RoleTypeConstant.ADMIN);
         if (roleAdmin.isEmpty()) {
             throw new Exception("Không tìm thấy role mặc định!");
         }
@@ -315,9 +315,9 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
             this.userRoleService.create(ur);
         } else {
             // xử lý role user cũ
-            Optional<Role> roleUser = this.roleService.findByMaNhaThuocAndTypeAndIsDefaultAndRoleName(getLoggedUser().getNhaThuoc().getMaNhaThuoc(), 1, true, RoleTypeConstant.USER);
+            Optional<Role> roleUser = this.roleService.findByMaNhaThuocAndTypeAndIsDefaultAndRoleName(getLoggedUser().getNhaThuoc().getMaNhaThuoc(), 3, true, RoleTypeConstant.USER);
             if (roleUser.isEmpty()) {
-                roleUser = this.roleService.findByTypeAndIsDefaultAndRoleName(0, true, RoleTypeConstant.USER);
+                roleUser = this.roleService.findByTypeAndIsDefaultAndRoleName(3, true, RoleTypeConstant.USER);
                 if (roleUser.isEmpty()) {
                     throw new Exception("Không tìm thấy role mặc định!");
                 }

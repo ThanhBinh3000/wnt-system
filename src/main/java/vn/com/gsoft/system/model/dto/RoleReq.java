@@ -11,7 +11,7 @@ public class RoleReq extends BaseRequest {
     private Boolean isDeleted;
     private String maNhaThuoc;
     private String description;
-    private Integer type;
+    private Long roleTypeId;
 
     private List<Long> privileges;
 }

@@ -35,6 +35,11 @@ public class RoleController {
     return ResponseEntity.ok(ResponseUtils.ok(service.searchList(objReq)));
   }
 
+  @PostMapping(value = PathConstant.URL_SEARCH_LIST+"-system", produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseEntity<BaseResponse> colectionListSystem(@RequestBody RoleReq objReq) throws Exception {
+    return ResponseEntity.ok(ResponseUtils.ok(service.searchListSystem(objReq)));
+  }
 
   @PostMapping(value = PathConstant.URL_CREATE, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)

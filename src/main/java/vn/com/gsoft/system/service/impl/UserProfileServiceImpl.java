@@ -164,7 +164,7 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
         nv.setStoreId(req.getStoreId());
         this.nhanVienNhaThuocsService.create(nv);
 
-        Optional<Role> role = this.roleService.findByTypeAndIsDefaultAndRoleName(0, true, RoleTypeConstant.ADMIN);
+        Optional<Role> role = this.roleService.findByTypeAndIsDefaultAndRoleName(2, true, RoleTypeConstant.ADMIN);
         if (role.isEmpty()) {
             throw new Exception("Không tìm thấy role mặc định!");
         }
@@ -231,9 +231,9 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
         nv.setNhaThuocMaNhaThuoc(getLoggedUser().getNhaThuoc().getMaNhaThuoc());
         nv.setStoreId(req.getStoreId());
         this.nhanVienNhaThuocsService.create(nv);
-        Optional<Role> role = this.roleService.findByMaNhaThuocAndTypeAndIsDefaultAndRoleName(getLoggedUser().getNhaThuoc().getMaNhaThuoc(), 1, true, RoleTypeConstant.USER);
+        Optional<Role> role = this.roleService.findByMaNhaThuocAndTypeAndIsDefaultAndRoleName(getLoggedUser().getNhaThuoc().getMaNhaThuoc(), 3, true, RoleTypeConstant.USER);
         if (role.isEmpty()) {
-            role = this.roleService.findByTypeAndIsDefaultAndRoleName(0, true, RoleTypeConstant.USER);
+            role = this.roleService.findByTypeAndIsDefaultAndRoleName(3, true, RoleTypeConstant.USER);
             if (role.isEmpty()) {
                 throw new Exception("Không tìm thấy role mặc định!");
             }
