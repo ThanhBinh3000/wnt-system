@@ -58,4 +58,15 @@ class RoleServiceImplTest {
         Page<vn.com.gsoft.system.entity.Role> sampleNotes = roleService.searchPage(noteMedicalsReq);
         assert sampleNotes != null;
     }
+
+    @Test
+    void searchListSystem() throws Exception {
+        RoleReq noteMedicalsReq = new RoleReq();
+        PaggingReq paggingReq = new PaggingReq();
+        paggingReq.setPage(0);
+        paggingReq.setLimit(10);
+        noteMedicalsReq.setPaggingReq(paggingReq);
+        List<vn.com.gsoft.system.entity.Role> roles = roleService.searchListSystem(noteMedicalsReq);
+        assert roles != null;
+    }
 }

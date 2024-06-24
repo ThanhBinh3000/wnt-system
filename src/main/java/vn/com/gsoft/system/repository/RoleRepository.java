@@ -70,7 +70,7 @@ public interface RoleRepository extends BaseRepository<Role, RoleReq, Long> {
     @Query("SELECT c FROM Role c " +
             "join RoleType rt on rt.id = c.roleTypeId " +
             "WHERE 1=1 AND (rt.roleName = 'SuperUser') "
-            + " AND (c.roleName like lower(concat('%',CONCAT(?1,'%')))) "
+            + " AND (?1 IS NULL OR c.roleName like lower(concat('%',CONCAT(?1,'%')))) "
     )
     List<Role> searchListSystem(String roleName);
 }
