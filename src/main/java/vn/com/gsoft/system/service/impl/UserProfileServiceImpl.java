@@ -310,6 +310,7 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
         return true;
     }
 
+    @Transactional
     @Override
     public Boolean changeRole(ChangeRoleReq objReq) throws Exception {
         if(objReq.getMaNhaThuoc() ==null){
@@ -319,6 +320,24 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
             throw new Exception("User không được để trống!");
         }
         userRoleRepository.deleteByMaNhaThuocAndUserId(objReq.getMaNhaThuoc(), objReq.getUserId());
+        for(Long roleId: objReq.getRoleIds()){
+            UserRoleReq ur = new UserRoleReq();
+            ur.setUserId(objReq.getUserId());
+            ur.setRoleId(roleId);
+            userRoleService.create(ur);
+        }
+        return true;
+    }
+    @Transactional
+    @Override
+    public Boolean changeRoleSystem(ChangeRoleReq objReq) throws Exception {
+        if(objReq.getMaNhaThuoc() ==null){
+            throw new Exception("Mã nhà thuốc không được để trống!");
+        }
+        if(objReq.getUserId() ==null){
+            throw new Exception("User không được để trống!");
+        }
+        userRoleRepository.deleteByMaNhaThuocAndUserIdSystem(objReq.getMaNhaThuoc(), objReq.getUserId());
         for(Long roleId: objReq.getRoleIds()){
             UserRoleReq ur = new UserRoleReq();
             ur.setUserId(objReq.getUserId());

@@ -32,4 +32,6 @@ public interface RolePrivilegeRepository extends BaseRepository<RolePrivilege, R
             + " ORDER BY c.id desc"
     )
     List<RolePrivilege> searchList(@Param("param") RolePrivilegeReq param);
+
+    void deleteByRoleId(Long roleId);
 }

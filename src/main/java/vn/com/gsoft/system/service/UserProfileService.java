@@ -32,4 +32,6 @@ public interface UserProfileService extends BaseService<UserProfile, UserProfile
     Boolean updateThongTinKhuVuc(ThongTinKhuVucReq objReq) throws Exception;
 
     Boolean changeRole(ChangeRoleReq objReq) throws Exception;
+
+    Boolean changeRoleSystem(ChangeRoleReq objReq) throws Exception ;
 }

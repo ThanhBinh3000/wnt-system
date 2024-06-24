@@ -36,6 +36,10 @@ public interface UserRoleRepository extends BaseRepository<UserRole, UserRoleReq
 
     UserRole findByUserIdAndRoleId(Long userId, Long roleId);
     @Modifying
-    @Query("delete from UserRole b where b.roleId in (select r.id from Role r where (r.maNhaThuoc =?1 or r.isDefault)) and b.userId =?2")
+    @Query("delete from UserRole b where b.roleId in (select r.id from Role r where (r.maNhaThuoc =?1 or r.isDefault = true) and r.roleTypeId != 1) and b.userId =?2")
     void deleteByMaNhaThuocAndUserId(String maNhaThuoc, Long userId);
+
+    @Modifying
+    @Query("delete from UserRole b where b.roleId in (select r.id from Role r where (r.maNhaThuoc =?1 or r.isDefault = true) and r.roleTypeId = 1) and b.userId =?2")
+    void deleteByMaNhaThuocAndUserIdSystem(String maNhaThuoc, Long userId);
 }

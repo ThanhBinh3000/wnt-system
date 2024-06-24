@@ -14,4 +14,8 @@ public interface RoleService extends BaseService<Role, RoleReq, Long> {
     Optional<Role> findByMaNhaThuocAndTypeAndIsDefaultAndRoleName(String maNhaThuoc, int type, boolean isDefault, String roleName);
 
     List<Role> searchListSystem(RoleReq objReq) throws Exception;
+
+    Role createSystem(RoleReq objReq) throws Exception;
+
+    Role updateSystem(RoleReq objReq) throws Exception;
 }

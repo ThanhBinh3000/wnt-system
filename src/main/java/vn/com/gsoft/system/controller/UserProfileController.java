@@ -141,6 +141,12 @@ public class UserProfileController {
         return ResponseEntity.ok(ResponseUtils.ok(service.changeRole(objReq)));
     }
 
+    @Operation(summary = "Change role", description = "Change role")
+    @PostMapping(value = "/change-role-system", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<BaseResponse> changeRoleSystem(@Valid @RequestBody ChangeRoleReq objReq) throws Exception {
+        return ResponseEntity.ok(ResponseUtils.ok(service.changeRoleSystem(objReq)));
+    }
 
     @Operation(summary = "Xóa thông tin", description = "Xóa thông tin")
     @PostMapping(value = PathConstant.URL_DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
