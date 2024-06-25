@@ -8,10 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.com.gsoft.system.constant.PathConstant;
 import vn.com.gsoft.system.model.dto.ProcessReq;
-import vn.com.gsoft.system.model.dto.RoleReq;
 import vn.com.gsoft.system.model.system.BaseResponse;
 import vn.com.gsoft.system.service.ProcessService;
-import vn.com.gsoft.system.service.RoleService;
 import vn.com.gsoft.system.util.system.ResponseUtils;
 
 @Slf4j
@@ -32,5 +30,11 @@ public class ProcessController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BaseResponse> colectionList(@RequestBody ProcessReq objReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.searchList(objReq)));
+    }
+
+    @GetMapping(value = PathConstant.URL_DETAIL, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<BaseResponse> detail(@PathVariable("id") Long id) throws Exception {
+        return ResponseEntity.ok(ResponseUtils.ok(service.detail(id)));
     }
 }

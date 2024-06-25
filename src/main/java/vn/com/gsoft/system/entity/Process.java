@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -32,5 +33,7 @@ public class Process {
     private Integer returnCode; // 0: Thành công, 1:Chạy thành công có lỗi 1 phần, 2: Chạy không thành công
     private String message;
     private Long createBy;
+    @Transient
+    private List<ProcessDtl> dtls;
 }
 

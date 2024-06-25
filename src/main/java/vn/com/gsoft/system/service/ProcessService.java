@@ -10,4 +10,5 @@ public interface ProcessService {
     Page<Process> searchPage(ProcessReq req) throws Exception;
 
     List<Process> searchList(ProcessReq req) throws Exception;
+    Process detail(Long id) throws Exception;
 }
