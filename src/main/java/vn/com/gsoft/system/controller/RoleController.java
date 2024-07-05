@@ -22,46 +22,46 @@ public class RoleController {
     private RoleService service;
 
 
-    @PostMapping(value = PathConstant.URL_SEARCH_PAGE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = PathConstant.URL_SEARCH_PAGE + "-staff-management", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BaseResponse> colection(@RequestBody RoleReq objReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.searchPage(objReq)));
     }
 
 
-    @PostMapping(value = PathConstant.URL_SEARCH_LIST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = PathConstant.URL_SEARCH_LIST + "-staff-management", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BaseResponse> colectionList(@RequestBody RoleReq objReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.searchList(objReq)));
     }
 
-    @PostMapping(value = PathConstant.URL_SEARCH_LIST + "-system", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = PathConstant.URL_SEARCH_LIST + "-user-management", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BaseResponse> colectionListSystem(@RequestBody RoleReq objReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.searchListSystem(objReq)));
     }
 
-    @PostMapping(value = PathConstant.URL_CREATE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = PathConstant.URL_CREATE + "-staff-management", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<BaseResponse> insert(@Valid @RequestBody RoleReq objReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.create(objReq)));
     }
 
 
-    @PostMapping(value = PathConstant.URL_UPDATE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = PathConstant.URL_UPDATE + "-staff-management", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<BaseResponse> update(@Valid @RequestBody RoleReq objReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.update(objReq)));
     }
 
-    @PostMapping(value = PathConstant.URL_CREATE + "-system", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = PathConstant.URL_CREATE + "-user-management", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<BaseResponse> insertSystem(@Valid @RequestBody RoleReq objReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.createSystem(objReq)));
     }
 
 
-    @PostMapping(value = PathConstant.URL_UPDATE + "-system", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = PathConstant.URL_UPDATE + "-user-management", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<BaseResponse> updateSystem(@Valid @RequestBody RoleReq objReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.updateSystem(objReq)));
