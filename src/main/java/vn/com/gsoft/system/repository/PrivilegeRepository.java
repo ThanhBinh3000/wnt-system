@@ -35,4 +35,11 @@ public interface PrivilegeRepository extends BaseRepository<Privilege, Privilege
     )
     List<Privilege> searchList(@Param("param") PrivilegeReq param);
 
+    @Query("SELECT c FROM Privilege c " +
+            "JOIN RolePrivilege d on d.privilegeId = c.id "+
+            "WHERE 1=1 "
+            + " AND (d.roleId = ?1) "
+            + " ORDER BY c.id desc"
+    )
+    List<Privilege> findByRoleId(Long roleId);
 }

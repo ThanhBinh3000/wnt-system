@@ -21,4 +21,5 @@ public class UserProfileRes {
     private String soCMT;
 
     private List<Role> roles;
+    private List<String> maNhaThuocs;
 }

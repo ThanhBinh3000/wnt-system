@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import vn.com.gsoft.system.entity.NhaThuocs;
 import vn.com.gsoft.system.model.dto.*;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface NhaThuocsService extends BaseService<NhaThuocs, NhaThuocsReq, Long> {
@@ -22,4 +23,6 @@ public interface NhaThuocsService extends BaseService<NhaThuocs, NhaThuocsReq, L
     Integer updateThongTinKhuVuc(ThongTinKhuVucReq req) throws Exception;
 
     LoginRespData onCheckConnectivity(NhaThuocsReq objReq) throws Exception;
+
+    List<NhaThuocs> searchByNvList(NhaThuocsReq objReq);
 }

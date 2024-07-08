@@ -477,6 +477,11 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
     }
 
     @Override
+    public List<NhaThuocs> searchByNvList(NhaThuocsReq objReq) {
+        return hdrRepo.findByUserId(objReq.getUserId());
+    }
+
+    @Override
     public Page<NhaThuocs> searchPageNhaThuocTong(NhaThuocsReq req) throws Exception {
         Profile userInfo = this.getLoggedUser();
         if (userInfo == null)

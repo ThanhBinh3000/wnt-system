@@ -18,4 +18,6 @@ public interface RoleService extends BaseService<Role, RoleReq, Long> {
     Role createSystem(RoleReq objReq) throws Exception;
 
     Role updateSystem(RoleReq objReq) throws Exception;
+
+    List<Role> searchListStaff(RoleReq objReq);
 }

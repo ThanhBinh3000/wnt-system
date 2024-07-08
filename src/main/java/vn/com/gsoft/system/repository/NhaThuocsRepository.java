@@ -162,4 +162,10 @@ public interface NhaThuocsRepository extends BaseRepository<NhaThuocs, NhaThuocs
             , nativeQuery = true)
     Page<Tuple> searchPageNhaThuocDongBoPhieu(@Param("storeCodes") String[] storeCodes, @Param("tenNhaThuoc") String tenNhaThuoc, Pageable pageable);
 
+    @Query("SELECT c FROM NhaThuocs c " +
+            " JOIN NhanVienNhaThuocs d on d.nhaThuocMaNhaThuoc = c.maNhaThuoc "+
+            " WHERE 1=1 " +
+            " AND d.userUserId = ?1 " +
+            " ORDER BY c.created DESC")
+    List<NhaThuocs> findByUserId(Long userId);
 }

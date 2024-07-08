@@ -43,6 +43,12 @@ public class NhaThuocsController {
         return ResponseEntity.ok(ResponseUtils.ok(service.searchList(objReq)));
     }
 
+    @PostMapping(value = PathConstant.URL_SEARCH_LIST+"-by-nv", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<BaseResponse> colectionByNvList(@RequestBody NhaThuocsReq objReq) throws Exception {
+        return ResponseEntity.ok(ResponseUtils.ok(service.searchByNvList(objReq)));
+    }
+
 
     @PostMapping(value = PathConstant.URL_CREATE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)

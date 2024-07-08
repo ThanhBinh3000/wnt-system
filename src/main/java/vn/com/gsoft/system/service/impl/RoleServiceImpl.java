@@ -1,5 +1,6 @@
 package vn.com.gsoft.system.service.impl;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,7 +28,8 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, RoleReq, Long> implem
     private RoleRepository hdrRepo;
     @Autowired
     private RolePrivilegeRepository rolePrivilegeRepository;
-
+    @Autowired
+    private PrivilegeRepository privilegeRepository;
     @Autowired
     public RoleServiceImpl(RoleRepository hdrRepo) {
         super(hdrRepo);
@@ -37,9 +39,6 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, RoleReq, Long> implem
     @Override
     public List<Role> searchList(RoleReq req) throws Exception {
         req.setRecordStatusId(RecordStatusContains.ACTIVE);
-        if (req.getMaNhaThuoc() == null) {
-            req.setMaNhaThuoc(getLoggedUser().getNhaThuoc().getMaNhaThuoc());
-        }
         return hdrRepo.searchList(req);
     }
 
@@ -79,6 +78,8 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, RoleReq, Long> implem
         if (e.getRecordStatusId() == null) {
             e.setRecordStatusId(RecordStatusContains.ACTIVE);
         }
+        e.setIsDeleted(false);
+        e.setRoleTypeId(3l);
         e.setMaNhaThuoc(getLoggedUser().getNhaThuoc().getMaNhaThuoc());
         e.setCreated(new Date());
         e.setCreatedByUserId(getLoggedUser().getId());
@@ -108,6 +109,8 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, RoleReq, Long> implem
         if (e.getRecordStatusId() == null) {
             e.setRecordStatusId(RecordStatusContains.ACTIVE);
         }
+        e.setIsDeleted(false);
+        e.setRoleTypeId(3l);
         e.setMaNhaThuoc(getLoggedUser().getNhaThuoc().getMaNhaThuoc());
         e.setModified(new Date());
         e.setModifiedByUserId(getLoggedUser().getId());
@@ -132,8 +135,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, RoleReq, Long> implem
         if (e.getRecordStatusId() == null) {
             e.setRecordStatusId(RecordStatusContains.ACTIVE);
         }
-        e.setMaNhaThuoc(null);
-        e.setRoleTypeId(1l);
+        e.setIsDeleted(false);
         e.setCreated(new Date());
         e.setCreatedByUserId(getLoggedUser().getId());
         e = hdrRepo.save(e);
@@ -147,6 +149,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, RoleReq, Long> implem
     }
 
     @Override
+    @Transactional
     public Role updateSystem(RoleReq req) throws Exception {
         Profile userInfo = this.getLoggedUser();
         if (userInfo == null)
@@ -162,8 +165,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, RoleReq, Long> implem
         if (e.getRecordStatusId() == null) {
             e.setRecordStatusId(RecordStatusContains.ACTIVE);
         }
-        e.setMaNhaThuoc(null);
-        e.setRoleTypeId(1l);
+        e.setIsDeleted(false);
         e.setModified(new Date());
         e.setModifiedByUserId(getLoggedUser().getId());
         e = hdrRepo.save(e);
@@ -175,5 +177,17 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, RoleReq, Long> implem
             rolePrivilegeRepository.save(privilege);
         }
         return e;
+    }
+
+    @Override
+    public Role detail(Long id) throws Exception {
+        Role detail = super.detail(id);
+        detail.setPrivileges(privilegeRepository.findByRoleId(detail.getId()));
+        return detail;
+    }
+
+    @Override
+    public List<Role> searchListStaff(RoleReq objReq) {
+        return hdrRepo.searchListStaff(objReq);
     }
 }

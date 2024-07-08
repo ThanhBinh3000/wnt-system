@@ -20,5 +20,6 @@ public class RoleType extends BaseEntity {
     private String roleName;
     @Column(name = "Descripition")
     private String descripition;
-
+    @Column(name = "EntityId")
+    private Long entityId;
 }

@@ -8,16 +8,18 @@ import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "Privilege")
-public class Privilege extends BaseEntity{
+public class Privilege extends BaseEntity {
     @Id
     @Column(name = "Id")
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "Code")
     private String code;
@@ -27,5 +29,7 @@ public class Privilege extends BaseEntity{
     private String name;
     @Column(name = "Enable")
     private Boolean enable;
+    @Transient
+    private List<vn.com.gsoft.system.entity.Entity> entitys;
 }
 

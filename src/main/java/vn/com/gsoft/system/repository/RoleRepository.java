@@ -29,7 +29,7 @@ public interface RoleRepository extends BaseRepository<Role, RoleReq, Long> {
 
     @Query("SELECT c FROM Role c " +
             "WHERE 1=1 "
-            + " AND (:#{#param.maNhaThuoc} IS NULL OR  ( c.maNhaThuoc = :#{#param.maNhaThuoc} OR c.isDefault = true)) "
+            + " AND (:#{#param.maNhaThuoc} IS NULL OR  ( c.maNhaThuoc = :#{#param.maNhaThuoc})) "
             + " AND (:#{#param.id} IS NULL OR c.id = :#{#param.id}) "
             + " AND (:#{#param.recordStatusId} IS NULL OR c.recordStatusId = :#{#param.recordStatusId})"
             + " AND (:#{#param.roleName} IS NULL OR lower(c.roleName) LIKE lower(concat('%',CONCAT(:#{#param.roleName},'%'))))"
@@ -73,4 +73,16 @@ public interface RoleRepository extends BaseRepository<Role, RoleReq, Long> {
             + " AND (?1 IS NULL OR c.roleName like lower(concat('%',CONCAT(?1,'%')))) "
     )
     List<Role> searchListSystem(String roleName);
+
+    @Query("SELECT c FROM Role c " +
+            "WHERE 1=1 "
+            + " AND (:#{#param.maNhaThuoc} IS NULL OR  ( c.maNhaThuoc = :#{#param.maNhaThuoc} OR c.isDefault = true)) "
+            + " AND (:#{#param.id} IS NULL OR c.id = :#{#param.id}) "
+            + " AND (:#{#param.recordStatusId} IS NULL OR c.recordStatusId = :#{#param.recordStatusId})"
+            + " AND (:#{#param.roleName} IS NULL OR lower(c.roleName) LIKE lower(concat('%',CONCAT(:#{#param.roleName},'%'))))"
+            + " AND (:#{#param.description} IS NULL OR lower(c.description) LIKE lower(concat('%',CONCAT(:#{#param.description},'%'))))"
+            + " AND (:#{#param.roleTypeId} IS NULL OR c.roleTypeId = :#{#param.roleTypeId}) "
+            + " ORDER BY c.id desc"
+    )
+    List<Role> searchListStaff(@Param("param") RoleReq param);
 }

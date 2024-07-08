@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.*;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -27,5 +29,7 @@ public class Role extends BaseEntity {
     private Long roleTypeId;
     @Column(name = "IsDefault")
     private Boolean isDefault;  // true là mặc định
+    @Transient
+    private List<Privilege> privileges;
 }
 

@@ -42,4 +42,8 @@ public interface UserRoleRepository extends BaseRepository<UserRole, UserRoleReq
     @Modifying
     @Query("delete from UserRole b where b.roleId in (select r.id from Role r where (r.maNhaThuoc =?1 or r.isDefault = true) and r.roleTypeId = 1) and b.userId =?2")
     void deleteByMaNhaThuocAndUserIdSystem(String maNhaThuoc, Long userId);
+
+    @Modifying
+    @Query("delete from UserRole b where  b.userId =?1")
+    void deleteByUserId(Long userId);
 }

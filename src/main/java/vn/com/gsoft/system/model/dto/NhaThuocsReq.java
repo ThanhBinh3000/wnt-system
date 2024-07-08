@@ -131,4 +131,6 @@ public class NhaThuocsReq extends BaseRequest {
     private String currentStoreCode;
 
     private Long nguoiPhuTrach;
+
+    private Long userId;
 }

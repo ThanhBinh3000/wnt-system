@@ -22,17 +22,22 @@ public class RoleController {
     private RoleService service;
 
 
-    @PostMapping(value = PathConstant.URL_SEARCH_PAGE + "-staff-management", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = PathConstant.URL_SEARCH_PAGE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BaseResponse> colection(@RequestBody RoleReq objReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.searchPage(objReq)));
     }
 
-
-    @PostMapping(value = PathConstant.URL_SEARCH_LIST + "-staff-management", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = PathConstant.URL_SEARCH_LIST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BaseResponse> colectionList(@RequestBody RoleReq objReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.searchList(objReq)));
+    }
+
+    @PostMapping(value = PathConstant.URL_SEARCH_LIST + "-staff-management", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<BaseResponse> colectionListStaff(@RequestBody RoleReq objReq) throws Exception {
+        return ResponseEntity.ok(ResponseUtils.ok(service.searchListStaff(objReq)));
     }
 
     @PostMapping(value = PathConstant.URL_SEARCH_LIST + "-user-management", produces = MediaType.APPLICATION_JSON_VALUE)

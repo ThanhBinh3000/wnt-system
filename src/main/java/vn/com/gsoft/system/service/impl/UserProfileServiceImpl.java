@@ -70,6 +70,7 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
         for(UserProfileRes up: userProfiles){
             List<NhanVienNhaThuocs> nhanVienNhaThuocs = nhanVienNhaThuocsService.findByUserUserId(up.getId());
             if(!nhanVienNhaThuocs.isEmpty()){
+                up.setMaNhaThuocs(nhanVienNhaThuocs.stream().map(NhanVienNhaThuocs::getNhaThuocMaNhaThuoc).toList());
                 for(NhanVienNhaThuocs nv: nhanVienNhaThuocs){
                     up.setRoles(roleRepository.findByMaNhaThuocAndUserId(nv.getNhaThuocMaNhaThuoc(), up.getId()));
                 }
@@ -331,13 +332,10 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
     @Transactional
     @Override
     public Boolean changeRoleSystem(ChangeRoleReq objReq) throws Exception {
-        if(objReq.getMaNhaThuoc() ==null){
-            throw new Exception("Mã nhà thuốc không được để trống!");
-        }
         if(objReq.getUserId() ==null){
             throw new Exception("User không được để trống!");
         }
-        userRoleRepository.deleteByMaNhaThuocAndUserIdSystem(objReq.getMaNhaThuoc(), objReq.getUserId());
+        userRoleRepository.deleteByUserId(objReq.getUserId());
         for(Long roleId: objReq.getRoleIds()){
             UserRoleReq ur = new UserRoleReq();
             ur.setUserId(objReq.getUserId());
