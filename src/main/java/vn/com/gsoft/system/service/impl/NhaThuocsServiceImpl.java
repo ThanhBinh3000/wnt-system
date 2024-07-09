@@ -377,7 +377,7 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
         req.setRecordStatusId(RecordStatusContains.ACTIVE);
         req.setHoatDong(true);
         // check is user hệ thống
-        Optional<vn.com.gsoft.system.model.system.Role> role = getLoggedUser().getRoles().stream().filter(item -> "Hệ thống".equalsIgnoreCase(item.getRoleType())).findFirst();
+        Optional<vn.com.gsoft.system.model.system.Role> role = getLoggedUser().getRoles().stream().filter(item -> ("Hệ thống".equalsIgnoreCase(item.getRoleType()) || "Sp hệ thống".equalsIgnoreCase(item.getRoleType()))).findFirst();
         if (role.isEmpty()) {
             req.setUserIdQueryData(getLoggedUser().getId());
         }
