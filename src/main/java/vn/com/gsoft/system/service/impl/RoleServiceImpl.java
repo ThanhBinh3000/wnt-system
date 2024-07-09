@@ -105,6 +105,8 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, RoleReq, Long> implem
         }
 
         Role e = optional.get();
+        req.setRoleTypeId(e.getRoleTypeId());
+        req.setMaNhaThuoc(e.getMaNhaThuoc());
         BeanUtils.copyProperties(req, e, "id", "created", "createdByUserId");
         if (e.getRecordStatusId() == null) {
             e.setRecordStatusId(RecordStatusContains.ACTIVE);
@@ -161,6 +163,8 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, RoleReq, Long> implem
         }
 
         Role e = optional.get();
+        req.setRoleTypeId(e.getRoleTypeId());
+        req.setMaNhaThuoc(e.getMaNhaThuoc());
         BeanUtils.copyProperties(req, e, "id", "created", "createdByUserId");
         if (e.getRecordStatusId() == null) {
             e.setRecordStatusId(RecordStatusContains.ACTIVE);
