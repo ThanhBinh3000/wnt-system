@@ -161,7 +161,6 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
         NhanVienNhaThuocsReq nv = new NhanVienNhaThuocsReq();
         nv.setUserUserId(e.getId());
         nv.setRole(NhanVienRoleConstant.ADMIN);
-        nv.setNhaThuocMaNhaThuoc(req.getMaNhaThuoc());
         nv.setStoreId(req.getStoreId());
         this.nhanVienNhaThuocsService.create(nv);
 
@@ -209,12 +208,15 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
         Profile userInfo = this.getLoggedUser();
         if (userInfo == null)
             throw new Exception("Bad request.");
-        Optional<UserProfile> userProfile = this.hdrRepo.findByUserName(req.getUserName());
+        String userName = req.getUserName() + "@" + userInfo.getNhaThuoc().getMaNhaThuoc();
+        Optional<UserProfile> userProfile = this.hdrRepo.findByUserName(userName);
         if (userProfile.isPresent()) {
             throw new Exception("UserName đã tồn tại!");
         }
         UserProfile e = new UserProfile();
         BeanUtils.copyProperties(req, e, "id");
+        e.setMaNhaThuoc(userInfo.getNhaThuoc().getMaNhaThuoc());
+        e.setUserName(userName);
         if (e.getRecordStatusId() == null) {
             e.setRecordStatusId(RecordStatusContains.ACTIVE);
         }
@@ -229,7 +231,7 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
         NhanVienNhaThuocsReq nv = new NhanVienNhaThuocsReq();
         nv.setUserUserId(e.getId());
         nv.setRole(NhanVienRoleConstant.USER);
-        nv.setNhaThuocMaNhaThuoc(getLoggedUser().getNhaThuoc().getMaNhaThuoc());
+        nv.setNhaThuocMaNhaThuoc(userInfo.getNhaThuoc().getMaNhaThuoc());
         nv.setStoreId(req.getStoreId());
         this.nhanVienNhaThuocsService.create(nv);
         Optional<Role> role = this.roleService.findByMaNhaThuocAndTypeAndIsDefaultAndRoleName(getLoggedUser().getNhaThuoc().getMaNhaThuoc(), 3, true, RoleTypeConstant.USER);
@@ -257,14 +259,8 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
         if (optional.isEmpty()) {
             throw new Exception("Không tìm thấy dữ liệu.");
         }
-        if (!optional.get().getUserName().equals(req.getUserName())) {
-            Optional<UserProfile> userProfile = this.hdrRepo.findByUserName(req.getUserName());
-            if (userProfile.isPresent()) {
-                throw new Exception("UserName đã tồn tại!");
-            }
-        }
         UserProfile e = optional.get();
-        BeanUtils.copyProperties(req, e, "id", "password", "hoatDong", "enableNT", "created", "createdByUserId", "modified", "modifiedByUserId", "recordStatusId");
+        BeanUtils.copyProperties(req, e, "id", "password", "userName", "enableNT", "created", "createdByUserId", "modified", "modifiedByUserId", "recordStatusId");
         if (e.getRecordStatusId() == null) {
             e.setRecordStatusId(RecordStatusContains.ACTIVE);
         }

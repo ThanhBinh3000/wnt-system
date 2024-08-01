@@ -190,7 +190,7 @@ public interface UserProfileRepository extends BaseRepository<UserProfile, UserP
                     " AND (:#{#param.maNhaThuoc} IS NULL OR nv.NhaThuoc_MaNhaThuoc = :#{#param.maNhaThuoc}) " +
                     " AND ((:#{#param.textSearch} IS NULL OR lower(up.UserName) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%'))))" +
                     " OR (:#{#param.textSearch} IS NULL OR lower(up.TenDayDu) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%')))))" +
-                    " ORDER BY up.id desc", nativeQuery = true
+                    " ORDER BY up.id", nativeQuery = true
     )
     Page<Tuple> searchPageStaffManagement(@Param("param") UserProfileReq param, Pageable pageable);
 

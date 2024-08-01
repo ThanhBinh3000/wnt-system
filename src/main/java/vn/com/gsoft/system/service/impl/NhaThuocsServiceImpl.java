@@ -101,10 +101,10 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
     public NhaThuocs create(NhaThuocsReq req) throws Exception {
         Optional<UserProfile> tkQuanLy = null;
         // check administrator account.
-        if (req.getNguoiPhuTrach() == null || req.getNguoiPhuTrach() <= 0) {
+        if (req.getAdministrator() == null || req.getAdministrator() <= 0) {
             throw new Exception("Chưa chọn tài khoản quản lý");
         } else {
-            tkQuanLy = userProfileRepository.findById(req.getNguoiPhuTrach());
+            tkQuanLy = userProfileRepository.findById(req.getAdministrator());
         }
         if (tkQuanLy.isEmpty()) {
             throw new Exception("Tài khoản quản lý không tồn tại");
@@ -260,10 +260,10 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
         }
         Optional<UserProfile> tkQuanLy = null;
         // check administrator account.
-        if (req.getNguoiPhuTrach() == null || req.getNguoiPhuTrach() <= 0) {
+        if (req.getAdministrator() == null || req.getAdministrator() <= 0) {
             throw new Exception("Chưa chọn tài khoản quản lý");
         } else {
-            tkQuanLy = userProfileRepository.findById(req.getNguoiPhuTrach());
+            tkQuanLy = userProfileRepository.findById(req.getAdministrator());
         }
         if (tkQuanLy.isEmpty()) {
             throw new Exception("Tài khoản quản lý không tồn tại");
@@ -338,7 +338,9 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
     public NhaThuocs detail(String code) throws Exception {
         Optional<NhaThuocs> byMaNhaThuoc = hdrRepo.findByMaNhaThuoc(code);
         NhaThuocs nhaThuocs = byMaNhaThuoc.get();
-        nhaThuocs.setNguoiPhuTrach(hdrRepo.findNguoiPhuTrachByMaNhaThuoc(code).get().getNguoiPhuTrach());
+        NhaThuocsRes nguoiPhuTrach = hdrRepo.findNguoiPhuTrachByMaNhaThuoc(code).get();
+        nhaThuocs.setNguoiPhuTrach(nguoiPhuTrach.getNguoiPhuTrach());
+        nhaThuocs.setAdministrator(nguoiPhuTrach.getId());
         if (nhaThuocs.getMaNhaThuocCha() != null && !nhaThuocs.getMaNhaThuocCha().isEmpty() && !Objects.equals(nhaThuocs.getMaNhaThuoc(), nhaThuocs.getMaNhaThuocCha())) {
             nhaThuocs.setNhaThuocQuanLy(hdrRepo.findByMaNhaThuoc(nhaThuocs.getMaNhaThuocCha()).get().getTenNhaThuoc());
         }

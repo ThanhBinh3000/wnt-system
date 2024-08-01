@@ -130,7 +130,7 @@ public class NhaThuocsReq extends BaseRequest {
     private Boolean excludeCurrentStore;
     private String currentStoreCode;
 
-    private Long nguoiPhuTrach;
-
+    private String nguoiPhuTrach;
+    private Long administrator;
     private Long userId;
 }
