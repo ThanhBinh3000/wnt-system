@@ -212,6 +212,9 @@ public class NhaThuocs extends BaseEntity {
     private String nguoiPhuTrach;
 
     @Transient
+    private Long administrator;
+
+    @Transient
     private String nhaThuocQuanLy;
 
     @Transient
